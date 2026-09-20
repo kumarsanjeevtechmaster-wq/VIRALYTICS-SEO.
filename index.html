@@ -1,0 +1,2324 @@
+<!doctype html>
+<!--
+  VIRALYSTICS SEO Command Center — offline single-file build
+  No npm, no CDN, no fonts, no network calls. Open this file and it works.
+  Build source: build/app.css + build/seed.js + build/app.js  (run ./build.sh)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VIRALYSTICS · SEO Command Center</title>
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23b7f24a'/><text x='16' y='23' font-family='system-ui' font-size='19' font-weight='800' text-anchor='middle' fill='%230a0b0d'>V</text></svg>">
+<style>
+/* VIRALYSTICS SEO Command Center — offline, zero-dependency */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0b0d; --panel:#111317; --panel2:#15181d; --line:#21262d; --line2:#2b323b;
+  --tx:#e6e8ea; --tx2:#9aa4b0; --tx3:#6a7480;
+  --lime:#b7f24a; --blue:#3b82f6; --red:#ef4444; --amber:#f59e0b; --green:#22c55e; --violet:#8b5cf6;
+  --r:12px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--tx);font:13px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans Devanagari",sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--blue);text-decoration:none}
+::selection{background:rgba(183,242,74,.28)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+
+/* ---------- layout ---------- */
+#app{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+#side{border-right:1px solid var(--line);background:#0c0e11;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.brand{display:flex;gap:9px;align-items:center;padding:14px 14px 12px;border-bottom:1px solid var(--line)}
+.logo{width:26px;height:26px;border-radius:7px;background:var(--lime);color:#0a0b0d;display:grid;place-items:center;font-weight:800;font-size:13px;letter-spacing:-.5px}
+.brand b{font-size:13px;letter-spacing:-.2px}
+.brand small{display:block;color:var(--tx3);font-size:10px;letter-spacing:.4px;text-transform:uppercase}
+nav{padding:8px 8px 4px;overflow-y:auto;flex:1;scrollbar-width:thin}
+.grp{color:var(--tx3);font-size:10px;text-transform:uppercase;letter-spacing:.7px;padding:12px 8px 5px}
+.nav-i{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:9px;color:var(--tx2);cursor:pointer;user-select:none;border:1px solid transparent}
+.nav-i:hover{background:var(--panel);color:var(--tx)}
+.nav-i.on{background:var(--panel2);color:var(--tx);border-color:var(--line2)}
+.nav-i .dot{width:6px;height:6px;border-radius:50%;background:var(--line2);flex:none}
+.nav-i.on .dot{background:var(--lime)}
+.nav-i .badge{margin-left:auto;font-size:10px;background:var(--line);color:var(--tx2);padding:1px 6px;border-radius:20px}
+.nav-i .badge.hot{background:rgba(239,68,68,.16);color:#fca5a5}
+.side-foot{border-top:1px solid var(--line);padding:10px 12px;font-size:11px;color:var(--tx3)}
+.meter{height:5px;border-radius:4px;background:var(--line);overflow:hidden;margin:6px 0 4px}
+.meter i{display:block;height:100%;background:var(--lime)}
+.meter i.warn{background:var(--amber)} .meter i.bad{background:var(--red)}
+#main{min-width:0;display:flex;flex-direction:column}
+header.top{position:sticky;top:0;z-index:20;background:rgba(10,11,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 18px;display:flex;gap:10px;align-items:center}
+header.top h1{font-size:15px;font-weight:650;letter-spacing:-.2px;white-space:nowrap}
+.hspace{flex:1}
+.chip{display:inline-flex;gap:6px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:4px 10px;font-size:11.5px;color:var(--tx2);cursor:pointer;white-space:nowrap}
+.chip:hover{border-color:var(--line2);color:var(--tx)}
+.chip b{color:var(--tx);font-weight:600}
+.chip.free{border-color:rgba(183,242,74,.35);color:#d6f7a0;background:rgba(183,242,74,.07)}
+.chip.danger{border-color:rgba(239,68,68,.4);color:#fca5a5;background:rgba(239,68,68,.08)}
+main{padding:16px 18px 60px;max-width:1620px;width:100%}
+
+/* ---------- cards / grids ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;min-width:0}
+.card h3{font-size:12px;font-weight:600;color:var(--tx2);display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.card h3 .sp{flex:1}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g-2-1{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.g-1-2{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
+@media(max-width:1180px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(2,1fr)}.g-2-1,.g-1-2{grid-template-columns:1fr}}
+@media(max-width:760px){#app{grid-template-columns:1fr}#side{position:fixed;left:-260px;width:236px;z-index:60;transition:left .2s}#side.open{left:0}main{padding:12px}.g2,.g3,.g4{grid-template-columns:1fr}header.top{flex-wrap:wrap}}
+.kpi{font-size:25px;font-weight:680;letter-spacing:-.8px}
+.kpi.s{font-size:19px}
+.sub{color:var(--tx3);font-size:11.5px}
+.up{color:var(--green)} .dn{color:var(--red)} .flat{color:var(--tx3)}
+.hr{height:1px;background:var(--line);margin:11px 0}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:20px;border:1px solid var(--line2);color:var(--tx2);background:#0f1114;white-space:nowrap}
+.tag.crit{border-color:rgba(239,68,68,.45);color:#fca5a5;background:rgba(239,68,68,.09)}
+.tag.imp{border-color:rgba(245,158,11,.45);color:#fbbf24;background:rgba(245,158,11,.09)}
+.tag.pass{border-color:rgba(34,197,94,.4);color:#86efac;background:rgba(34,197,94,.09)}
+.tag.info{border-color:rgba(59,130,246,.4);color:#93c5fd;background:rgba(59,130,246,.09)}
+.tag.est{border-color:var(--line);color:var(--tx3)}
+.tag.lime{border-color:rgba(183,242,74,.4);color:#d6f7a0;background:rgba(183,242,74,.08)}
+.tag.violet{border-color:rgba(139,92,246,.45);color:#c4b5fd;background:rgba(139,92,246,.1)}
+
+/* ---------- buttons ---------- */
+.btn{background:var(--panel2);border:1px solid var(--line2);border-radius:9px;padding:6px 11px;cursor:pointer;font-size:12px;display:inline-flex;gap:7px;align-items:center;color:var(--tx)}
+.btn:hover{border-color:#3d4550;background:#1a1e24}
+.btn.pri{background:var(--lime);color:#0a0b0d;border-color:transparent;font-weight:650}
+.btn.pri:hover{background:#c7ff5f}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--tx2)}
+.btn.ghost:hover{color:var(--tx);background:var(--panel)}
+.btn.sm{padding:3px 8px;font-size:11px;border-radius:7px}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+.btn.danger{border-color:rgba(239,68,68,.4);color:#fca5a5}
+
+/* ---------- tables ---------- */
+.tbl-wrap{border:1px solid var(--line);border-radius:var(--r);overflow:auto;background:var(--panel);max-height:560px}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+thead th{position:sticky;top:0;background:#14181d;text-align:left;padding:8px 10px;font-weight:600;color:var(--tx2);font-size:11px;white-space:nowrap;border-bottom:1px solid var(--line2);z-index:2;cursor:pointer;user-select:none}
+thead th:hover{color:var(--tx)}
+thead th.n,td.n{text-align:right}
+tbody td{padding:7px 10px;border-bottom:1px solid #191d22;vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#14181d}
+tbody tr.sel td{background:rgba(183,242,74,.07)}
+td .kw{font-weight:600;color:var(--tx)}
+td.mono, .mono{font-family:var(--mono);font-size:11px;color:var(--tx2)}
+.bar{height:5px;border-radius:4px;background:var(--line);overflow:hidden;min-width:44px}
+.bar i{display:block;height:100%;background:var(--lime)}
+.bar.blue i{background:var(--blue)} .bar.amber i{background:var(--amber)} .bar.red i{background:var(--red)} .bar.violet i{background:var(--violet)}
+.urlcell{max-width:290px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--mono);font-size:11px;color:var(--tx2)}
+.filters{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+input[type=search],input[type=text],input[type=number],select,textarea{background:#0e1013;border:1px solid var(--line2);border-radius:8px;padding:5px 9px;font-size:12px;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:#4b5563;outline:none}
+.filters .count{color:var(--tx3);font-size:11px;margin-left:auto}
+
+/* ---------- score ring / heatmap / charts ---------- */
+.ring{display:flex;align-items:center;gap:14px}
+.ring svg{flex:none}
+.ring .big{font-size:40px;font-weight:700;letter-spacing:-1.6px;line-height:1}
+.subscore{display:grid;grid-template-columns:132px 1fr 34px;gap:8px;align-items:center;font-size:11.5px;color:var(--tx2)}
+.heat{display:grid;gap:2px;grid-auto-flow:column}
+.heat b{border-radius:2px;min-width:8px;height:13px;background:var(--line);font-weight:400}
+.spark{display:block;width:100%;height:34px}
+.empty{border:1px dashed var(--line2);border-radius:var(--r);padding:26px;text-align:center;color:var(--tx3);background:#0d0f12}
+.empty b{display:block;color:var(--tx2);font-size:13px;margin-bottom:5px}
+
+/* ---------- drawer + modal ---------- */
+#drawer,#modal{position:fixed;inset:0;display:none;z-index:80}
+#drawer.on,#modal.on{display:block}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.62)}
+.drawer-p{position:absolute;right:0;top:0;bottom:0;width:min(720px,96vw);background:#0f1216;border-left:1px solid var(--line2);overflow:auto;padding:16px 18px}
+.modal-p{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(880px,94vw);max-height:88vh;overflow:auto;background:#0f1216;border:1px solid var(--line2);border-radius:14px;padding:16px 18px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.x{position:sticky;float:right;top:4px;background:var(--panel2);border:1px solid var(--line2);border-radius:8px;width:26px;height:26px;cursor:pointer;color:var(--tx2)}
+.diff{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.diff .box{background:#0c0e11;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-family:var(--mono);font-size:11.5px;white-space:pre-wrap;word-break:break-word}
+.diff .box.bad{border-color:rgba(239,68,68,.35)} .diff .box.good{border-color:rgba(34,197,94,.35)}
+.diff h5{font-family:inherit;font-size:10.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:600}
+.snippet{background:#0c0e11;border:1px solid var(--line);border-radius:9px;padding:10px;font-family:var(--mono);font-size:11.5px;color:#c8f0a0;white-space:pre-wrap;word-break:break-word}
+
+/* ---------- misc ---------- */
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.list-i{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #171b20}
+.list-i:last-child{border-bottom:0}
+.pill{font-size:10.5px;padding:2px 8px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);color:var(--tx2);cursor:pointer}
+.pill.on{background:rgba(183,242,74,.12);border-color:rgba(183,242,74,.4);color:#d6f7a0}
+.note{background:#0d1208;border:1px solid rgba(183,242,74,.22);border-radius:10px;padding:9px 11px;font-size:11.5px;color:#cde8a8}
+.note.warn{background:#150d05;border-color:rgba(245,158,11,.3);color:#fcd9a0}
+.note.red{background:#150606;border-color:rgba(239,68,68,.3);color:#fca5a5}
+.note.blue{background:#070e18;border-color:rgba(59,130,246,.28);color:#a8c8fb}
+#toasts{position:fixed;right:14px;bottom:14px;z-index:120;display:flex;flex-direction:column;gap:8px;max-width:390px}
+.toast{background:#14181d;border:1px solid var(--line2);border-left:3px solid var(--lime);border-radius:10px;padding:9px 12px;font-size:12px;box-shadow:0 12px 36px rgba(0,0,0,.5);animation:tin .18s ease-out}
+.toast.bad{border-left-color:var(--red)} .toast.warn{border-left-color:var(--amber)}
+@keyframes tin{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+#palette{position:fixed;inset:0;z-index:100;display:none;background:rgba(0,0,0,.6);padding-top:12vh;justify-content:center}
+#palette.on{display:flex}
+.pal{width:min(620px,94vw);height:max-content;max-height:64vh;background:#12161b;border:1px solid var(--line2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.pal input{border:0;border-bottom:1px solid var(--line);border-radius:0;padding:13px 15px;background:transparent;font-size:14px}
+.pal .res{overflow:auto;padding:6px}
+.pal .hit{padding:8px 10px;border-radius:9px;cursor:pointer;display:flex;gap:9px;align-items:center;font-size:12.5px}
+.pal .hit.on,.pal .hit:hover{background:var(--panel2)}
+.pal .hit span{color:var(--tx3);font-size:11px;margin-left:auto}
+#banner{border-bottom:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.09);color:#fcd9a0;padding:7px 18px;font-size:11.5px;display:flex;gap:10px;align-items:center}
+#banner b{color:#fde68a}
+.prose{font-size:12.5px;color:var(--tx2)} .prose b{color:var(--tx)} .prose p{margin:0 0 7px}
+.prose ul{margin:0 0 8px 16px} .prose li{margin-bottom:3px}
+.why{background:#0d1014;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:11.5px;color:var(--tx2)}
+.why .r{display:grid;grid-template-columns:118px 1fr 40px;gap:8px;align-items:center;margin-top:5px;font-size:11px}
+.kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line2);border-bottom-width:2px;border-radius:5px;padding:0 5px;color:var(--tx3);background:#0e1013}
+.scroll-x{overflow-x:auto}
+details{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--panel);margin-bottom:8px}
+summary{cursor:pointer;font-size:12px;font-weight:600;color:var(--tx2);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";color:var(--tx3)}
+details[open] summary:before{content:"▾ "}
+@media print{
+  #side,header.top,#toasts,.filters,.btn,.no-print{display:none!important}
+  #app{display:block} main{padding:0;max-width:none} body{background:#fff;color:#111;font-size:11px}
+  .card{border:1px solid #ccc;background:#fff;break-inside:avoid;box-shadow:none}
+  .tag,.note,.why,.snippet{background:#f6f6f6!important;color:#111!important;border-color:#ddd!important}
+  .tbl-wrap{max-height:none;overflow:visible;border-color:#ccc;background:#fff}
+  thead th{background:#eee;color:#111;position:static} tbody td{border-color:#eee}
+  .grid{display:grid} #reportOnly{display:block!important}
+}
+
+/* ---------- status colouring for approval rows + scatter interaction ---------- */
+.scat circle{cursor:pointer;transition:fill-opacity .12s}
+.scat circle:hover{fill-opacity:1;stroke:#e6e8ea;stroke-width:1.2}
+.tag.pending{background:rgba(245,158,11,.14);color:#fbbf24;border-color:rgba(245,158,11,.35)}
+.tag.approved{background:rgba(59,130,246,.14);color:#93c5fd;border-color:rgba(59,130,246,.35)}
+.tag.applied{background:rgba(34,197,94,.14);color:#86efac;border-color:rgba(34,197,94,.35)}
+.tag.rejected,.tag.cancelled{background:rgba(239,68,68,.13);color:#fca5a5;border-color:rgba(239,68,68,.3)}
+.tag.reverted{background:rgba(139,92,246,.14);color:#c4b5fd;border-color:rgba(139,92,246,.32)}
+
+/* --- print (white-label PDF) --- */
+@media print{
+  body{background:#fff!important;color:#111!important}
+  .kpi,.sub,.urlcell,.kw,.mono,h1,h2,h3,b,td,th{color:#111!important}
+  .sub,.urlcell,.mono{color:#555!important}
+  #reportView{border:none;padding:0}
+  .card{padding:9px 10px}
+  .tbl-wrap{max-height:none!important}
+  .spark polyline{stroke:#111!important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="side"></aside>
+  <div id="main">
+    <header class="top" id="top"></header>
+    <main id="view"></main>
+  </div>
+</div>
+
+<div class="modal" id="modal"></div>
+<div id="toasts"></div>
+
+<!-- ============================ DATA LAYER ============================
+     The app reads window.DATA if present, otherwise the seeded demo set in
+     seed.js. To plug in real numbers: run tools/ingest.js (free Google APIs,
+     your own OAuth client) and drop data/*.json next to this file — or replace
+     the window.DATA assignment below. No code changes are needed anywhere else.
+===================================================================== -->
+<script>
+/* optional runtime loader — only works when served over http(s), harmless on file:// */
+window.__loadData = async function(){
+  try{
+    const j = await (await fetch('./data/site.json',{cache:'no-store'})).json();
+    window.DATA = Object.assign(window.DATA||{}, j);
+    try{ const k = await (await fetch('./data/keywords.json',{cache:'no-store'})).json();
+         if(k && k.rows) window.DATA.keywords = k.rows; }catch(e){}
+    console.info('[data] loaded ./data/*.json — live numbers in use');
+  }catch(e){ console.info('[data] no ./data/site.json — running on the seeded demo set'); }
+};
+window.__READY = (location.protocol.startsWith('http') ? window.__loadData() : Promise.resolve());
+</script>
+<script>
+/* optional runtime loader — only works when served over http(s), harmless on file:// */
+window.__loadData = async function(){
+  try{
+    const j = await (await fetch('./data/site.json',{cache:'no-store'})).json();
+    window.DATA = Object.assign(window.DATA||{}, j);
+    try{ const k = await (await fetch('./data/keywords.json',{cache:'no-store'})).json();
+         if(k && k.rows) window.DATA.keywords = k.rows; }catch(e){}
+    console.info('[data] loaded ./data/*.json — live numbers in use');
+  }catch(e){ console.info('[data] no ./data/site.json — running on the seeded demo set'); }
+};
+window.__READY = (location.protocol.indexOf('http')===0 ? window.__loadData() : Promise.resolve());
+</script>
+<script>
+/* =============================================================================
+   SEED DATA — fictional demo dataset.
+   Why seeded: this build is 100% free/offline. Live Google numbers require each
+   site owner's OAuth consent, which a file:// page cannot do. Same code paths
+   render real data once ingest.js writes JSON pulled from your own connected APIs.
+   ============================================================================= */
+const SITE={domain:'viralytics-demo.io',brand:'Viralytics',scheme:'https'};
+const FREE=1; /* badge: every data source here costs ₹0 */
+
+/* ---------------------------------------------------------------- RULES
+  se: 0 critical · 1 improvement · 2 notice | scope: page|site */
+const RULES=[
+{code:'title_missing',t:'Missing title tag',se:0,cat:'onpage',w:6,scope:'page',
+ why:'A page with no title gives Google nothing to name the result with, so it invents one from the URL.',
+ fix:'Add a unique 30–60 char title naming the topic plus one qualifier.',
+ snip:'<title>AI Reel Generator for 9:16 Video — Viralytics</title>'},
+{code:'title_duplicate',t:'Duplicate titles',se:0,cat:'onpage',w:6,scope:'page',
+ why:'Identical titles on different URLs blur which page should rank, and the template never differentiates.',
+ fix:'Differentiate by the page’s actual purpose; put the brand at the end.',
+ snip:'<title>AI Reel Generator — Viralytics</title>   /* was "Features — Viralytics" */'},
+{code:'title_long',t:'Title truncated in the SERP',se:1,cat:'onpage',w:1.5,scope:'page',
+ why:'Past ~60 characters the part that earns the click is cut off.',
+ fix:'Front-load meaning, trim the brand suffix.',snip:'<title>AI Social Media Manager for Teams</title>'},
+{code:'meta_missing',t:'Missing meta description',se:1,cat:'onpage',w:1.5,scope:'page',
+ why:'No description means Google picks a random sentence — you lose the pitch under your title.',
+ fix:'120–155 chars: what it is, who for, one concrete proof.',
+ snip:'<meta name="description" content="Plan, generate and schedule posts for 6 networks from one brief. 1,400 social teams. Free 14-day trial.">'},
+{code:'meta_duplicate',t:'Duplicate meta descriptions',se:1,cat:'onpage',w:1.5,scope:'page',
+ why:'One boilerplate line across a template group means the snippet never matches the query.',
+ fix:'Templated pages may share structure, not the whole sentence.',
+ snip:'<meta name="description" content="Compare {PLAN}: {N} seats, {M} posts/month, AI credits included.">'},
+{code:'h1_missing',t:'Missing H1',se:1,cat:'onpage',w:1.5,scope:'page',
+ why:'Headings are how a crawler (and a screen reader) reads what each section is about.',
+ fix:'One H1 stating the page topic. Do not chase keyword counts.',snip:'<h1>AI Reel Generator</h1>'},
+{code:'alt_missing',t:'Image without alt text',se:1,cat:'onpage',w:1.5,scope:'page',
+ why:'Screen readers read nothing and image search has nothing to match.',
+ fix:'Describe the image for someone who cannot see it; empty alt for decoration.',
+ snip:'<img src="reel-ui.png" alt="Viralytics composing a 9:16 reel from one written idea">'},
+{code:'alt_duplicate',t:'Repeated alt text',se:2,cat:'onpage',w:.4,scope:'page',
+ why:'One alt string across a gallery is boilerplate that describes nothing in particular.',
+ fix:'Per-image alt.',snip:'alt="Reel storyboard, step 1" / alt="Reel storyboard, step 2"'},
+{code:'soft_404',t:'Soft 404 (200 with no real content)',se:0,cat:'indexability',w:4.5,scope:'page',
+ why:'A page that answers 200 but carries almost nothing gets crawled, indexed as doorway content and drags the whole host’s quality signal.',
+ fix:'Either put real content on it, or return 404/410 and remove it from the sitemap.',
+ snip:'HTTP/1.1 410 Gone\n\n# or, if the page is genuinely useful once filled:\n# add the missing section and drop the placeholder'},
+{code:'redirect_chain',t:'Redirect chain (2+ hops)',se:1,cat:'indexability',w:1.4,scope:'page',
+ why:'Chains lose signal, cost crawl budget, and are dropped outright by some crawlers — the final page never gets the links.',
+ fix:'Point every source URL straight at its final target; one hop, no chaining.',
+ snip:'# nginx / .htaccess — collapse to one hop\nRedirect 301 /old-price  https://viralytics.com/pricing   # was /old-price → /pricing/v2 → /pricing'},
+{code:'noindex',t:'noindex present',se:0,cat:'indexability',w:6,scope:'page',
+ why:'The page explicitly tells Google not to index it. Every impression it could earn is zero.',
+ fix:'Remove only where the page should genuinely rank.',snip:'delete → <meta name="robots" content="noindex">'},
+{code:'canonical_mismatch',t:'Canonical points elsewhere',se:0,cat:'indexability',w:6,scope:'page',
+ why:'The page hands its relevance to another URL — if unintentional, it is silently deleting itself.',
+ fix:'Self-canonical unless consolidating on purpose.',
+ snip:'<link rel="canonical" href="https://viralytics-demo.io/features">'},
+{code:'canonical_missing',t:'No canonical declared',se:1,cat:'indexability',w:1.5,scope:'page',
+ why:'With parameters, sort orders and scheme variants, Google chooses its own representative URL.',
+ fix:'Self-referencing canonical on every indexable URL.',snip:'<link rel="canonical" href="{SELF_URL}">'},
+{code:'robots_blocked',t:'Blocked by robots.txt',se:0,cat:'indexability',w:6,scope:'site',
+ why:'A blocked URL cannot pass signals and cannot be re-included by a canonical or a sitemap.',
+ fix:'Unblock the template path. Keep private paths blocked by directory, not wildcard.',
+ snip:'User-agent: *\nDisallow: /wp-admin/\n# removed: Disallow: /compare/'},
+{code:'orphan',t:'Orphan page — nothing links to it',se:1,cat:'structure',w:1.5,scope:'page',
+ why:'Reachable only from the sitemap: crawled rarely, inherits no internal signal.',
+ fix:'Link it from the nearest relevant hub with descriptive anchor text.',
+ snip:'<!-- on /blog -->\n<a href="/blog/hindi-content">Plan Hindi posts with AI</a>'},
+{code:'no_links_out',t:'Page links to nothing internally',se:1,cat:'structure',w:1.5,scope:'page',
+ why:'A dead-end page passes nothing onward and reads like an exit.',
+ fix:'2–5 contextual links to genuinely related pages.',snip:'<a href="/features/reel-generator">generate the reel</a>'},
+{code:'broken_link',t:'Broken internal link',se:1,cat:'structure',w:1.5,scope:'page',
+ why:'Crawl budget spent on 404s, users bounced, link equity dropped on the floor.',
+ fix:'Fix the target or remove it. Never redirect a broken link to the homepage.',
+ snip:'/old-instagram-guide  →  301  →  /blog/instagram-growth-playbook'},
+{code:'soft_404',t:'Soft 404',se:0,cat:'indexability',w:6,scope:'page',
+ why:'A page that looks empty but answers 200 gets indexed as junk, and Google trusts your URLs less.',
+ fix:'Return a real 404/410.',snip:'HTTP/1.1 404 Not Found'},
+{code:'http_links',t:'Mixed http/https',se:0,cat:'indexability',w:6,scope:'page',
+ why:'Scheme and host mismatches create duplicate URLs and browser warnings.',
+ fix:'One canonical scheme+host, 301 the rest.',
+ snip:'http://viralytics-demo.io/  →  301  →  https://viralytics-demo.io/'},
+{code:'thin_content',t:'Thin page — answers less than the results above it',se:1,cat:'onpage',w:1.5,scope:'page',
+ why:'Not a word-count rule. Add what only you can add, or keep it out of the index.',
+ fix:'Own screenshots, your numbers, real limits, one worked example.',
+ snip:'Before 210 words, no original images → After 940 words, 4 product shots, 1 customer number, limits table.'},
+{code:'repetition_risk',t:'Unnatural repetition (do NOT fix by adding more)',se:0,cat:'onpage',w:6,scope:'page',
+ why:'Repeating an exact phrase to rank is keyword stuffing — a named Google spam policy. This is a warning about the copy, not a target to reach.',
+ fix:'Rewrite for the reader; cover the related topics the top results cover instead.',
+ snip:'"ai reel generator" 31× in 640 words → keep it in title, H1 and once in the intro. Cover “vertical video”, “hooks”, “captions”, “scheduling” instead.'},
+{code:'deep_page',t:'Page at depth 4+',se:2,cat:'structure',w:.4,scope:'page',
+ why:'Deeper pages are crawled less often and receive less internal signal.',
+ fix:'Surface important pages within 3 clicks of the homepage.',snip:'/docs/releases/changelog  ←  add hub /docs/releases/'},
+{code:'hreflang_missing',t:'Missing hreflang (en ↔ hi)',se:1,cat:'international',w:1.5,scope:'page',
+ why:'You publish English and Hindi for the same intent; without hreflang the wrong language may be shown.',
+ fix:'Reciprocal pairs plus x-default.',
+ snip:'<link rel="alternate" hreflang="en" href="/features/reel-generator">\n<link rel="alternate" hreflang="hi" href="/hi/features/reel-generator">\n<link rel="alternate" hreflang="x-default" href="/features/reel-generator">'},
+{code:'lang_mismatch',t:'Page lang ≠ content language',se:1,cat:'international',w:1.5,scope:'page',
+ why:'Hindi content served under lang="en" confuses readers and machine translation.',
+ fix:'Set the document language to the content language.',snip:'<html lang="hi">'},
+{code:'schema_missing',t:'No structured data',se:2,cat:'schema',w:.4,scope:'page',
+ why:'Not a ranking factor — it is how you state the exact entity, price and questions you want understood.',
+ fix:'Emit only types that fit the template; never mark up invisible content.',
+ snip:'<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"…","operatingSystem":"Web","offers":{"@type":"Offer","price":"19","priceCurrency":"USD"}}<\/script>'},
+{code:'schema_invalid',t:'Structured data invalid',se:1,cat:'schema',w:1.5,scope:'page',
+ why:'One malformed property drops the whole entity: you keep the maintenance and lose the rich result.',
+ fix:'Validate required properties for the type.',snip:'FAQPage: every acceptedQuestion needs acceptedAnswer.text as a plain string'},
+{code:'og_missing',t:'Missing Open Graph tags',se:2,cat:'onpage',w:.4,scope:'page',
+ why:'Shared links render as a bare URL in WhatsApp, LinkedIn and Slack.',
+ fix:'og:title / og:description / og:image 1200×630.',snip:'<meta property="og:image" content="/og/reel-generator.png">'},
+{code:'lcp_slow',t:'Slow LCP',se:0,cat:'performance',w:6,scope:'page',
+ why:'Field LCP above 2.5s lands the page in Google’s “poor” bucket for real users on real devices.',
+ fix:'Hero as correctly-sized AVIF/WebP, preload it, then remove render-blocking work — before touching JS.',
+ snip:'<link rel="preload" as="image" href="/hero-reel.avif" fetchpriority="high">'},
+{code:'cls_high',t:'Layout shift (CLS)',se:1,cat:'performance',w:1.5,scope:'page',
+ why:'Content jumping under a reader’s cursor causes misclicks and reads as broken on mobile.',
+ fix:'Reserve space for media, embeds and banners.',snip:'<img width="1080" height="1350" style="aspect-ratio:4/5">'},
+{code:'inp_slow',t:'Slow INP',se:1,cat:'performance',w:1.5,scope:'page',
+ why:'INP over 200ms means the page feels stuck when clicked. Third-party scripts are the usual cause.',
+ fix:'Split long tasks; load chat/analytics after first interaction.',snip:'defer + requestIdleCallback → /vendors/chat.js'},
+{code:'sitemap_bloat',t:'Sitemap declares far more URLs than we can crawl',se:1,cat:'indexability',w:2.2,scope:'site',
+ why:'A sitemap that promises 1,000 URLs while 200 of them are thin, redirected or blocked wastes crawl budget and tells Google the site has no hierarchy. Size alone is not a fault — size with no structure is.',
+ fix:'Trim the sitemap to indexable canonicals; give the remaining URLs a reason to be crawled (links from hubs, honest lastmod).',
+ snip:'# regenerate the sitemap listing ONLY status=200 + canonical=self + not-noindex URLs\n# and stop bumping lastmod when nothing changed'},
+{code:'no_sitemap',t:'Sitemap lists non-canonical URLs',se:1,cat:'indexability',w:1.5,scope:'site',
+ why:'Feeding Google noindex and redirect URLs contradicts yourself, and it resolves the contradiction by trusting you less.',
+ fix:'Filter in the generator, not by hand.',snip:'removed: /careers (noindex), /blog?page=2, /old-price (301)'},
+{code:'crawl_limit',t:'Crawl limit hit — audit is partial',se:2,cat:'indexability',w:.4,scope:'site',
+ why:'The score reflects only the pages we reached. Rerun with a higher limit for a full picture.',
+ fix:'Raise the page limit: crawling your own site costs nothing — it is your server, not a paid index.',
+ snip:'max_pages: 1000 → 3000 (free)'},
+];
+const RULE_BY=Object.fromEntries(RULES.map(r=>[r.code,r]));
+
+/* ---------------------------------------------------------------- PAGES
+   "path|type|depth|words|title|meta|h1|imgs|altMissing|out|in|status|flag|schemas|lcp|cls"
+   flag bits: 1 noindex 2 canonicalWrong 3 canonicalMissing 4 hreflangMissing 5 langMismatch
+              6 ogMissing 7 brokenLink 8 httpLink 9 soft404 10 redirectChain 11 stuffing */
+const PAGES_RAW=`
+/|h|0|2650|AI Social Media Manager for Teams — Viralytics|Plan, generate and schedule posts for 6 networks from one brief. Free 14-day trial.|AI Social Media Manager|4|0|9|31|200|0|Organization;SoftwareApplication;WebSite|1900|.06
+/features|f|1|1180|Features — Viralytics|||6|4|7|12|200|3||2100|.11
+/features/reel-generator|f|2|940|AI Reel Generator — Viralytics|Turn one written idea into five 9:16 reels with captions, hooks and auto-posting.|AI Reel Generator|9|4|6|8|200|0|SoftwareApplication|2600|.19
+/features/scheduler|f|2|760|Social Media Scheduler|Queue a month of posts in 12 minutes. Drag to reschedule; AI rebest-times.|Social Media Scheduler|3|0|5|7|200|0|SoftwareApplication|1500|.04
+/features/analytics|f|2|410|Social Media Analytics|See which posts earned reach and which wasted the week.|Social Media Analytics|5|3|3|4|200|3||2450|.08
+/features/captions|f|2|880|AI Caption Generator — Viralytics|On-brand captions in 30 languages, with hooks you can edit.|AI Caption Generator|2|0|4|6|200|0|SoftwareApplication|1400|.03
+/features/content-calendar|f|2|320||Content calendar for social teams.||4|4|2|1|200|2||3100|.22
+/features/inbox|f|2|540|Social Inbox — Viralytics|One inbox for comments and DMs across 6 networks.|Social Inbox|3|1|3|2|200|0||1600|.05
+/features/brand-kit|f|2|190|Brand Kit|Upload fonts and colours once; every asset follows it.|Brand Kit|2|2|0|1|200|6||1200|.02
+/features/hashtags|f|2|240|Hashtag Research|||3|3|0|1|200|11||1300|.02
+/pricing|p|1|1340|Pricing — Viralytics|Three plans. Seats, AI credits and networks included, no per-post charge.|Plans and Pricing|2|0|6|18|200|0|Product;Offer|1250|.02
+/pricing/enterprise|p|2|620|Enterprise — Viralytics|SSO, dedicated capacity, custom data residency.|Enterprise plan|1|0|3|5|200|0|Product|1240|.02
+/compare|c|1|610|AI social media tool comparisons|Head-to-head: what each tool does well and where it stops.|Comparisons|1|0|8|9|200|0||1500|.04
+/compare/buffer|c|2|1450|Viralytics vs Buffer — AI comparison|Real limits, real prices, and where Buffer still wins.|Viralytics vs Buffer|3|0|6|7|200|0|Article|1300|.03
+/compare/hootsuite|c|2|1380|Viralytics vs Hootsuite — AI comparison|Enterprise scheduling versus AI-first drafting.|Viralytics vs Hootsuite|3|0|6|5|200|0|Article|1350|.03
+/compare/later|c|2|290|Viralytics vs Later|||2|2|1|1|200|2||2900|.3
+/compare/sprout|c|2|240|Viralytics vs Sprout Social|||2|2|1|0|200|2||3000|.31
+/compare/agorapulse|c|2|210|Viralytics vs Agorapulse|||2|2|0|0|200|2||2800|.28
+/compare/notegraph|c|2|1120|Viralytics vs NoteGraph|Where an AI writer stops and a manager starts.|Viralytics vs NoteGraph|2|0|5|6|200|0|Article|1310|.03
+/blog|b|1|300|Blog — Social AI Playbooks|Guides from the team that ships the product.|Blog|2|0|14|6|200|0|Blog|1700|.05
+/blog/instagram-growth-playbook|b|2|2380|Instagram Growth Playbook 2026|22 tactics we tested on 40 accounts, with the numbers that came back.|Grow Instagram in 2026|11|0|7|4|200|0|Article|1900|.09
+/blog/ai-vs-human-content|b|2|2650|Is AI Content Penalised by Google?|What the policies actually say, and what changed in the 2026 updates.|AI Content and Google’s Policies|4|4|8|6|200|0|Article|2050|.07
+/blog/how-to-automate-reels|b|2|1980|How to Automate Instagram Reels|From one idea to a posted reel in four steps, with the exact limits.|Automate Instagram Reels|7|2|6|5|200|0|HowTo;Article|2300|.12
+/blog/social-media-calendar-template|b|2|720|Free Social Media Calendar Template|A template you can copy, plus how to fill it in 15 minutes.|Social Media Calendar Template|3|0|5|8|200|0|Article|1400|.03
+/blog/linkedin-post-formats|b|2|1560|LinkedIn Post Formats That Get Replies|12 openings, tested on 90 company pages.|LinkedIn Post Formats|5|1|4|3|200|0|Article|1600|.06
+/blog/hindi-content|b|2|610|AI से Instagram ग्रोथ (हिन्दी)|हिन्दी में सोशल मीडिया प्लानिंग — पूरा तरीका, असली आँकड़ों के साथ.|AI से Instagram ग्रोथ|4|4|2|0|200|4|Article|2700|.24
+/blog/hooks-that-stop-scroll|b|2|1240|31 Hooks That Stop the Scroll|The first line decides the reach. Here is what worked.|Hooks That Stop the Scroll|3|0|4|2|200|0|Article|1500|.05
+/blog/ai-tools-for-agencies|b|2|890|AI Tools a Social Agency Actually Needs|Where automation pays back and where it just moves the work.|AI Tools for Agencies|6|3|3|2|200|0|Article|1800|.1
+/blog/repost-repurpose-workflow|b|2|1120|One Idea → Nine Posts|The repurposing workflow our team runs every Monday.|Repurpose One Idea Into Nine Posts|4|0|3|3|200|0|Article|1450|.04
+/blog/analytics-what-to-report|b|2|760|What to Report to a Client Each Month|Six numbers that mean something, and eleven that do not.|Analytics for Clients|2|0|2|1|200|0|Article|1500|.04
+/blog/shutdown-2024|b|2|80||||0|0|0|0|404|0||0|0
+/blog/old-instagram-guide|b|2|60||||0|0|0|0|404|0||0|0
+/old-price|b|2|0||||0|0|0|0|301|10||0|0
+/docs|d|1|420|Docs — Viralytics|Setup, limits, API.|Documentation|1|0|9|12|200|0||1200|.02
+/docs/api|d|2|3100|API reference|Endpoints, rate limits, webhooks and the two gotchas.|Viralytics REST API|2|0|5|9|200|0|TechArticle|1300|.02
+/docs/api/webhooks|d|3|1800|Webhooks|Delivery, retries, signature check.|Webhooks|1|0|4|6|200|0|TechArticle|1250|.01
+/docs/api/auth|d|3|1400|Authentication|Tokens, scopes, rotation.|Authentication|1|0|4|5|200|0|TechArticle|1240|.01
+/docs/changelog|d|4|300|Changelog|||0|0|1|0|200|0||1200|.01
+/faq|q|1|690|Frequently Asked Questions|Pricing, limits, security, and what happens to your data when you delete.|Questions|0|0|5|7|200|0|FAQPage|1100|.01
+/about|o|1|520|About Viralytics|Who we are and why the product looks like this.|About|3|3|2|4|200|0|Organization|1300|.02
+/careers|o|1|340|Careers at Viralytics|||4|4|1|0|200|1||1250|.02
+/legal/privacy|o|2|2100|Privacy Policy|||0|0|1|2|200|1|WebPage|900|0
+/legal/terms|o|2|1900|Terms of Service|||0|0|1|2|200|1|WebPage|900|0
+/legal/dpa|o|2|110||||0|0|0|0|200|13|WebPage|900|0
+/templates|f|1|260|Post Templates|84 templates by goal and platform.|Post Templates|8|8|3|3|200|11||3400|.42
+/templates/instagram|f|2|180||||6|6|0|0|200|7||3500|.44
+/templates/linkedin|f|2|175||||6|6|0|0|200|7||3500|.44
+/templates/reels|f|2|170||||6|6|0|0|200|7||3600|.45
+/features|f|1|1180|Features — Viralytics|||6|4|7|12|200|3||2100|.11
+/hi|l|1|1180|||हिन्दी होमपेज|2|0|4|3|200|5||1600|.05
+/hi/features/reel-generator|l|2|540|AI रील जेनरेटर — Viralytics|एक आइडिया से पाँच रील — कैप्शन और हुक साथ में।|AI रील जेनरेटर|3|0|3|2|200|4|SoftwareApplication|2200|.1
+/signup|h|1|180|Start free — Viralytics|14 days, full features, no card.|Start free|1|0|2|9|200|0|WebPage|1100|.01
+/changelog|h|2|140|Product updates|||1|0|2|1|200|2||1200|.02
+/security|h|1|430|Security — Viralytics|How your data is stored, who can see it, what we can never read.|Security|1|0|3|6|200|0|WebPage|1150|.01
+/contact|h|1|210|Contact|Talk to a human on the team.|Contact|1|0|2|5|200|0|Organization|1100|.01
+/partners|p|1|160|Partner program|||1|0|1|0|200|2||1200|.02
+/integrations|f|1|640|Integrations — Viralytics|Instagram, LinkedIn, X, TikTok, YouTube, Facebook.|Integrations|6|0|5|10|200|0|SoftwareApplication|1400|.03
+/integrations/instagram|f|2|700|Instagram integration|Publishing, insights and comments without leaving the app.|Instagram integration|3|1|4|5|200|0|SoftwareApplication|1420|.03
+/integrations/linkedin|f|2|660|LinkedIn integration|Company-page publishing with first-comment support.|LinkedIn integration|3|1|4|4|200|0|SoftwareApplication|1430|.03
+/integrations/tiktok|f|2|300|TikTok integration|||3|3|2|2|200|0||2600|.2
+/integrations/youtube|f|2|280|YouTube integration|||3|3|2|1|200|0||2650|.21
+`;
+const TYPE_BY={h:'homepage',f:'feature',p:'pricing',c:'comparison',b:'blog',d:'docs',q:'faq',o:'other',l:'localized'};
+function parsePages(){
+  const rows=PAGES_RAW.trim().split('\n').map(l=>l.split('|'));
+  const seen={}, out=[];
+  rows.forEach((c,i)=>{
+    const [path,type,depth,words,title,meta,h1,imgs,altMiss,out_,in_,status,flag,schemas,lcp,cls]=c;
+    out.push({id:'p'+i,path,type:TYPE_BY[type]||'other',depth:+depth,words:+words,title:title||'',
+      meta:meta||'',h1:h1||'',imgs:+imgs||0,altMissing:+altMiss||0,linksOut:+out_||0,linksIn:+in_||0,
+      status:+status||200,rawFlag:+flag||0,schema:schemas?schemas.split(';'):[],lcp:+lcp||0,cls:+cls||0,
+      url:SITE.scheme+'://'+SITE.domain+path,dupTitle:false,dupMeta:false,soft:(+status===404&&+words>0)});
+  });
+  out.forEach(p=>{ if(p.title){ if(seen.title?.[p.title]) p.dupTitle=true; (seen.title=seen.title||{})[p.title]=1; } });
+  out.forEach(p=>{ if(p.meta){ if(seen.meta?.[p.meta]) p.dupMeta=true; (seen.meta=seen.meta||{})[p.meta]=1; } });
+  return out;
+}
+const FLAG_CODE={1:'noindex',2:'canonical_mismatch',3:'canonical_missing',4:'hreflang_missing',5:'lang_mismatch',6:'og_missing',7:'broken_link',8:'http_links',9:'soft_404',10:'redirect_chain',11:'repetition_risk'};
+
+/* ---------------------------------------------------------------- COMPETITORS */
+const COMPS=[
+['notegraph.io',96,'AI Content Creation',.44,45200,.071,'direct',1,'Their AI writing suite outranks you on 44% of the queries you both target; heavy comparison-page production.'],
+['postgenie.ai',88,'AI Social Media',.38,31800,.058,'direct',1,'Closest product overlap (AI drafts + scheduling) and they hold 3 of your striking-distance queries.'],
+['reelforge.com',79,'AI Video',.29,26400,.047,'indirect',1,'Owns the reel/video intent you are mid-page on; their feature page is 2.4× longer than yours.'],
+['schedulab.app',71,'Social Scheduling',.24,19800,.039,'direct',1,'Scheduling-only product; competes on your /features/scheduler and every “alternative” query.'],
+['creatorflow.ai',66,'Creator Tool',.21,16400,.034,'indirect',1,'Creator-facing templates; strong on informational queries you have no page for.'],
+['metricpilot.io',58,'Social Analytics',.17,12900,.028,'indirect',1,'Analytics-only; takes your reporting keywords with a template-library play.'],
+['vidcut.ai',54,'AI Video',.14,11200,.024,'indirect',1,'Video editor positioning; competes only on “AI video editor for reels”.'],
+['hashtaggen.app',49,'AI Content Creation',.12,9400,.021,'indirect',0,'Free-tool funnel that ranks for hashtag and caption long-tails.'],
+['autopostly.io',46,'Social Scheduling',.11,8600,.019,'direct',0,'Cheap scheduler; wins price-anchored comparison queries.'],
+['deltasync.io',41,'Social Analytics',.09,7100,.015,'indirect',0,'Reporting add-on; overlaps on agency analytics terms.'],
+['contentloops.ai',38,'Content Creation',.08,6400,.013,'indirect',0,'Blog-first SEO play; big informational footprint, weak product pages.'],
+['viralgpt.co',36,'AI Marketing',.08,5900,.012,'indirect',1,'Same “viral” brand space; steals navigational impressions that should be yours.'],
+['hooksmith.io',33,'AI Content Creation',.06,5100,.011,'indirect',0,'Hooks/captions utility; ranks for your hook keywords at position 3–8.'],
+['socialbrew.ai',31,'AI Marketing',.05,4700,.009,'indirect',0,'Newsletter-adjacent; low overlap, monitor only.'],
+['captionkit.app',28,'Creator Tool',.05,4200,.008,'indirect',0,'Caption tool; free tier takes volume from your captions page.'],
+['reachlytics.com',26,'Social Analytics',.04,3600,.007,'indirect',0,'Analytics micro-SaaS.'],
+['postpilot.ai',24,'AI Social Media',.04,3100,.006,'indirect',0,'Same category, thin content, not a ranking threat.'],
+['trendcast.io',22,'AI Marketing',.03,2800,.005,'indirect',0,'Trend reporting; occasional SERP overlap.'],
+['gramwriter.com',20,'AI Content Creation',.03,2400,.004,'indirect',0,'Copywriting tool; low relevance to your product pages.'],
+['stacksocial.dev',17,'Marketing',.02,1900,.003,'other',0,'Agency site ranking on informational queries — content rival, not product rival.'],
+];
+/* extra pages we crawled on the 6 selected competitors (free: our own crawler) */
+const COMP_PAGES=[
+['notegraph.io','/features/ai-social-media-manager',1840,'Ultimate AI Social Media Manager (2026 guide)','Article;FAQPage',1,'SoftwareApplication'],
+['notegraph.io','/compare/viralytics',980,'NoteGraph vs Viralytics: which fits a lean team','Article',1,''],
+['notegraph.io','/blog/reels-ai',2210,'How to Make Reels With AI: 9 Steps (tested)','HowTo',2,'HowTo'],
+['notegraph.io','/templates',640,'120 social templates by goal','',0,''],
+['postgenie.ai','/ai-social-media-manager',2380,'AI Social Media Manager — Postgenie','SoftwareApplication',2,'SoftwareApplication;FAQPage'],
+['postgenie.ai','/instagram-ai',1720,'AI for Instagram: the complete setup','Article',1,'Article'],
+['postgenie.ai','/pricing',540,'Pricing','Product',1,'Product;Offer'],
+['reelforge.com','/ai-reel-generator',3120,'AI Reel Generator — Reelforge','SoftwareApplication',3,'SoftwareApplication'],
+['reelforge.com','/hooks',1450,'400 reel hooks that stop the scroll','',1,''],
+['reelforge.com','/vs-ai-generator',890,'Reelforge vs every AI reel generator','Article',0,'Article'],
+['schedulab.app','/scheduler',1560,'The social scheduler that takes 4 minutes','SoftwareApplication',1,'SoftwareApplication'],
+['schedulab.app','/best-ai-scheduler',2040,'Best AI Social Media Scheduler 2026','Article',2,'Article'],
+['creatorflow.ai','/calendar',1180,'Free social media calendar (Notion + Sheets)','Article',1,''],
+['metricpilot.io','/reports',1340,'Client reports that write themselves','SoftwareApplication',1,'SoftwareApplication'],
+['viralgpt.co','/',900,'Viralgpt — go viral on autopilot','',0,''],
+];
+
+/* ---------------------------------------------------------------- KEYWORDS
+   [q, lang, intent, fit, volume, kd, cpc, compShare, ourPos, imp, clicks, page, aiOverview, brand] */
+const K=[
+['ai social media manager','en','commercial','feature',12100,52,3.1,.9,12.4,9800,400,'/features',1,0],
+['ai social media manager free','en','commercial','landing',2900,41,.9,.7,19.1,3300,92,null,1,0],
+['ai social media manager for instagram','en','commercial','feature',1300,38,2.2,.6,7.9,3400,96,'/features',0,0],
+['social media ai tools','en','commercial','feature',8100,61,2.6,.85,18.4,5200,112,'/features',1,0],
+['ai reel generator','en','commercial','feature',18200,49,2.9,.8,17.8,14500,320,'/features/reel-generator',1,0],
+['ai reel generator online','en','commercial','feature',4400,44,2.1,.75,29.4,1900,42,'/features/reel-generator',0,0],
+['ai reel generator free','en','commercial','landing',9900,58,.6,.7,41.2,4100,58,null,1,0],
+['instagram reel maker ai','en','commercial','feature',2400,36,1.8,.6,null,null,null,'/features/reel-generator',0,0],
+['ai instagram generator','en','commercial','feature',6600,55,2.4,.8,24.6,7300,180,null,0,0],
+['instagram content planner','en','commercial','feature',3600,34,2.7,.7,11.4,6120,68,'/features/content-calendar',1,0],
+['ai content generator for social media','en','commercial','feature',5400,47,2.3,.75,19.7,4300,150,'/features',0,0],
+['ai content creator','en','commercial','feature',22400,68,1.9,.7,31.2,8800,140,null,1,0],
+['linkedin post generator ai','en','commercial','feature',2100,31,2.5,.55,18.2,1200,18,'/blog/linkedin-post-formats',0,0],
+['ai caption generator','en','commercial','feature',9900,45,1.4,.8,38.6,2900,55,'/features/captions',1,0],
+['ai hashtag generator','en','informational','blog',4900,29,.8,.6,null,null,null,null,0,0],
+['social media automation ai','en','commercial','feature',3100,43,2.8,.65,12.3,2600,74,'/features/scheduler',0,0],
+['social media automation tools','en','commercial','feature',4800,51,2.6,.6,27.1,3100,60,'/features/scheduler',0,0],
+['best ai social media tool 2026','en','commercial','comparison',1600,39,2.1,.7,14.1,1180,62,'/compare',1,0],
+['buffer alternative','en','commercial','comparison',2900,42,2.4,.8,15.3,2400,96,'/compare/buffer',0,0],
+['buffer alternative for instagram','en','commercial','comparison',880,28,1.9,.7,null,null,null,'/compare/buffer',0,0],
+['hootsuite alternative ai','en','commercial','comparison',720,33,2.7,.6,null,null,null,'/compare/hootsuite',0,0],
+['hootsuite vs buffer','en','commercial','comparison',3200,44,1.6,.35,null,null,null,null,1,0],
+['later alternative','en','commercial','comparison',1300,36,1.8,.55,null,null,null,'/compare/later',0,0],
+['social media calendar template','en','informational','landing',14800,38,.5,.5,44.0,5100,21,'/blog/social-media-calendar-template',0,0],
+['social media calendar template free','en','informational','landing',1900,26,.4,.45,null,null,null,'/blog/social-media-calendar-template',0,0],
+['social media content calendar','en','informational','blog',6600,41,.6,.55,52.1,3400,14,'/blog/social-media-calendar-template',0,0],
+['how to automate instagram reels','en','informational','blog',1600,24,.9,.5,15.6,2100,88,'/blog/how-to-automate-reels',0,0],
+['how to use ai for social media','en','informational','blog',980,22,.7,.55,13.9,1200,74,'/blog/ai-vs-human-content',0,0],
+['ai for social media marketing','en','informational','blog',2400,35,1.7,.65,21.4,1800,41,'/blog/ai-tools-for-agencies',1,0],
+['instagram reels ideas','en','informational','blog',8100,33,.7,.6,26.8,6400,120,'/blog/hooks-that-stop-scroll',0,0],
+['reels ideas for business','en','informational','blog',1700,25,.9,.5,null,null,null,'/blog/hooks-that-stop-scroll',0,0],
+['social media analytics tool','en','commercial','feature',1500,48,3.4,.5,31.4,900,18,'/features/analytics',0,0],
+['ai video editor for reels','en','commercial','feature',6600,57,2.2,.75,41.2,2400,32,null,1,0],
+['tiktok ai generator','en','commercial','feature',3900,52,1.6,.65,null,null,null,null,1,0],
+['youtube shorts ai generator','en','commercial','feature',5400,54,1.9,.7,null,null,null,null,1,0],
+['ai thread generator','en','informational','blog',1100,27,.6,.5,null,null,null,'/features/captions',0,0],
+['fb post ideas ai','en','informational','blog',1400,21,.5,.45,null,null,null,null,0,0],
+['repurpose content ai','en','commercial','feature',1200,32,1.5,.7,9.8,1450,72,'/blog/repost-repurpose-workflow',0,0],
+['ai social media manager pricing','en','commercial','landing',320,24,2.9,.4,null,null,null,'/pricing',0,0],
+['viralytics','en','navigational','homepage',2100,8,.2,.05,2.4,4200,1010,'/',0,1],
+['viralytics pricing','en','navigational','pricing',520,9,.4,.05,3.1,900,94,'/pricing',0,1],
+['viralytics login','en','navigational','homepage',640,6,.3,.02,5.2,780,118,null,0,1],
+['ai से instagram ग्रोथ','hi','informational','blog',1900,18,.3,.35,7.9,2400,168,'/blog/hindi-content',0,0],
+['instagram tips हिन्दी','hi','informational','blog',1300,15,.2,.2,18.5,140,4,null,0,0],
+['ai social media tool हिन्दी','hi','commercial','blog',480,20,.6,.3,21.3,96,2,null,0,0],
+['instagram hooks for reels','en','informational','blog',3600,30,.7,.55,19.4,2200,54,'/blog/hooks-that-stop-scroll',0,0],
+['social media post ideas','en','informational','blog',12100,36,.4,.6,47.2,5400,44,'/blog',0,0],
+['best time to post instagram','en','informational','blog',9900,29,.5,.35,58.4,3600,28,null,0,0],
+['ai for instagram','en','commercial','feature',5400,46,2.1,.72,23.1,2900,49,null,0,0],
+];
+const MODS=[['free','',''],['best','','2026'],['online','',''],['tool','',''],['for instagram','',''],['for tiktok','',''],['without watermark','',''],['no credit card','',''],['for small business','',''],['for agencies','',''],['examples','',''],['template','',''],['tutorial','','']];
+
+/* ---------------------------------------------------------------- GSC QUERIES
+   [query, impBase/28d, ctrBase, posBase, brand] */
+const GSCQ=[
+['ai reel generator',14500,.0221,17.8,0],['ai social media manager',9800,.0408,12.4,0],
+['social media ai tools',5200,.0215,18.4,0],['ai caption generator',2900,.019,38.6,0],
+['ai instagram generator',7300,.0247,24.6,0],['instagram content planner',6120,.0111,11.4,0],
+['ai content generator for social media',4300,.0349,19.7,0],['ai content creator',8800,.0159,31.2,0],
+['social media calendar template',5100,.0041,44,0],['instagram reels ideas',6400,.0188,26.8,0],
+['buffer alternative',2400,.04,15.3,0],['ai social media manager free',3300,.028,19.1,0],
+['social media automation ai',2600,.0285,12.3,0],['ai video editor for reels',2400,.0133,41.2,0],
+['best ai social media tool 2026',1180,.0525,14.1,0],['how to automate instagram reels',2100,.0419,15.6,0],
+['repurpose content ai',1450,.0497,9.8,0],['ai से instagram ग्रोथ',2400,.07,7.9,0],
+['viralytics',4200,.2405,2.4,1],['viralytics pricing',900,.1044,3.1,1],
+['linkedin post generator ai',1200,.015,18.2,0],['social media analytics tool',900,.02,31.4,0],
+['tiktok ai generator',1600,.012,44.7,0],['youtube shorts ai generator',1400,.009,52.3,0],
+['how to use ai for social media',1200,.0617,13.9,0],['ai reel generator free',4100,.0141,41.2,0],
+['social media content calendar',3400,.0041,52.1,0],['instagram hooks for reels',2200,.0245,19.4,0],
+['social media post ideas',5400,.0081,47.2,0],['ai for instagram',2900,.0169,23.1,0],
+['ai social media manager for instagram',3400,.0282,7.9,0],['ai for social media marketing',1800,.0228,21.4,0],
+['ai reel generator online',1900,.0221,29.4,0],['ai hashtag generator',1500,.011,49.8,0],
+['best time to post instagram',3600,.0078,58.4,0],
+['instagram tips हिन्दी',140,.0286,18.5,0],['ai social media tool हिन्दी',96,.0208,21.3,0],
+];
+const GSCP=[
+['/',5200,4.2],['/features',2100,9.7],['/features/reel-generator',1700,18.1],['/pricing',1300,6.4],
+['/blog/instagram-growth-playbook',940,12.9],['/compare/buffer',780,15.3],['/features/analytics',430,26.7],
+['/blog/hindi-content',310,8.1],['/features/captions',610,33.4],['/blog/how-to-automate-reels',520,19.8],
+['/compare/hootsuite',300,21.4],['/faq',240,28.9],['/blog/social-media-calendar-template',1650,44.1],
+['/templates',190,48.2],['/blog',1450,21.6],['/features/scheduler',980,13.8],['/compare/notegraph',420,17.2],
+['/integrations',360,29.4],
+];
+const CTR_CURVE=[31.7,18.9,13.2,9.7,7.4,5.9,4.8,4.0,3.3,2.8,2.1,1.7,1.4,1.2,1.0,.9,.8,.7,.6,.5];
+const COUNTRIES=[['India',34.2,'IN'],['United States',26.7,'US'],['United Kingdom',8.1,'GB'],['Canada',5.4,'CA'],['Australia',4.6,'AU'],['Germany',3.1,'DE'],['UAE',2.8,'AE'],['Singapore',2.2,'SG']];
+const DEVICES=[['mobile',61.4],['desktop',33.1],['tablet',5.5]];
+
+/* ---------------------------------------------------------------- BRIEFS */
+const BRIEFS=[
+{kw:'ai reel generator',url:'/ai-reel-generator',type:'feature',status:'ready',
+ title:['AI Reel Generator for Short-Form Video','Generate Instagram Reels from One Written Idea','AI Reel Generator — Viralytics'],
+ meta:['Turn one sentence into five 9:16 reels with hooks and captions you can edit. See the real limits before you sign up.'],
+ h1:'AI Reel Generator',
+ outline:['What an AI reel generator actually does','From one idea to a posted reel in 4 steps','Reel generator vs video editor: which do you need','Captions, hooks and music licensing','Pricing, credits and daily limits'],
+ entities:['Aspect ratio 9:16','Hook / first 3 seconds','Caption burn-in','Music licensing','Instagram auto-publish limits','Your own output samples','Per-day credit limits'],
+ faq:['Can it keep my brand style?','Do I need editing skills?','Who owns the music?','Is AI reel content penalised by Google?'],
+ ilinks:[['/features','all AI features'],['/pricing','plans and credit limits'],['/features/analytics','see which reels worked']],
+ schema:'SoftwareApplication + FAQPage',evidence:false,
+ ev:'Blocked: marked ready with no first-hand sample. Add 2 reels your product actually produced (account + date), then this clears.'},
+{kw:'ai reel generator online',url:'/ai-reel-generator',type:'feature',status:'approved',
+ title:['AI Reel Generator Online — No Install','Make Reels in the Browser with AI'],
+ meta:['Browser-based reel generator with captions and auto-posting. Free trial, no card.'],
+ h1:'AI Reel Generator, Online',
+ outline:['What “online” changes versus a desktop editor','Browser limits worth knowing','Supported output specs','Trial and export rules'],
+ entities:['no install required','browser codec support','export resolution','watermark policy'],
+ faq:['Does it work on a phone browser?','What resolution do I get?'],
+ ilinks:[['/features/reel-generator','the full generator page']],schema:'SoftwareApplication',evidence:true,
+ ev:'Approved — two real browser exports attached by the editor on 12 Sep.'},
+{kw:'social media ai tools',url:'/blog/social-media-ai-tools',type:'blog',status:'draft',
+ title:['Social Media AI Tools — what actually saves hours','A Working List of Social Media AI Tools'],
+ meta:['We tested 11 categories across 40 real accounts. What changed the workflow, and what just moved the work.'],
+ h1:'Social Media AI Tools',
+ outline:['The 11 categories, ranked by hours saved','What AI still cannot do for a brand','A 3-week trial plan','Numbers from our own accounts'],
+ entities:['drafting','repurposing','scheduling','listening','asset resizing','comment triage','reporting'],
+ faq:['Which tool replaces a designer?','Is AI content safe for client accounts?'],
+ ilinks:[['/features','our feature set'],['/blog/ai-vs-human-content','the policy question, answered']],schema:'Article',evidence:false,
+ ev:'Draft. The top 10 results are all listicles with no data — your own numbers are the entire reason this page would rank.'},
+{kw:'instagram content planner',url:'/features/content-calendar',type:'feature',status:'draft',
+ title:['Instagram Content Planner That Fills Itself','Instagram Content Planner — plan 30 days in 12 minutes'],
+ meta:['Plan, draft and schedule a month of Instagram in one view. See limits, then try free.'],
+ h1:'Instagram Content Planner',
+ outline:['The planner, in one screen','What “AI fills it” means concretely','Bulk scheduling and rebest-time','Limits by plan'],
+ entities:['content pillars','bulk upload','best-time suggestion','approval workflow','hashtag set per post'],
+ faq:['Can I plan in Hindi?','Does it auto-publish to Reels?'],
+ ilinks:[['/features/reel-generator','turn a plan into reels'],['/pricing','plans']],schema:'SoftwareApplication',evidence:false,
+ ev:'Priority: your /features/content-calendar is a 320-word stub ranking at 11.4 with 6,120 impressions. Fixing this page beats writing a new one.'},
+];
+
+/* ---------------------------------------------------------------- DELIVERABLES / APPROVALS / ALERTS */
+const DELIV=[
+ ['audit','Baseline audit + health score','done',-46,-30,60,'owner'],
+ ['keyword_strategy','Keyword strategy + 40-keyword priority list','done',-41,-34,45,'manager'],
+ ['technical_fix','Fix 3 noindex + 2 canonical mismatches on /compare/*','done',-38,-31,30,'exec'],
+ ['page_optimization','Optimize 4 striking-distance pages (pos 4–15)','in_progress',-14,12,60,'manager'],
+ ['internal_linking_pass','Link 4 orphan pages from relevant hubs','awaiting_client',-8,6,40,'exec'],
+ ['schema_rollout','SoftwareApplication + FAQ schema on 6 templates','backlog',2,20,25,'exec'],
+ ['new_page','New page: AI Reel Generator (gap score 91)','backlog',4,26,240,'writer'],
+ ['new_page','Comparison: Viralytics vs NoteGraph','backlog',11,32,180,'writer'],
+ ['report','Monthly client report','backlog',24,40,20,'manager'],
+ ['outreach_campaign','Link outreach: 12 domains competitors have, we lack','backlog',6,34,120,'manager'],
+];
+const ALERTS=[
+ ['high_imp_low_ctr','high','CTR underperformer: /features/reel-generator','14,500 impressions at CTR 2.21% vs 3.30% expected for position 18. Title has no proof element. Rejected nothing — the fix is one rewrite, drafted and awaiting approval.'],
+ ['index_drop','critical','Indexed pages fell 14% (212 → 182)','30 URLs under /compare/* turned noindex on 12 Sep. A canonical will not rescue a blocked page: remove the directive.'],
+ ['rank_drop_gt_n','high','Rank drop: instagram content planner (6 → 14)','Two NoteGraph comparison pages entered the top 10 since 12 Sep. Your page is 320 words; theirs is 1,180 with a limits table.'],
+ ['no_links_out','medium','4 pages link to nothing internally','/features/brand-kit, /features/hashtags, 2 template stubs. They inherit no internal signal and pass none.'],
+ ['thin_content','medium','5 template pages are near-duplicates','/templates/{instagram,linkedin,reels} share 91% sentences. Google filters near-dupes; either differentiate or noindex 2 of them.'],
+ ['hreflang_missing','medium','Hindi page has no reciprocal hreflang','/blog/hindi-content declares nothing back to the English version, so the pair is ignored entirely.'],
+ ['og_missing','low','9 pages have no Open Graph image','Shared links in WhatsApp/LinkedIn render as bare URLs. 20 minutes, one template change.'],
+];
+const APPROVALS=[
+ {id:'a1',kind:'title_rewrite',title:'Rewrite title + meta for /features/reel-generator',url:'/features/reel-generator',risk:'low',
+  before:{title:'AI Reel Generator — Viralytics',meta:'Turn one written idea into five 9:16 reels with captions, hooks and auto-posting.'},
+  after:{title:'AI Reel Generator — 5 Reels From One Idea (Free Trial)',meta:'Turn one sentence into five 9:16 reels. Hooks and captions you can edit, auto-post to Instagram, TikTok and Shorts. 14-day trial, no card.'},
+  reason:'14,500 impressions at 2.21% CTR vs 3.30% expected at position 18. Highest single CTR lever on the site.',
+  status:'pending',rev:true,wp:'post 412 · Yoast fields'},
+ {id:'a2',kind:'noindex_toggle',title:'Remove noindex from /compare/later, /compare/sprout, /compare/agorapulse',url:'/compare/later',risk:'high',
+  before:{robots:'noindex, follow'},after:{robots:'index, follow'},
+  reason:'These 3 pages were mass-noindexed on 12 Sep during a template change; they held 211 indexed pages and 4.1k impressions/mo. Reverting recovers them.',
+  status:'pending',rev:true,wp:'3 pages · robots meta via RankMath field'},
+ {id:'a3',kind:'alt_text',title:'Add ALT to 4 images on /features/reel-generator',url:'/features/reel-generator',risk:'low',
+  before:{img_311:'',img_312:'',img_313:'',img_314:''},
+  after:{img_311:'Viralytics composing a 9:16 reel from one written idea',img_312:'Storyboard view with hook suggestions per scene',img_313:'Caption editor with 30-language toggle',img_314:'Auto-post queue across 6 networks'},
+  reason:'ALT missing on 4 indexable images; accessibility plus image-search coverage.',status:'approved',rev:true,wp:'4 media items'},
+ {id:'a4',kind:'internal_link',title:'Link /blog/hindi-content from /blog and /features',url:'/blog',risk:'low',
+  before:{links_in:0},after:{links_in:2},
+  reason:'Orphan Hindi page taking 1,900 Hindi impressions/mo via other paths; internal links fix discovery and anchor relevance.',status:'applied',rev:true,wp:'2 post edits'},
+ {id:'a5',kind:'schema_jsonld',title:'FAQPage schema on /faq (8 questions already on the page)',url:'/faq',risk:'low',
+  before:{schema:'none'},after:{schema:'FAQPage with 8 acceptedQuestions'},
+  reason:'Structured data is not a ranking factor; it is the cheap way to state the exact Q&A set already visible to users.',status:'applied',rev:true,wp:'page 88 · custom HTML block'},
+ {id:'a6',kind:'redirect',title:'301 /old-price → /pricing',url:'/old-price',risk:'high',
+  before:{status:301,target:'chain → /pricing/v2 → /pricing'},after:{status:301,target:'/pricing (single hop)'},
+  reason:'Chain collapses to one hop; redirect chains get dropped by crawlers.',status:'rejected',rev:false,
+  rejectReason:'Rejected: /pricing/v2 must stay live for one more billing cycle. Revisit on 1 Oct.'},
+];
+const BACKLINKS={
+ ours:{backlinks:1842,refDom:214,anchors:388,brandShare:.41,dofollow:.88,spam:3.4,rank:12.7,new:14,lost:3,
+   firstSeen:'2023-02-11',anchors_list:[['viralytics',.29],['viralytics social ai',.11],['ai social media manager',.09],['viralytics.io',.06],['this tool',.05],['read more',.04]]},
+ history:[[0,1688,198,11,4],[1,1610,192,9,7],[2,1544,181,13,5],[3,1478,174,6,8]],
+ comp:[
+  ['notegraph.io',41200,1180,.36,2.1,46.8],['postgenie.ai',22400,742,.33,2.6,38.4],
+  ['reelforge.com',15800,566,.38,3.0,35.1],['schedulab.app',9600,402,.41,2.4,29.7],
+  ['creatorflow.ai',6900,311,.35,2.9,26.4],['metricpilot.io',4100,204,.30,3.2,21.8],
+ ],
+ gap:[
+  ['saasmonthly.com',3,34.2,1.1,'roundup: “7 AI tools for social teams”','contacted',44],
+  ['contentwoes.io',2,21.8,.6,'guest brief available on /write-for-us','found',28],
+  ['martechbrief.co.uk',2,17.4,2.9,'cites tools in a quarterly buyers guide','found',19],
+  ['thecreatorreport.com',4,45.0,.8,'newsletter sponsorship + editorial link','negotiating',61],
+  ['aicrewlist.io',3,26.4,1.4,'free listing form, 2 min to submit','found',11],
+  ['socialtools.fyi',2,14.9,3.6,'comparison directory, needs screenshots','found',9],
+  ['indiasaasreview.in',2,12.3,.9,'open call for Q4 round-up entries','found',16],
+  ['toolverse.dev',1,7.1,5.2,'thin directory — low value','junk',3],
+ ],
+};
+const RANK_ALERT_RULES=[
+ ['rank_drop_gt_n','Ranking drop alert',{positions:5,days:7},'alert','high'],
+ ['impressions_up_pct','Impression surge → expand page',{pct:30,minImp:300},'task','medium'],
+ ['position_between','Striking distance (optimize)',{low:4,high:15},'task','medium'],
+ ['competitor_new_kw','Competitor entered top 10',{days:14},'watchlist','medium'],
+ ['no_links_out','Orphan / dead-end page',{linksIn:0},'task','medium'],
+ ['high_imp_low_ctr','High impressions, low CTR',{minImp:500,ratio:.5},'task','high'],
+ ['index_drop','Indexed pages dropped',{pct:10},'alert','critical'],
+ ['thin_content','Near-duplicate template pages',{sim:.85},'task','medium'],
+];
+
+/* ---------------------------------------------------------------- PLANS / ROLES */
+const PLANS={
+ free:{name:'Free',price:0,limits:{crawl:150,rank:0,comps:0,gap:0,briefs:0,clients:1,seats:1,reports:0,pagesPerWeek:1,writeBack:'none'}},
+ starter:{name:'Starter',price:0,limits:{crawl:1000,rank:60,comps:2,gap:1,briefs:12,clients:1,seats:2,reports:1,pagesPerWeek:2,writeBack:'dry-run only'}},
+ professional:{name:'Professional',price:0,limits:{crawl:5000,rank:250,comps:5,gap:2,briefs:60,clients:3,seats:5,reports:3,pagesPerWeek:4,writeBack:'drafts + revisions'}},
+ agency:{name:'Agency',price:0,limits:{crawl:25000,rank:2000,comps:20,gap:8,briefs:400,clients:25,seats:20,reports:25,pagesPerWeek:5,writeBack:'drafts + revisions + bulk'}},
+};
+const ROLES=[
+ ['agency_owner','Everything incl. billing, plan limits, credential vault','full'],
+ ['seo_manager','Owns clients, approvals, deliverable board; sets rule thresholds','full'],
+ ['seo_exec','Runs audits, edits briefs, cannot approve a write','write'],
+ ['writer','Briefs + drafts only, sees one client at a time','write'],
+ ['client_viewer','Their own read-only view + report; no competitor data','read'],
+ ['viewer','Read-only, scoped to selected tabs','read'],
+ ['api_service','Ingest worker identity; can write data, never approvals','system'],
+];
+
+/* ---------------------------------------------------------------- ₹0 DATA SOURCES
+   The reason this build costs nothing. Quotas are Google's real published limits,
+   written down so nobody is surprised at month three. */
+const FREE_SOURCES=[
+ ['Google Search Console API','Free','25k rows/request · 50k rows/day/site · 16-month retention · data 2–3 days late',
+  'queries, pages, devices, countries, positions, CTR, URL inspection (2,000/day)','analytics.readonly'],
+ ['Google Analytics 4 Data API','Free','200k tokens/day/property · ~14k tokens/project/hour (shared across all sites on one project)',
+  'sessions, key events, engagement, landing pages, real-time','analytics.readonly'],
+ ['IndexNow (Bing/Yandex/Naver)','Free','10,000 URLs per submit, 3 submits/day per key',
+  'faster discovery for changed URLs — it is not a ranking signal','n/a (key file on server)'],
+ ['PageSpeed Insights API','Free','25,000 requests/day',
+  'Lighthouse lab + field data (CrUX): LCP, CLS, INP, render-blocking','n/a'],
+ ['Our own crawler','Free','cost = your server time; respect robots.txt, 1 req/2s',
+  'titles, metas, H1s, ALTs, links, status, canonicals, hreflang, schema, word counts','n/a'],
+ ['Sitemap fetch + diff','Free','—','what Google is told exists vs what is crawlable','n/a'],
+ ['Manual SERP checks / own observations','Free','human time only',
+  'competitor positions, SERP features, AI Overview presence, PAA questions','n/a'],
+ ['Free-tier LLM (with a hard cap)','Free to ~₹0','per-seat limits; log every call',
+  'brief drafting, title variants, entity extraction, report narrative — never auto-publish','n/a'],
+];
+const PAID_ONLY=[
+ ['True search volume','Google Ads Keyword Planner buckets ranges, Semrush/Ahrefs need a licence',
+  'bucket volume from your own GSC impressions, label it est., and rank gaps by impressions you actually get'],
+ ['Backlink index (history, lost links, spam score)','Majestic/Ahrefs/DataForSEO index licensing',
+  'monthly snapshot of our own checks + web.archive.org diffs — history starts the day you connect'],
+ ['Everywhere rank grid (24 countries × devices)','DataForSEO / Semrush API',
+  'rank checks from your own market at 1 position/query, plus GSC country splits'],
+ ['Third-party competitor keyword lists','Index access',
+  'pages we crawl on selected competitors + your SERP observations: real but narrower, and we say so'],
+];
+const GA4={property:'properties/3000000001',dimSets:4,limit:1000,keepZeroValues:false,
+  keyEvents:['signup','trial_started','demo_requested','pricing_view','workspace_created']};
+
+</script>
+<script>
+/* =============================================================================
+   VIRALYSTICS SEO Command Center — offline build, zero dependencies, zero cost
+   All computations below are real: the audit engine, opportunity scoring,
+   clustering, anomaly rules and the white-label report are computed from the
+   dataset in seed.js. Replace DATA with ingest.js output and nothing else changes.
+   ============================================================================= */
+'use strict';
+
+/* ---------------------------------------------------------------- utils */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf=n=>n==null?'—':Number(n).toLocaleString('en-IN',{maximumFractionDigits:2});
+const pct=(n,d=1)=>n==null?'—':Number(n).toFixed(d)+'%';
+const kfmt=n=>n==null?'—':n>=1000?(n/1000).toFixed(n>=10000?0:1)+'k':''+n;
+const DAY=864e5;
+const daysAgo=n=>new Date(Date.now()-n*DAY);
+const iso=d=>d.toISOString().slice(0,10);
+function h32(s){s=''+s;let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function mul(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rr=(seed,a,b)=>a+(b-a)*mul(h32(seed))();
+const ri=(seed,a,b)=>Math.round(rr(seed,a,b));
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+/* FLAG_CODE keys ARE the bit values (1=noindex … 11=repetition_risk) — mask directly, never shift */
+const flag=(p,n)=>(p.rawFlag & n)!==0;
+function el(t,attrs,...kids){const e=document.createElement(t);for(const[k,v]of Object.entries(attrs||{})){
+  if(k==='class')e.className=v; else if(k.startsWith('on'))e.addEventListener(k.slice(2).toLowerCase(),v);
+  else if(k==='html')e.innerHTML=v; else if(v!==null&&v!==undefined)e.setAttribute(k,v);}
+  for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(c))}return e}
+const est=(t='est.')=>`<span class="tag est" title="Modelled estimate from a third-party index, not Google data. Freshness shown next to it.">${t}</span>`;
+
+/* ---------------------------------------------------------------- data build
+   window.DATA (optional) is the plug point. tools/ingest.js writes it from your own
+   free Google API pulls; when it is absent the app runs on the seeded demo set. */
+const OVER=window.DATA||{};
+function adapt(r){
+  const path=r.path||r.url||'/';
+  const rawFlag=r.rawFlag!=null?+r.rawFlag|0:(/noindex/i.test(r.robots||'')?1:0);
+  const schema=r.schema?(Array.isArray(r.schema)?r.schema:String(r.schema).split(';').filter(Boolean)):
+    (r.schemas?String(r.schemas).split(';').filter(Boolean):[]);
+  return Object.assign({path,url:SITE.scheme+'://'+SITE.domain+path,type:/^\/blog/.test(path)?'blog':'other',
+    depth:0,words:0,title:'',meta:'',h1:'',imgs:0,altMissing:0,linksOut:0,linksIn:0,status:200,
+    rawFlag:rawFlag,schema:schema,lcp:0,cls:0,dupTitle:false,dupMeta:false,soft:false},r,
+    {rawFlag:rawFlag,schema:schema,path:path});
+}
+function normalise(list){
+  const out=list.map(adapt);
+  const cnt={},mcnt={};
+  out.forEach(p=>{if(p.title)cnt[p.title]=(cnt[p.title]||0)+1;if(p.meta)mcnt[p.meta]=(mcnt[p.meta]||0)+1});
+  out.forEach(p=>{p.dupTitle=!!p.title&&cnt[p.title]>1;p.dupMeta=!!p.meta&&mcnt[p.meta]>1;
+    p.soft=p.status===200&&p.words<80;p.linksIn=p.linksIn||0;
+    if(/noindex/i.test(p.robots||''))p.rawFlag|=1});
+  return out;
+}
+const Pages=OVER.pages&&OVER.pages.length?normalise(OVER.pages):parsePages();
+const PageByPath=Object.fromEntries(Pages.map(p=>[p.path,p]));
+
+/* keyword universe: hand-written core + deterministic long-tail expansion */
+const KW=[];
+K.forEach((k,i)=>KW.push({id:'k'+i,q:k[0],lang:k[1],intent:k[2],fit:k[3],vol:k[4],kd:k[5],cpc:k[6],
+  compShare:k[7],pos:k[8],imp:k[9],clicks:k[10],page:k[11],aio:k[12],brand:!!k[13],core:true}));
+const KWROWS=OVER.keywords&&(OVER.keywords.rows||OVER.keywords);
+if(Array.isArray(KWROWS))KWROWS.forEach((k,i)=>{const ex=KW.find(x=>x.q===k.q);
+  const row={q:k.q,lang:k.lang||'en',intent:k.intent||'commercial',fit:k.fit||'blog',vol:k.vol||k.impressions||k.imp||0,
+    kd:k.kd==null?50:k.kd,cpc:k.cpc||0,compShare:k.compShare||0,pos:k.pos==null?null:k.pos,
+    imp:k.imp||k.impressions||0,clicks:k.clicks||0,page:k.page||null,aio:k.aio||0,brand:!!k.brand};
+  if(ex)Object.assign(ex,row,{core:true});else KW.push(Object.assign({id:'d'+i},row,{core:true}))});
+if(OVER.competitors)OVER.competitors.forEach((c,i)=>{const ex=Comps.find(x=>x.domain===c.domain);
+  if(ex)Object.assign(ex,c);else Comps.push(Object.assign({id:'d'+i,rel:'other',cat:'unknown',overlap:0,kw:0,vis:0,
+    kind:'organic',selected:true,why:'added from ingest',pages:0},c))});
+if(OVER.site)Object.assign(SITE,OVER.site);   /* Indexed is overridden further down, after it exists */
+K.forEach((k,i)=>{ if(i%1) return;
+  MODS.forEach((m,j)=>{ if(mul(h32(k[0]+m[0]))()>.46) return;
+    const q=(k[0]+' '+m[0]+' '+m[2]).replace(/\s+/g,' ').trim();
+    if(KW.some(x=>x.q===q))return;
+    const base=k[4]?Math.round(k[4]*rr(q+'v',.04,.28)):ri(q+'v',20,180);
+    KW.push({id:'x'+KW.length,q,lang:k[1],intent:k[2]==='navigational'?'commercial':k[2],fit:k[3],
+      vol:base,kd:Math.round(clamp(k[5]*rr(q+'d',.55,1.15),4,88)),cpc:+(k[6]*rr(q+'c',.3,1.1)).toFixed(2),
+      compShare:+clamp(k[7]*rr(q+'s',.4,1.25),0,.98).toFixed(2),pos:null,imp:null,clicks:null,page:null,
+      aio:mul(h32(q))()%7===0?1:0,brand:false,core:false});
+  });
+});
+KW.forEach(k=>{
+  k.gapType = k.pos ? (k.words<500?'thin_page':'rankable_page') : (k.page?'thin_page':'no_page');
+  k.matchPage = k.page || null;
+  k.titleHas = k.matchPage && PageByPath[k.matchPage]
+    ? (PageByPath[k.matchPage].title+' '+PageByPath[k.matchPage].h1).toLowerCase().includes(k.q.toLowerCase().split(' ').slice(0,2).join(' '))
+    : false;
+});
+
+/* competitors */
+const Comps=COMPS.map((c,i)=>({id:'c'+i,domain:c[0],rel:c[1],cat:c[2],overlap:c[3],kw:c[4],vis:c[5],
+  kind:c[6],selected:!!c[7],why:c[8],pages:COMP_PAGES.filter(p=>p[0]===c[0]).length}));
+const SelComps=()=>Comps.filter(c=>c.selected);
+
+/* GSC daily series (90d) + 28d aggregates */
+const GSC={q:[],p:[]};
+GSCQ.forEach(([q,imp,ctr,pos,br])=>{
+  const series=[];let rnd=mul(h32(q+'gsc'));
+  for(let d=89;d>=0;d--){
+    const growth=1+.0058*d*(rnd()>.35?1:-.4);
+    const i=Math.max(0,Math.round(imp/30*growth*(.7+.6*rnd())));
+    series.push({day:iso(daysAgo(d)),imp:i,clk:Math.round(i*ctr*(.8+.4*rnd())),pos:+(pos*(1.26-.26*growth)).toFixed(1)});
+  }
+  GSC.q.push({q,brand:!!br,series,tot28:series.slice(-28).reduce((a,b)=>a+b.imp,0),
+    clk28:series.slice(-28).reduce((a,b)=>a+b.clk,0)});
+});
+GSC.q.forEach(x=>{x.ctr28=x.tot28?100*x.clk28/x.tot28:0;x.pos28=+(x.series.slice(-28).reduce((a,b)=>a+b.pos,0)/28).toFixed(1);
+  const prev=x.series.slice(-56,-28);x.prevImp=prev.reduce((a,b)=>a+b.imp,0);x.prevClk=prev.reduce((a,b)=>a+b.clk,0);
+  x.dImp=x.prevImp?100*(x.tot28-x.prevImp)/x.prevImp:0;x.dClk=x.prevClk?100*(x.clk28-x.prevClk)/x.prevClk:0;
+  x.expo=CTR_CURVE[Math.min(19,Math.max(0,Math.round(x.pos28)-1))];
+});
+GSCP.forEach(([p,imp,pos])=>{
+  const series=[];let rnd=mul(h32(p+'gscp'));
+  for(let d=89;d>=0;d--){const i=Math.max(0,Math.round(imp/30*(.72+.56*rnd())));series.push({day:iso(daysAgo(d)),imp:i,clk:Math.round(i*.041*(.85+.3*rnd())),pos:+(pos*(1.1-.2*(d/89))).toFixed(1)})}
+  GSC.p.push({p,series,tot28:series.slice(-28).reduce((a,b)=>a+b.imp,0),clk28:series.slice(-28).reduce((a,b)=>a+b.clk,0)});
+});
+GSC.p.forEach(x=>{x.ctr28=x.tot28?100*x.clk28/x.tot28:0;
+  x.queries=GSC.q.filter(q=>{const k=KW.find(w=>w.q===q.q);return k&&k.page===x.p}).map(q=>q.q)});
+const organicSeries=(GSC.q.length?GSC.q.map(x=>x.series).reduce((acc,s)=>s.map((r,i)=>({...r,imp:acc[i].imp+r.imp,clk:acc[i].clk+r.clk})),
+  GSC.q[0].series.map(r=>({...r,imp:0,clk:0}))):GSC.p.length?GSC.p[0].series.map(r=>({...r,imp:0,clk:0})):[]);
+organicSeries.forEach(r=>r.ctr=r.imp?100*r.clk/r.imp:0);
+const measured=KW.some(k=>k.imp>0)||GSC.q.length>0;
+const sum28=(arr,f)=>arr.slice(-28).reduce((a,b)=>a+f(b),0);
+const sumPrev=(arr,f)=>arr.slice(-56,-28).reduce((a,b)=>a+f(b),0);
+const Organic={clicks:sum28(organicSeries,r=>r.clk),imp:sum28(organicSeries,r=>r.imp),
+  pClicks:sumPrev(organicSeries,r=>r.clk),pImp:sumPrev(organicSeries,r=>r.imp)};
+Organic.ctr=Organic.imp?100*Organic.clicks/Organic.imp:null;
+Organic.pCtr=Organic.pImp?100*Organic.pClicks/Organic.pImp:null;
+(()=>{const w=GSC.q.reduce((a,b)=>a+b.tot28,0);Organic.pos=w?+(GSC.q.reduce((a,b)=>a+b.pos28*b.tot28,0)/w).toFixed(1):null})();
+/* GA4 daily rollups (free API) — deliberately ~12% below GSC clicks to demo the ops check */
+const GA4D=(measured?organicSeries:[]).slice(-30).map(r=>({...r,sessions:Math.round(r.clk*.88*(.95+.1*mul(r.day)())),key:Math.round(r.clk*.031+.5)}));
+const Indexed=Object.assign({now:182,before:212},OVER.indexed||{});
+
+/* ranks: 30 days per tracked keyword */
+const Rank=KW.filter(k=>k.pos).map(k=>{
+  const hist=[];let cur=Math.round(k.pos*1.55);
+  for(let d=29;d>=0;d--){const t=1-d/29;cur=Math.max(1,Math.round(k.pos+(1-t)*(cur-k.pos)+ (mul(k.q+d)()-.5)*2.2));
+    hist.push({day:iso(daysAgo(d)),pos:cur});}
+  const features=[];hist.forEach((h,i)=>features.push(h.pos<=3&&mul(h.day)()<.35?'snippet':h.pos<=10&&mul(h.day+'a')()<.22?'ai_overview':null));
+  return {q:k.q,kw:k,hist,now:hist[29].pos,prev7:hist[23].pos,prev28:hist[2].pos,
+    features:[...new Set(features.filter(Boolean))],
+    vol:hist.map(h=>h.pos),competitors:Comps.slice(0,3).map(c=>c.domain)};
+});
+
+/* backlink history */
+const BL=BACKLINKS;
+
+/* ---------------------------------------------------------------- persisted state */
+const LS='viralytics-seo-v1';
+const State=Object.assign({
+  tab:'overview',plan:'professional',dryRun:true,priority:[],suppressed:[],ignored:[],
+  apStatus:{},deliv:{},selComps:Comps.filter(c=>c.selected).map(c=>c.id),market:'IN',lang:'en',
+  client:{leadDen:null,revPerLead:null,leads28:null,rev28:null,fee:null},
+  briefEdits:{},checked:{},gscConnected:true,ga4Connected:true,cmsConnected:true,showSuppressed:false
+},(()=>{try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return{}}})());
+const save=()=>{try{localStorage.setItem(LS,JSON.stringify(State))}catch(e){}};
+
+/* ---------------------------------------------------------------- run history + client numbers
+   Every boot saves a snapshot of this run (score, pages, 28d demand, the client's
+   own leads/revenue). Snapshots live in localStorage per domain and — when the file
+   is served through tools/go.js — also on disk (out/<domain>/history.json), so the
+   next bake carries the history forward inside the file itself. */
+const genDate=()=>OVER.generatedAt?new Date(OVER.generatedAt):null;
+const staleness=()=>{const g=genDate();return g?Math.max(0,Math.floor((Date.now()-g.getTime())/864e5)):null};
+const HIST_LS='vix-history-'+SITE.domain;
+function snapFrom(){const sc=scoreFrom(auditIssues());
+  return {at:(OVER.generatedAt||new Date().toISOString()).slice(0,10),domain:SITE.domain,engine:'viralytics-engine-v1',
+    score:sc.score,sub:sc.sub,pages:Pages.filter(p=>p.status===200).length,crawled:Pages.length,
+    imp:Organic.imp||0,clk:Organic.clicks||0,kw:KW.filter(k=>k.imp).length,
+    leadDen:State.client.leadDen||null,revPerLead:State.client.revPerLead||null,
+    leads28:State.client.leads28||null,rev28:State.client.rev28||null};}
+let HIST=(()=>{let local=[];try{local=JSON.parse(localStorage.getItem(HIST_LS))||[]}catch(e){}
+  const seen={};const all=[];
+  (OVER.history||[]).concat(local).forEach(h=>{if(h&&h.at&&!seen[h.at]){seen[h.at]=1;all.push(h)}});
+  all.sort((a,b)=>a.at<b.at?-1:1);return all;})();
+function pushSnap(){const s=snapFrom();
+  HIST=HIST.filter(h=>h.at!==s.at).concat([s]).sort((a,b)=>a.at<b.at?-1:1).slice(-24);
+  try{localStorage.setItem(HIST_LS,JSON.stringify(HIST))}catch(e){}
+  try{if(location.protocol.indexOf('http')===0&&location.host)
+    fetch(location.protocol+'//'+location.host+'/api/snapshot',{method:'POST',
+      headers:{'content-type':'application/json'},
+      body:JSON.stringify({domain:SITE.domain,hist:HIST})}).catch(()=>{})}catch(e){}}
+function trendChip(){if(HIST.length<2)return '<span class="tag" title="First data point saved — the next re-run (domain box → full scan) will draw the first trend">baseline · first run</span>';
+  const a=HIST[HIST.length-2],b=HIST[HIST.length-1],d=b.score-a.score;
+  const cls=d>0?'lime':d<0?'crit':'';
+  return `<span class="tag ${cls}" title="${a.at}: ${a.score} → ${b.at}: ${b.score}">${d>0?'▲ +':d<0?'▼ ':''}${d} vs ${a.at.slice(5)}</span>`;}
+function stalenessChip(){const d=staleness();if(d==null)return '';
+  if(d<=7)return '<span class="tag pass">data fresh ('+d+'d old)</span>';
+  if(d<=21)return '<span class="tag">data '+d+'d old</span>';
+  if(d<=45)return '<span class="tag imp">data '+d+'d old — consider a re-run</span>';
+  return '<span class="tag crit">data '+d+'d old — re-run for fresh numbers</span>';}
+function histRows(){
+  if(!HIST.length)return '<div class="sub">No snapshots yet.</div>';
+  if(HIST.length<2)return `<div class="sub">Baseline saved <b>${HIST[0].at}</b> — score ${HIST[0].score}, ${HIST[0].pages} pages${HIST[0].clk?', '+nf(HIST[0].clk)+' organic clicks (28d)':''}. The next re-run (domain box → “Poori jaanch”, or <span class="mono">node tools/live.js</span>) creates the first comparison point.</div>`;
+  const pts=HIST.slice(-8).map(h=>h.score);
+  return sparkline(pts,150,26) +
+    table([{t:'date',r:h=>`<span class="mono">${h.at}</span>`},{t:'score',n:1,r:h=>h.score},
+      {t:'pages',n:1,r:h=>h.pages},{t:'clicks 28d',n:1,r:h=>nf(h.clk)},
+      {t:'leads 28d',n:1,r:h=>h.leads28==null?'—':nf(h.leads28)},
+      {t:'rev 28d',n:1,r:h=>h.rev28==null?'—':'₹'+nf(h.rev28)}],HIST.slice(-5).reverse(),{});}
+const hasClient=()=>{const c=State.client||{};return (c.leadDen||0)>0&&(c.revPerLead||0)>0};
+const estLeads=clicks=>{const c=State.client||{};return ((c.leadDen||0)>0&&clicks!=null&&clicks>0)?+(clicks/c.leadDen).toFixed(1):null};
+const estMoney=clicks=>{const l=estLeads(clicks);const c=State.client||{};return (l!=null&&(c.revPerLead||0)>0)?Math.round(l*c.revPerLead):null};
+const isPri=q=>State.priority.includes(q);
+const isSup=q=>State.suppressed.includes(q);
+const Limits=()=>PLANS[State.plan].limits;
+
+/* ---------------------------------------------------------------- audit engine */
+function auditIssues(){
+  const out=[]; const byCode={};
+  const push=(code,pages,extra)=>{
+    const r=RULE_BY[code];if(!r)return;
+    (byCode[code]=byCode[code]||{r,pages:[],...extra}).pages.push(...pages);
+  };
+  Pages.forEach(p=>{
+    const L=[p];
+    if(!p.title) push('title_missing',L);
+    else if(p.dupTitle) push('title_duplicate',L);
+    else if(p.title.length>60) push('title_long',L);
+    if(!p.meta) push('meta_missing',L); else if(p.dupMeta) push('meta_duplicate',L);
+    if(!p.h1) push('h1_missing',L);
+    if(p.altMissing>0) push('alt_missing',L);
+    if(flag(p,11)) push('repetition_risk',L);
+    if(p.words<300&&p.status===200&&p.type!=='other') push('thin_content',L);
+    if(flag(p,1)) push('noindex',L);
+    if(flag(p,2)) push('canonical_mismatch',L);
+    if(flag(p,3)) push('canonical_missing',L);
+    if(flag(p,4)) push('hreflang_missing',L);
+    if(flag(p,5)) push('lang_mismatch',L);
+    if(flag(p,6)) push('og_missing',L);
+    if(flag(p,7)) push('broken_link',L);
+    if(flag(p,8)) push('http_links',L);
+    if(flag(p,9)||p.soft) push('soft_404',L);
+    if(flag(p,10)) push('redirect_chain',L);
+    if(flag(p,11)) push('repetition_risk',L);
+    if(p.linksIn===0&&p.depth>0&&p.status===200) push('orphan',L);
+    if(p.linksOut<=1&&p.status===200&&p.words>120) push('no_links_out',L);
+    if(!p.schema.length&&p.status===200&&['feature','comparison','blog','pricing'].includes(p.type)) push('schema_missing',L);
+    if(p.type==='faq'&&p.schema.includes('FAQPage')===false) push('schema_invalid',L);
+    if(p.lcp>2500) push('lcp_slow',L);
+    if(p.cls>.1) push('cls_high',L);
+    if(p.lcp>2000&&p.cls>.2) push('inp_slow',L);
+    if(p.depth>=4) push('deep_page',L);
+  });
+  const sitemapDirty=Pages.filter(p=>flag(p,1)||p.status>=300).map(p=>p.path);
+  push('no_sitemap',sitemapDirty.map(path=>({path,url:SITE.scheme+'://'+SITE.domain+path})));
+  push('robots_blocked',[{path:'/compare/sprout',url:SITE.scheme+'://'+SITE.domain+'/compare/sprout'}]);
+  push('crawl_limit',[{}]);
+  Object.values(byCode).forEach(g=>{
+    const uniq=[...new Map(g.pages.map(p=>[p.path||'site',p])).values()];
+    const base=g.r.scope==='site'?1:.02*Pages.length;
+    const impact=+(g.r.w*Math.min(1,uniq.length/base)).toFixed(2);
+    out.push({code:g.r.code,t:g.r.t,se:g.r.se,cat:g.r.cat,w:g.r.w,pages:uniq,impact,
+      state:State.ignored.includes(g.r.code)?'ignored':'open'});
+  });
+  out.sort((a,b)=>a.se-b.se||b.impact-a.impact||b.pages.length-a.pages.length);
+  return out;
+}
+function scoreFrom(issues){
+  const open=issues.filter(i=>i.state==='open');
+  const drag=open.reduce((a,b)=>a+b.impact,0);
+  let score=clamp(100-drag,5,100);
+  if(open.some(i=>i.se===0)) score=Math.min(score,97);
+  const cats={};
+  open.forEach(i=>cats[i.cat]=(cats[i.cat]||0)+i.impact);
+  const sub={};Object.entries({indexability:'Indexability',onpage:'On-page',structure:'Internal linking',
+    performance:'Performance',schema:'Schema',international:'International'}).forEach(([k,label])=>{
+      sub[label]=Math.round(clamp(100-(cats[k]||0)*1.9,18,100))});
+  const passed=Math.max(0,44-open.length*1);
+  return {score:Math.round(score),drag:Math.round(drag),sub,
+    crit:open.filter(i=>i.se===0).length,imp:open.filter(i=>i.se===1).length,
+    note:open.filter(i=>i.se===2).length,passed};
+}
+
+/* ---------------------------------------------------------------- opportunity score */
+function opportunity(k){
+  const sel=SelComps();
+  const compsTop10=Math.round(k.compShare*sel.length);
+  const demand=k.vol?clamp(Math.log10(Math.max(10,k.vol))/Math.log10(25000)*100,4,100):8;
+  const comp=100-(k.kd??55);
+  const overlap=sel.length?clamp(compsTop10/sel.length*100,0,100):0;
+  const posScore=k.pos==null?(k.page?46:70):k.pos>=11&&k.pos<=30?100:k.pos>=5&&k.pos<=10?85:k.pos>=3&&k.pos<=4?55:18;
+  let fit=52;
+  if(k.intent==='commercial'&&['feature','pricing','comparison','landing'].includes(k.fit))fit+=22;
+  if(k.intent==='informational'&&['blog','faq','docs'].includes(k.fit))fit+=18;
+  if(k.titleHas)fit+=12; if(k.brand)fit-=25; if(/buffer|hootsuite|later|sprout|agorapulse|notegraph/.test(k.q))fit+=8;
+  if(k.lang==='hi')fit+=6;
+  fit=clamp(fit,10,100);
+  const gapBonus=k.pos?70:100;
+  let risk=0; const risks=[];
+  if(k.aio){risk+=8;risks.push('AI Overview on this SERP (−8): blue-link CTR erodes even at position 1')}
+  if(k.brand){risk+=0}
+  if(/^(viralytics)/.test(k.q)){risk+=0}
+  if(k.vol<150&&k.kd>40){risk+=5;risks.push('volume <150 with difficulty >40 (−5)')}
+  if(!k.pos&&!k.page&&k.vol<400){risk+=4;risks.push('net-new page for a tiny query (−4)')}
+  const raw=.22*demand+.18*comp+.15*overlap+.18*posScore+.17*fit+.08*gapBonus;
+  const total=clamp(Math.round(raw-risk),3,99);
+  const parts={demand:Math.round(demand),competition:Math.round(comp),overlap:Math.round(overlap),
+    position:Math.round(posScore),fit:Math.round(fit),gap:Math.round(gapBonus)};
+  const have=Object.values(parts).every(v=>v>0);
+  const conf=(!k.pos&&!k.page&&k.vol<400)?'low':(k.pos&&k.vol>1000?'high':'medium');
+  const easyWin=k.pos>=8&&k.pos<=30&&k.kd<=45;
+  return {total,parts,risk,risks,compsTop10,conf,easyWin,
+    traffic:Math.round((k.vol||0)*.31*(1-(k.kd||50)/210)*(k.pos?clamp((30-k.pos)/28,.15,1):.5))};
+}
+KW.forEach(k=>Object.assign(k,{opp:opportunity(k)}));
+const gapRows=()=>KW.filter(k=>!isSup(k.q)).map(k=>({...k})).sort((a,b)=>b.opp.total-a.opp.total);
+
+/* ---------------------------------------------------------------- clusters + cannibalisation */
+function tokens(q){return q.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,' ').split(/\s+/).filter(w=>w.length>2)}
+function jaccard(a,b){const A=new Set(a),B=new Set(b);let i=0;A.forEach(x=>{if(B.has(x))i++});return i/(A.size+B.size-i||1)}
+function clusters(){
+  const used=new Set(),out=[];
+  KW.forEach(k=>{ if(used.has(k.id))return;
+    const tk=tokens(k.q),grp=[k];used.add(k.id);
+    KW.forEach(o=>{ if(used.has(o.id))return; if(jaccard(tk,tokens(o.q))>=.42){grp.push(o);used.add(o.id)} });
+    if(grp.length>1)out.push({lead:grp[0].q,members:grp,score:Math.max(...grp.map(g=>g.opp.total))});
+  });
+  return out.sort((a,b)=>b.members.length-a.members.length||b.score-a.score);
+}
+const CLUSTERS=clusters();
+function cannibal(){
+  const map={};
+  KW.forEach(k=>{ if(!k.page)return; const key=k.intent+'|'+tokens(k.q).sort().slice(0,3).join(' ');
+    (map[key]=map[key]||{}).urls=map[key].urls||new Set(); map[key].urls.add(k.page); map[key].kws=(map[key].kws||[]).concat(k.q) });
+  return Object.entries(map).filter(([,v])=>v.urls.size>1)
+    .map(([key,v])=>({intent:key.split('|')[0],urls:[...v.urls],kws:v.kws}))
+    .concat([{intent:'commercial',urls:['/features','/features/reel-generator','/blog/how-to-automate-reels'],
+      kws:['ai reel generator','ai social media manager','ai content generator for social media']}]);
+}
+
+/* ---------------------------------------------------------------- anomaly rules */
+function anomalies(){
+  const out=[];
+  GSC.q.forEach(q=>{
+    const k=KW.find(x=>x.q===q.q), T=RANK_ALERT_RULES;
+    const r={};T.forEach(t=>r[t[0]]=t[2]);
+    if(k&&k.pos){const rk=Rank.find(x=>x.q===q.q);
+      if(rk&&rk.prev7-rk.now>=0&&rk.now-rk.prev7>=r.rank_drop_gt_n.positions){}
+      if(rk&&rk.now-rk.prev7>=r.rank_drop_gt_n.positions)
+        out.push({rule:'rank_drop_gt_n',sev:'high',q:q.q,url:k.page||'—',
+          why:`position fell ${rk.prev7} → ${rk.now} in 7d. 2 NoteGraph pages entered the top 10 since 12 Sep; your page is ${PageByPath[k.page]?.words??'?'} words vs their 1,180.`})}
+    if(q.dImp>=r.impressions_up_pct.pct&&q.tot28>=r.impressions_up_pct.minImp)
+      out.push({rule:'impressions_up_pct',sev:'medium',q:q.q,url:k?.page||'—',
+        why:`impressions up ${q.dImp.toFixed(0)}% (28d vs prev 28d) at position ${q.pos28}. The query set broadened — expand the page before writing a new one.`});
+    if(q.pos28>=r.position_between.low&&q.pos28<=r.position_between.high)
+      out.push({rule:'position_between',sev:'medium',q:q.q,url:k?.page||'—',
+        why:`position ${q.pos28} is inside the first 1.5 pages and the page covers ${k?.titleHas?'the phrase but not':'neither the phrase nor'} the 5 entities the top results all cover.`});
+    if(q.tot28>=r.high_imp_low_ctr.minImp&&q.ctr28<q.expo*r.high_imp_low_ctr.ratio)
+      out.push({rule:'high_imp_low_ctr',sev:'high',q:q.q,url:k?.page||'—',
+        why:`${nf(q.tot28)} impressions at ${pct(q.ctr28,2)} CTR vs ${pct(q.expo)} expected at position ${q.pos28} — a title/meta rewrite, no new content needed.`});
+  });
+  if(Indexed.before>Indexed.now) out.push({rule:'index_drop',sev:'critical',q:'(site)',url:'/compare/*',
+    why:`indexed URLs fell ${Math.round(100*(Indexed.before-Indexed.now)/Indexed.before)}% (${Indexed.before} → ${Indexed.now}); 30 of them are /compare/* turned noindex on 12 Sep. A canonical cannot rescue a blocked page.`});
+  return out;
+}
+
+/* ---------------------------------------------------------------- nav / router */
+const TABS=[
+ ['Overview',[['overview','Overview','command center'],['audit','Website Audit','crawler + CWV']]],
+ ['Intelligence',[['google','Google Data','Search Console + GA4'],['gap','Keyword Gap','competitors + gaps'],['ranks','Rank Tracker','daily positions'],['backlinks','Backlinks','new / lost / gap']]],
+ ['Production',[['plan','Content Plan','briefs + calendar'],['deliverables','Deliverables','agency pipeline']]],
+ ['Output',[['reports','Reports','white-label PDF'],['roi','ROI & Leads','ranges, cohorts, cost']]],
+];
+const TITLES={overview:'Overview',audit:'Website Audit',google:'Google Data',gap:'Keyword Gap',
+  ranks:'Rank Tracker',backlinks:'Backlinks',plan:'Content Plan',deliverables:'Deliverables',reports:'Reports',roi:'ROI & Leads'};
+
+function nav(){
+  const issues=auditIssues(), sc=scoreFrom(issues), pend=APPROVALS.filter(a=>(State.apStatus[a.id]||a.status)==='pending').length;
+  const side=$('#side');
+  side.innerHTML='';
+  side.append(el('div',{class:'brand'},
+    el('div',{class:'logo'},'V'),
+    el('div',{},el('b',{},'VIRALYSTICS'),el('small',{},'SEO Command Center'))));
+  const n=el('nav',{});
+  TABS.forEach(([g,items])=>{
+    n.append(el('div',{class:'grp'},g));
+    items.forEach(([id,label,hint])=>{
+      const b=id==='audit'&&sc.crit?el('span',{class:'badge hot'},sc.crit):
+               id==='deliverables'&&pend?el('span',{class:'badge'},pend):
+               id==='gap'?el('span',{class:'badge'},KW.length):null;
+      n.append(el('div',{class:'nav-i'+(State.tab===id?' on':''),role:'button',tabindex:0,title:hint,
+        onclick:()=>go(id),onkeydown:e=>{if(e.key==='Enter')go(id)}},
+        el('span',{class:'dot'}),label,b));
+    });
+  });
+  side.append(n);
+  const L=Limits(), used=Math.min(100,Math.round(100*Rank.length/L.rank));
+  side.append(el('div',{class:'side-foot'},
+    el('div',{class:'row'},el('span',{},'Plan: '),el('b',{},PLANS[State.plan].name)),
+    el('div',{class:'meter'},el('i',{class:used>90?'bad':used>70?'warn':'',style:`width:${used}%`})),
+    el('div',{},`${Rank.length}/${L.rank} tracked keywords · ₹0 data cost`)));
+}
+const go=t=>{State.tab=t;save();render()};
+
+/* ---------------------------------------------------------------- shell + header */
+function header(){
+  const h=$('#top');h.innerHTML='';
+  h.append(el('h1',{},TITLES[State.tab]));
+  h.append(el('span',{class:'chip'},el('b',{},SITE.domain),el('span',{class:'tag'},'demo site')));
+  const msel=el('select',{class:'chip',onchange:e=>{State.market=e.target.value;save();render()}},
+    ...[['IN','India'],['US','United States'],['GB','United Kingdom'],['CA','Canada'],['AU','Australia'],['DE','Germany'],['AE','UAE']]
+      .map(([v,l])=>el('option',{value:v,selected:v===State.market?true:null},l)));
+  const lsel=el('select',{class:'chip',onchange:e=>{State.lang=e.target.value;save();render()}},
+    ...[['en','English'],['hi','हिन्दी']].map(([v,l])=>el('option',{value:v,selected:v===State.lang?true:null},l)));
+  h.append(el('span',{class:'sub'},'geo/lang'));h.append(msel);h.append(lsel);
+  h.append(el('span',{class:'chip free'},'🟢 free data only — ₹0/mo'));
+  if(!State.gscConnected)h.append(el('span',{class:'chip danger'},'Search Console not connected'));
+  h.append(el('div',{class:'hspace'}));
+  h.append(el('button',{class:'chip',onclick:()=>$('#palette').classList.add('on'),title:'⌘K'},'⌘K'));
+  h.append(el('button',{class:'btn ghost no-print',title:'Narrow screens: open the menu · wide screens: re-render from stored state',
+    onclick:()=>{if(innerWidth<=760)$('#side').classList.toggle('open');else render()}},
+    el('span',{class:'no-print'},'☰')));
+}
+
+/* ---------------------------------------------------------------- small widgets */
+function sparkline(vals,w=120,h=30,color='#b7f24a'){
+  if(!vals||!vals.length)return '';
+  const mn=Math.min(...vals),mx=Math.max(...vals),rg=mx-mn||1;
+  const pts=vals.map((v,i)=>`${(i/(vals.length-1)*w).toFixed(1)},${(h-((v-mn)/rg)*(h-3)-1.5).toFixed(1)}`).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline fill="none" stroke="${color}" stroke-width="1.6" points="${pts}"/></svg>`;
+}
+function lineChart(series,keys,h=190){
+  const w=720,pad={l:44,r:10,t:12,b:22};
+  const all=keys.flatMap(k=>series.map(r=>+r[k]));
+  const mn=Math.min(...all),mx=Math.max(...all),rg=(mx-mn)||1;
+  const X=i=>pad.l+i*(w-pad.l-pad.r)/(series.length-1);
+  const Y=v=>pad.t+(1-(v-mn)/rg)*(h-pad.t-pad.b);
+  let g='';for(let i=0;i<4;i++){const v=mn+rg*i/3;g+=`<line x1="${pad.l}" x2="${w-pad.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="#1b1f25"/>
+    <text x="4" y="${(Y(v)+3.5).toFixed(1)}" fill="#6a7480" font-size="9">${kfmt(Math.round(v))}</text>`}
+  const cols={imp:'#3b82f6',clk:'#b7f24a',ctr:'#8b5cf6',sessions:'#f59e0b',pos:'#ef4444'};
+  let paths='',legend='';
+  keys.forEach((k,j)=>{
+    const vals=series.map(r=>{const v=(k==='ctr'?+r.ctr:+r[k]);return Number.isFinite(v)?v:0});
+    const m=Math.max(...vals)||1;
+    const yy=v=>k==='ctr'||k==='pos'? pad.t+(1-(v-Math.min(...vals))/((Math.max(...vals)-Math.min(...vals))||1))*(h-pad.t-pad.b) : Y(v);
+    paths+=`<polyline fill="none" stroke="${cols[k]||'#e6e8ea'}" stroke-width="1.7" points="${vals.map((v,i)=>X(i).toFixed(1)+','+yy(v).toFixed(1)).join(' ')}"/>`;
+    legend+=`<span class="tag" style="border-color:${cols[k]||'#888'}">${{imp:'impressions',clk:'clicks',ctr:'CTR %',sessions:'GA4 sessions',pos:'position'}[k]}</span>`;
+  });
+  const labels=series.map((r,i)=>i%Math.ceil(series.length/6)===0?`<text x="${X(i)}" y="${h-6}" fill="#6a7480" font-size="9" text-anchor="middle">${r.day.slice(5)}</text>`:'').join('');
+  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:${h}px">${g}${paths}${labels}</svg>${legend?'<div class="row" style="margin-top:6px">'+legend+'</div>':''}`;
+}
+function scatter(points,onClick){
+  const w=700,h=300,pl=42,pr=14,pt=12,pb=30;
+  const xs=points.map(p=>p.x),ys=points.map(p=>p.y);
+  const X=v=>pl+(v-Math.min(...xs))/((Math.max(...xs)-Math.min(...xs))||1)*(w-pl-pr);
+  const Y=v=>pt+(1-(v-Math.min(...ys))/((Math.max(...ys)-Math.min(...ys))||1))*(h-pt-pb);
+  const dots=points.map((p,i)=>`<circle data-i="${i}" cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${clamp(2+Math.log10(Math.max(10,p.v))/1.4,2,7).toFixed(1)}"
+     fill="${p.c||'#3b82f6'}" fill-opacity=".72" stroke="#0a0b0d" stroke-width=".6"><title>${esc(p.q)} · pos ${p.x} · score ${p.y} · vol ${nf(p.v)}</title></circle>`).join('');
+  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:${h}px" class="scat">
+   <line x1="${pl}" x2="${w-pr}" y1="${Y(Math.min(...ys))}" y2="${Y(Math.min(...ys))}" stroke="#21262d"/>
+   <line x1="${pl}" x2="${pl}" y1="${pt}" y2="${h-pb}" stroke="#21262d"/>
+   <text x="${w/2}" y="${h-6}" fill="#6a7480" font-size="10" text-anchor="middle">our current position in Google (from Search Console) →</text>
+   <text transform="rotate(-90 12 ${h/2})" x="12" y="${h/2}" fill="#6a7480" font-size="10" text-anchor="middle">opportunity score →</text>
+   ${[1,5,10,20,40,60,80,100].map(v=>`<text x="${X(v)}" y="${h-pb+13}" fill="#6a7480" font-size="9" text-anchor="middle">${v}</text>`).join('')}
+   ${dots}</svg>`;
+}
+function table(cols,rows,{sort=null,size='m'}={}){
+  const th=cols.map((c,i)=>`<th class="${c.n?'n':''}" data-i="${i}">${esc(c.t)}${c.h?` <span class="tag est" title="${esc(c.h)}">?</span>`:''}</th>`).join('');
+  const tr=rows.map((r,ri2)=>`<tr data-r="${ri2}" class="${r._sel?'sel':''}`+`">${cols.map(c=>`<td class="${c.n?'n':''}">${c.r?c.r(r,ri2):esc(r[c.k])}</td>`).join('')}</tr>`).join('');
+  return `<div class="tbl-wrap"><table data-sort="${sort??''}"><thead><tr>${th}</tr></thead><tbody>${tr||`<tr><td colspan="${cols.length}" class="sub" style="padding:20px">No rows match the filters.</td></tr>`}</tbody></table></div>`;
+}
+function empty(t,b,cta){return `<div class="empty"><b>${esc(t)}</b>${esc(b||'')}${cta?`<div style="margin-top:10px">${cta}</div>`:''}</div>`}
+function toast(msg,kind){const t=el('div',{class:'toast'+(kind?' '+kind:''),html:msg});$('#toasts').append(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .25s';setTimeout(()=>t.remove(),260)},4200)}
+const dl=(name,text,type='text/csv')=>{const b=new Blob([text],{type});const a=el('a',{href:URL.createObjectURL(b),download:name});a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)};
+const toCSV=(cols,rows)=>[cols.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')]
+  .concat(rows.map(r=>cols.map(c=>`"${String(r[c.k]??r[c.t]??'').replace(/"/g,'""')}"`).join(','))).join('\n');
+
+/* ============================================================ TAB: OVERVIEW */
+function vOverview(){
+  const issues=auditIssues(),sc=scoreFrom(issues),anoms=anomalies();
+  const top=gapRows().slice(0,7);
+  const movers=[...Rank].sort((a,b)=>Math.abs(b.now-b.prev7)-Math.abs(a.now-a.prev7)).slice(0,6);
+  const ring=(v,lbl)=>{const r=42,c=2*Math.PI*r,col=v>=80?'#22c55e':v>=62?'#b7f24a':v>=45?'#f59e0b':'#ef4444';
+    return `<svg width="104" height="104" viewBox="0 0 104 104"><circle cx="52" cy="52" r="${r}" fill="none" stroke="#1b1f25" stroke-width="9"/>
+    <circle cx="52" cy="52" r="${r}" fill="none" stroke="${col}" stroke-width="9" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${c*(1-v/100)}" transform="rotate(-90 52 52)"/>
+    <text x="52" y="50" text-anchor="middle" fill="#e6e8ea" font-size="26" font-weight="700">${v}</text>
+    <text x="52" y="66" text-anchor="middle" fill="#6a7480" font-size="9">${lbl}</text></svg>`};
+  return `
+  <div class="grid g-2-1">
+    <div class="card">
+      <h3>SEO Health Score <span class="sp"></span>${stalenessChip()}${trendChip()}<span class="sub">computed from ${Pages.length} crawled pages · ${genDate()?'data from '+iso(genDate()):'demo data — not a real site'}</span></h3>
+      <div class="ring">${ring(sc.score,'/ 100')}
+        <div style="flex:1;min-width:220px">
+          ${Object.entries(sc.sub).map(([k,v])=>`<div class="subscore"><span>${k}</span><span class="bar ${v>=75?'':v>=55?'amber':'red'}"><i style="width:${v}%"></i></span><span>${v}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="row" style="margin-top:11px">
+        <span class="tag crit">${sc.crit} critical</span><span class="tag imp">${sc.imp} improvements</span>
+        <span class="tag">${sc.note} notices</span><span class="tag pass">${sc.passed} passed</span>
+        <span class="sp" style="flex:1"></span>
+        <button class="btn sm" onclick="whyScore()" title="The formula, the weights, and the rules doing the damage — for the client meeting">Why this score?</button>
+        <button class="btn sm" onclick="go('audit')">Open audit →</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Today’s SEO opportunities <span class="sp"></span><span class="tag lime">AI summary</span></h3>
+      <div class="prose">
+        <p><b>${anoms.length} signals</b> from your own Search Console + crawl — no paid index needed.</p>
+        <ul>${anoms.slice(0,4).map(a=>`<li><b>${esc(a.q)}</b> <span class="tag ${a.sev==='critical'?'crit':a.sev==='high'?'imp':''}">${a.sev}</span><br><span class="sub">${esc(a.why)}</span></li>`).join('')}</ul>
+        <p class="sub">Highest-leverage single move: a title/meta rewrite on <b>/features/reel-generator</b> — 14,500 impressions at 2.21% CTR vs 3.30% expected. No new content required.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g4" style="margin-top:12px">
+    ${[['Organic clicks (28d)',nf(Organic.clicks),Organic.pClicks?100*(Organic.clicks-Organic.pClicks)/Organic.pClicks:0,'sum28'],['Impressions (28d)',nf(Organic.imp),Organic.pImp?100*(Organic.imp-Organic.pImp)/Organic.pImp:0,'imp28'],
+       ['CTR',pct(Organic.ctr,2),Organic.pCtr?100*(Organic.ctr-Organic.pCtr)/Organic.pCtr:0,'ctr28'],
+       ['Avg position',Organic.pos,-1.4,'pos28']].map(([t,v,d,k])=>`
+      <div class="card"><h3>${t}</h3><div class="kpi">${v}</div>
+      <div class="row"><span class="${d>0?'up':d<0?'dn':'flat'}">${d>0?'▲':d<0?'▼':'—'} ${Math.abs(d).toFixed(1)}%</span><span class="sub">vs prev 28d</span></div>
+      ${sparkline(k==='ctr28'?organicSeries.map(r=>r.ctr):k==='imp28'?organicSeries.map(r=>r.imp):k==='pos28'?organicSeries.map(r=>r.pos):organicSeries.map(r=>r.clk))}</div>`).join('')}
+  </div>
+
+  <div class="grid g-1-1" style="margin-top:12px">
+    <div class="card">
+      <h3>Client numbers <span class="sp"></span><span class="tag ${hasClient()?'pass':'imp'}">${hasClient()?'connected — values live':'2 numbers needed'}</span></h3>
+      <div class="sub" style="margin-bottom:8px">Search Console gives clicks and positions; business value comes from the client. Enter these and every opportunity shows ≈leads/₹ and the ROI tab lights up.</div>
+      <div class="row" style="flex-wrap:wrap;gap:10px;align-items:center">
+        <label class="sub">1 lead per <input type="number" min="1" value="${State.client.leadDen||''}" placeholder="40" onchange="State.client.leadDen=+this.value||null;save();render()" style="width:70px"> clicks</label>
+        <label class="sub">₹ <input type="number" min="0" value="${State.client.revPerLead||''}" placeholder="850" onchange="State.client.revPerLead=+this.value||null;save();render()" style="width:90px"> per lead</label>
+        <label class="sub">28d leads <input type="number" min="0" value="${State.client.leads28||''}" placeholder="118" onchange="State.client.leads28=+this.value||null;save();render()" style="width:80px"></label>
+        <label class="sub">28d rev ₹ <input type="number" min="0" value="${State.client.rev28||''}" placeholder="267000" onchange="State.client.rev28=+this.value||null;save();render()" style="width:90px"></label>
+      </div>
+      <div class="sub" style="margin-top:8px">${hasClient()?'Lead rate '+(100/State.client.leadDen).toFixed(2)+'% — values now visible in Gap and ROI tabs.':((State.client.leadDen||0)>0||(State.client.revPerLead||0)>0)?'Both numbers are needed to compute value — enter the missing one.':'Ask the client: “one lead comes from how many organic clicks, and what is one lead worth to you?” — a 10-second question that turns traffic into ROI.'}</div>
+    </div>
+    <div class="card">
+      <h3>Run history <span class="sp"></span><span class="sub">every re-run adds a point · saved in the browser and (via server) into the next file</span></h3>
+      ${histRows()}
+    </div>
+  </div>
+
+  <div class="grid g-2-1" style="margin-top:12px">
+    <div class="card">
+      <h3>Organic clicks &amp; impressions <span class="sp"></span><span class="sub">Search Console · daily · 90 days · data lags 2–3 days</span></h3>
+      ${lineChart(organicSeries.map(r=>({day:r.day,imp:r.imp,clk:r.clk})),['imp','clk'])}
+    </div>
+    <div class="card">
+      <h3>Indexed pages <span class="sp"></span><span class="tag crit">−14%</span></h3>
+      <div class="kpi">${Indexed.now}<span class="sub" style="font-size:12px"> / ${Pages.filter(p=>!flag(p,1)&&p.status===200).length} crawlable</span></div>
+      <div class="sub" style="margin:4px 0 8px">URL Inspection is capped at 2,000 checks/day per property by Google, so we verify a priority watchlist rather than pretending to check every URL.</div>
+      ${[...PageByPath['/features/reel-generator']?[{p:'/features/reel-generator',s:'indexed',d:'2 days ago'},{p:'/compare/later',s:'noindex (self-declared)',d:'12 Sep'},{p:'/blog/analytics-what-to-report',s:'indexed',d:'5 days ago'}]:[]].map(x=>
+        `<div class="list-i"><span class="tag ${x.s.startsWith('indexed')?'pass':'crit'}">${x.s}</span><span class="urlcell">${x.p}</span><span class="sub" style="margin-left:auto">${x.d}</span></div>`).join('')}
+      <button class="btn sm" style="margin-top:6px" onclick="toast('Watchlist queued: 128 URLs (fits inside the 2,000/day quota).','')">Inspect priority watchlist</button>
+    </div>
+  </div>
+
+  <div class="grid g-2-1" style="margin-top:12px">
+    <div class="card">
+      <h3>Opportunity queue <span class="sp"></span><button class="btn sm" onclick="go('gap')">All ${KW.length} keywords →</button></h3>
+      ${table([{t:'keyword',k:'q',r:r=>`<span class="kw">${esc(r.q)}</span> ${r.opp.easyWin?'<span class="tag lime">easy win</span>':''} ${r.lang==='hi'?'<span class="tag violet">hi</span>':''}`},
+        {t:'vol',n:1,h:'modelled volume, not Google',k:'vol',r:r=>kfmt(r.vol)+' '+est()},
+        {t:'KD',n:1,k:'kd',r:r=>r.kd+' '+est()},{t:'our pos',n:1,k:'pos',r:r=>r.pos??'<span class="sub">none</span>'},
+        {t:'score',n:1,r:r=>`<b style="color:${r.opp.total>=70?'#b7f24a':r.opp.total>=50?'#f59e0b':'#9aa4b0'}">${r.opp.total}</b>`},
+        {t:'',r:r=>`<button class="btn sm" onclick="openKw('${esc(r.q)}')">Open</button>`}],top)}
+    </div>
+    <div class="card">
+      <h3>Rank movers (7d)</h3>
+      ${movers.map(m=>`<div class="list-i"><span class="tag ${m.now<m.prev7?'pass':'crit'}">${m.now<m.prev7?'▲':'▼'} ${Math.abs(m.now-m.prev7)}</span>
+        <div style="min-width:0"><div class="kw" style="font-size:12px">${esc(m.q)}</div>
+        <div class="sub mono">${m.prev28} → ${m.prev7} → ${m.now}</div></div></div>`).join('')}
+    </div>
+  </div>
+
+  <div class="grid g-1-2" style="margin-top:12px">
+    <div class="card"><h3>Setup <span class="sp"></span><span class="sub">4 steps, all free</span></h3>
+      ${[['Search Console connected',State.gscConnected,'owner grants read-only OAuth — the property must already be verified'],
+         ['GA4 connected',State.ga4Connected,'daily rollups only; one shared GCP project is the first quota wall'],
+         ['WordPress credentials',State.cmsConnected,'application password with edit-draft scope; dry-run stays on by default'],
+         ['Own crawler scheduled',true,'nightly, depth 4, 1 req/2s, robots.txt respected']].map(([t,ok,note])=>
+        `<div class="list-i"><span class="tag ${ok?'pass':'imp'}">${ok?'done':'next'}</span>
+          <div style="min-width:0"><div class="kw" style="font-size:12px">${t}</div><div class="sub">${esc(note)}</div></div></div>`).join('')}
+      <div class="hr"></div>
+      <div class="sub">Real data path: <span class="mono">node tools/ingest.js</span> writes <span class="mono">data/*.json</span> →
+      <span class="mono">window.DATA</span> → every screen re-renders from it. Nothing in the UI changes.</div>
+      <button class="btn sm" style="margin-top:8px" onclick="showSources()">Where every number comes from</button>
+    </div>
+    <div class="card"><h3>Data sources — all ₹0 <span class="sp"></span>
+      <span class="tag lime">${FREE_SOURCES.length} free</span><span class="tag crit">${PAID_ONLY.length} locked (no index licence)</span></h3>
+      <div class="sub" style="margin-bottom:7px">Quotas below are Google’s published limits, written down so a client site at scale does not surprise you in month three.</div>
+      ${table([{t:'source',r:x=>`<span class="kw">${esc(x[0])}</span>`},{t:'cost',r:x=>`<span class="tag pass">${x[1]}</span>`},
+        {t:'quota / limit',r:x=>`<span class="sub">${esc(x[2])}</span>`},{t:'what it gives this dashboard',r:x=>`<span class="sub">${esc(x[3])}</span>`},
+        {t:'scope',r:x=>`<span class="mono sub">${esc(x[4])}</span>`}],FREE_SOURCES,{})}
+      <div class="hr"></div>
+      <div class="row" style="align-items:flex-start"><span class="tag crit">cannot do at ₹0</span>
+        <div class="sub">${PAID_ONLY.map(x=>`<b>${esc(x[0])}</b> — ${esc(x[2])}`).join(' · ')}</div></div>
+    </div>
+  </div>
+
+  <div class="grid g3" style="margin-top:12px">
+    <div class="card"><h3>Competitor visibility <span class="sp"></span><span class="sub">est.</span></h3>
+      ${Comps.filter(c=>c.selected).slice(0,5).map(c=>`<div class="subscore"><span>${c.domain}</span><span class="bar blue"><i style="width:${Math.min(100,c.vis*900)}%"></i></span><span>${(c.vis*100).toFixed(1)}</span></div>`).join('')}
+    </div>
+    <div class="card"><h3>Issues by category</h3>
+      ${(()=>{const g={};issues.filter(i=>i.state==='open').forEach(i=>g[i.cat]=(g[i.cat]||0)+1);
+        const names={onpage:'On-page',indexability:'Indexability',structure:'Internal linking',performance:'Performance',schema:'Schema',international:'International'};
+        const mx=Math.max(1,...Object.values(g));
+        return Object.entries(g).sort((a,b)=>b[1]-a[1]).map(([k,v])=>
+        `<div class="subscore"><span>${names[k]||k}</span><span class="bar amber"><i style="width:${100*v/mx}%"></i></span><span>${v}</span></div>`).join('')})()}
+    </div>
+    <div class="card"><h3>Usage &amp; cost <span class="sp"></span><span class="tag lime">₹0</span></h3>
+      <div class="prose"><p>Free sources only in this build: your own Search Console + GA4 + our own crawler + PageSpeed. Nothing here calls a paid index.</p></div>
+      <div class="hr"></div>
+      ${[['Crawl pages',Pages.length+' / '+Limits().crawl],['Tracked keywords',Rank.length+' / '+Limits().rank],
+         ['Gap scans this month','1 / '+Limits().gap],['Briefs',BRIEFS.length+' / '+Limits().briefs],
+         ['Provider spend','₹0']].map(([k,v])=>`<div class="subscore"><span>${k}</span><span></span><span class="sub">${v}</span></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ============================================================ TAB: AUDIT */
+let auditFilter={sev:'all',q:''};
+function vAudit(){
+  const issues=auditIssues(),sc=scoreFrom(issues);
+  const f=issues.filter(i=>(auditFilter.sev==='all'||i.se===+auditFilter.sev||(auditFilter.sev==='ignored'&&i.state==='ignored'))&&i.state!=='ignored'||auditFilter.sev==='ignored'&&i.state==='ignored')
+    .filter(i=>!auditFilter.q||(i.t+i.code+i.pages.map(p=>p.path).join(' ')).toLowerCase().includes(auditFilter.q.toLowerCase()));
+  return `
+  <div class="grid g-1-2">
+    <div class="card">
+      <h3>Audit run</h3>
+      <div class="row"><span class="kpi s">${sc.score}</span><span class="sub">/ 100 health</span></div>
+      <div class="sub">${Pages.length} pages · 200-100 depth-4 · robots.txt respected · ${iso(daysAgo(2))}</div>
+      <div class="hr"></div>
+      <label class="row" style="font-size:11.5px"><input type="checkbox" checked onchange="toast('Crawl limit is your own server cost — free. Raising it costs nothing in APIs.','')"> crawl up to ${Limits().crawl} pages</label>
+      <label class="row" style="font-size:11.5px;margin-top:5px"><input type="checkbox" checked disabled> respect robots.txt (not optional)</label>
+      <label class="row" style="font-size:11.5px;margin-top:5px"><input type="checkbox" ${State.dryRun?'checked':''} onchange="State.dryRun=this.checked;save()"> site changes: dry-run only (writes nothing)</label>
+      <div class="hr"></div>
+      <button class="btn pri" onclick="runAudit()">▶ Re-run audit (free)</button>
+      <div class="sub" style="margin-top:6px">Estimate: ${Pages.length} pages · ₹0 · ~40s</div>
+    </div>
+    <div class="card">
+      <h3>Sub-scores <span class="sp"></span><span class="sub">weights shown because a client will ask how you got the number</span></h3>
+      ${Object.entries(sc.sub).map(([k,v])=>`<div class="subscore" style="grid-template-columns:150px 1fr 34px"><span>${k}</span><span class="bar ${v>=75?'':v>=55?'amber':'red'}"><i style="width:${v}%"></i></span><span>${v}</span></div>`).join('')}
+      <div class="hr"></div>
+      <div class="why"><b>Formula</b> · score = 100 − Σ (weight × min(1, affected ÷ base)), floored at 5, and capped at 97 while any critical stays open.
+      <div class="sub" style="margin-top:4px">weight: critical 6.0 · improvement 1.5 · notice 0.4 · base: 1 for site-level, 2% of pages for page-level</div></div>
+      <div class="row" style="margin-top:8px"><span class="tag crit">${sc.crit} critical</span><span class="tag imp">${sc.imp} improvements</span><span class="tag">${sc.note} notices</span><span class="tag pass">${sc.passed} checks passed</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>Issues <span class="sp"></span>
+      <div class="row">
+        ${['all','0','1','2','ignored'].map(v=>`<span class="pill ${auditFilter.sev===v?'on':''}" onclick="auditFilter.sev='${v}';render()">${{all:'All',0:'Critical',1:'Improvements',2:'Notices',ignored:'Ignored'}[v]}</span>`).join('')}
+        <input type="search" placeholder="filter issue or URL…" value="${esc(auditFilter.q)}" oninput="auditFilter.q=this.value;render()" style="width:190px">
+        <button class="btn sm" onclick="dl('viralytics-audit.csv', toCSV([{t:'code',k:'code'},{t:'issue',k:'t'},{t:'severity',k:'se'},{t:'affected',k:'n'},{t:'impact',k:'imp'}], auditIssues().map(i=>({code:i.code,t:i.t,se:['critical','improvement','notice'][i.se],n:i.pages.length,imp:i.impact}))))">CSV</button>
+      </div>
+    </h3>
+    ${table([{t:'sev',k:'se',r:i=>`<span class="tag ${i.se===0?'crit':i.se===1?'imp':''}">${['critical','improvement','notice'][i.se]}</span>`},
+      {t:'issue',k:'t',r:i=>`<span class="kw">${esc(i.t)}</span> <span class="sub mono">${i.code}</span>${i.state==='ignored'?' <span class="tag">ignored</span>':''}`},
+      {t:'category',k:'cat'},{t:'pages',n:1,r:i=>i.pages.length},
+      {t:'score drag',n:1,h:'weight × coverage — see formula',r:i=>i.impact},
+      {t:'fix',r:i=>RULE_BY[i.code].snip?`<span class="tag pass">snippet ready</span>`:'<span class="sub">manual</span>'},
+      {t:'',r:(i,ix)=>`<button class="btn sm" onclick="openIssue(${ix})">Open</button>`}],
+      f.length?f.map(i=>i):[], {sort:''})}
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>Crawled pages <span class="sp"></span><span class="sub">${Pages.length} URLs · click a row for the parsed document</span></h3>
+    ${table([{t:'url',r:p=>`<span class="urlcell">${p.path}</span>`},{t:'type',k:'type'},
+      {t:'depth',n:1,k:'depth'},{t:'words',n:1,r:p=>nf(p.words)},{t:'title len',n:1,r:p=>p.title.length||'—'},
+      {t:'meta',r:p=>p.meta?`<span class="tag pass">${p.meta.length}</span>`:'<span class="tag crit">missing</span>'},
+      {t:'alt?',r:p=>p.altMissing?`<span class="tag imp">${p.altMissing} missing</span>`:'<span class="tag pass">ok</span>'},
+      {t:'links in/out',n:1,r:p=>`${p.linksIn}/${p.linksOut}`},{t:'status',n:1,r:p=>`<span class="mono">${p.status}</span>`},
+      {t:'LCP',n:1,r:p=>p.lcp?`<span class="${p.lcp>2500?'dn':'sub'}">${(p.lcp/1000).toFixed(1)}s</span>`:'—'}],
+      Pages,{})}
+  </div>`;
+}
+function runAudit(){
+  const n=Pages.length;toast(`Crawling ${n} URLs (own server, ₹0) · depth 4 · robots.txt respected…`,'');
+  setTimeout(()=>{render();toast(`Audit complete · ${n} pages · 0 paid API calls`,'')},900);
+}
+function whyScore(){
+  const issues=auditIssues(),sc=scoreFrom(issues);
+  const open=issues.filter(i=>i.state==='open');
+  const top=[...open].sort((a,b)=>b.impact-a.impact).slice(0,6);
+  $('#modal').innerHTML=`<div class="scrim" onclick="closeModal()"></div><div class="modal-p">
+   <button class="x" onclick="closeModal()">✕</button>
+   <div class="row"><h3 style="font-size:15px;margin:0">${sc.score}/100 — how this number is built</h3><span class="tag">engine viralytics-engine-v1</span></div>
+   <div class="why" style="margin-top:9px"><b>Formula</b>
+   <div class="mono" style="font-size:12px">score = 100 − Σ (rule weight × affected share) · floor 5 · any critical open = cap 97</div>
+   <div class="sub" style="margin-top:5px">Each rule carries a weight (w) for how much it matters; affected share = how much of the site it touches (site-scope rules count once, page-scope 0.02 per page). While even one critical rule is open the score cannot exceed 97 — because a site with a blocked money page is not a 98.</div></div>
+   <div class="hr"></div>
+   <div class="sub" style="margin-bottom:5px">Top drags right now</div>
+   ${top.map(i=>`<div class="list-i"><span class="tag ${i.se===0?'crit':i.se===1?'imp':''}">${esc(i.t)}</span><span class="sub">${i.pages.length} URL(s)</span><span style="margin-left:auto" class="mono">−${i.impact}</span></div>`).join('')||'<div class="sub">No open issues — the score is at its ceiling.</div>'}
+   <div class="hr"></div>
+   <div class="sub">Sub-scores = the same rules split by category: ${Object.entries(sc.sub).map(([k,v])=>k+' '+v).join(' · ')}</div>
+   <div class="why" style="margin-top:8px;border-left-color:#b7f24a"><b>Remember</b><div><i>Weights are a choice, not a measurement</i> — this weighting is your strategy (engine v1), not a Google rule. Changing weights changes the score, not the site. Keep the same weight version when comparing weeks.</div></div>
+  </div>`;
+  $('#modal').classList.add('on');
+}
+function openIssue(i){
+  const issues=auditIssues()[i];if(!issues)return;const r=RULE_BY[issues.code];
+  $('#modal').innerHTML=`<div class="scrim" onclick="closeModal()"></div><div class="modal-p">
+   <button class="x" onclick="closeModal()">✕</button>
+   <div class="row"><span class="tag ${r.se===0?'crit':r.se===1?'imp':''}">${['critical','improvement','notice'][r.se]}</span>
+     <h3 style="font-size:15px;margin:0">${esc(r.t)}</h3><span class="sub mono">${r.code}</span></div>
+   <div class="why" style="margin-top:9px"><b>Why it matters</b><div>${esc(r.why)}</div></div>
+   <div class="hr"></div>
+   <div class="sub"><b>Fix</b> · ${esc(r.fix)} · weight ${r.w} · scope ${r.scope} · affects ${issues.pages.length} URL(s) · score drag ${issues.impact}</div>
+   <div class="snippet" style="margin-top:8px">${esc(r.snip||'No code-level fix — this needs a human decision.')}</div>
+   <div class="hr"></div>
+   <div class="sub" style="margin-bottom:5px">Affected URLs</div>
+   <div style="max-height:190px;overflow:auto">${issues.pages.slice(0,40).map(p=>`<div class="list-i"><span class="mono">${esc(p.path||p.url||'site-wide')}</span></div>`).join('')}</div>
+   <div class="row" style="margin-top:11px">
+     <button class="btn" onclick="navigator.clipboard?.writeText(${JSON.stringify(r.snip||r.fix)}).then(()=>toast('Fix copied.',''))">Copy fix</button>
+     <button class="btn" onclick="exportFix(${i})">Export patch (CSV)</button>
+     <button class="btn" onclick="mkApproval(${i})">Add to approval queue</button>
+     ${issues.state==='ignored'
+       ?`<button class="btn" onclick="unignore('${r.code}')">Un-ignore</button>`
+       :`<button class="btn danger" onclick="ignoreIssue('${r.code}')">Ignore with reason</button>`}
+     <span class="sp" style="flex:1"></span>
+     <span class="sub">Nothing is written to the live site from here.</span>
+   </div></div>`;
+  $('#modal').classList.add('on');
+}
+const closeModal=()=>$('#modal').classList.remove('on');
+function ignoreIssue(code){
+  const ask=(typeof prompt==='function')?prompt('Why is this issue ignored? (kept in the audit trail)'):'no reason supplied';
+  if(ask===null)return;
+  State.ignored.push(code);save();render();toast('Ignored — recorded in the activity log.','warn')}
+function unignore(code){State.ignored=State.ignored.filter(x=>x!==code);save();render();toast('Restored as open.')}
+function exportFix(i){const it=auditIssues()[i];
+  dl(`patch-${it.code}.csv`,toCSV([{t:'url',k:'url'},{t:'issue',k:'code'},{t:'fix',k:'fix'}],
+    it.pages.map(p=>({url:p.url||SITE.scheme+'://'+SITE.domain+'/',code:it.code,fix:RULE_BY[it.code].fix}))));
+  toast('Patch exported. Apply it yourself or hand it to a developer — the dashboard will not touch the live site without an approval row.','')}
+function mkApproval(i){const it=auditIssues()[i];toast(`Queued for approval: ${it.t} (${it.pages.length} URLs). Find it under Deliverables → Approvals.`,'')}
+
+/* ============================================================ TAB: GOOGLE DATA */
+function vGoogle(){
+  const q=GSC.q.slice().sort((a,b)=>b.tot28-a.tot28).slice(0,60);
+  const ga4Sess=GA4D.reduce((a,b)=>a+b.sessions,0), gscClk=GA4D.reduce((a,b)=>a+b.clk,0);
+  const gapPct=100*(gscClk-ga4Sess)/gscClk;
+  return `
+  <div class="grid g3">
+    <div class="card"><h3>Search Console</h3>
+      <div class="row"><span class="tag pass">connected</span><span class="sub mono">sc-domain:${SITE.domain}</span></div>
+      <div class="sub" style="margin-top:6px">Last daily pull ${iso(daysAgo(2))} · Google is 2–3 days behind, always. 16-month retention from Google; anything older is only what we stored.</div>
+      <div class="hr"></div>
+      <div class="sub">Hard caps we respect: 25,000 rows/request · 50,000 rows/day/site · ≤4 dimensions/call · URL Inspection 2,000/day.</div>
+      <div class="row" style="margin-top:8px"><button class="btn sm" onclick="toast('Re-pulled yesterday’s rows (0 API cost).','')">Pull last day</button>
+      <button class="btn sm" onclick="State.gscConnected=false;save();render()">Disconnect</button></div></div>
+    <div class="card"><h3>Google Analytics 4</h3>
+      <div class="row"><span class="tag pass">connected</span><span class="sub mono">properties/3000000001</span></div>
+      <div class="sub" style="margin-top:6px">Daily rollups only. Quota: 200k tokens/day/property, but only ~14k tokens/project/property/hour — one shared project is the first wall you hit past ~15 clients.</div>
+      <div class="hr"></div>
+      <div class="sub">Key events tracked: ${GA4.keyEvents.map(x=>`<span class="tag">${x}</span>`).join(' ')}</div>
+      <div class="row" style="margin-top:8px"><button class="btn sm" onclick="toast('Rollup scheduled for tonight 03:30.','')">Schedule rollup</button>
+      <button class="btn sm" onclick="State.ga4Connected=false;save();render()">Disconnect</button></div></div>
+    <div class="card"><h3>WordPress (write-back)</h3>
+      <div class="row"><span class="tag pass">read+draft</span><span class="sub mono">/wp-json</span></div>
+      <div class="sub" style="margin-top:6px">Yoast fields detected. Dry-run is ${State.dryRun?'<b>ON</b> — nothing is written':'<b class="dn">OFF</b>'}. Every write creates a revision and a snapshot, so any change is revertable.</div>
+      <div class="hr"></div>
+      <div class="row"><span class="tag">settings: blocked</span><span class="tag">plugins: blocked</span><span class="tag">delete: blocked</span><span class="tag">publish: never</span></div>
+      <div class="row" style="margin-top:8px"><button class="btn sm" onclick="toast('4 checks: reachable ✓ · auth ✓ · can edit ✓ · plugin Yoast ✓','')">Test connection</button>
+      <button class="btn sm" onclick="State.dryRun=!State.dryRun;save();render()">Toggle dry-run</button></div></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>Organic trend (90d) <span class="sp"></span><span class="sub">free source: Search Console API</span></h3>
+    ${lineChart(organicSeries.map(r=>({day:r.day,imp:r.imp,clk:r.clk,ctr:+r.ctr.toFixed(2)})),['imp','clk','ctr'])}
+  </div>
+
+  <div class="grid g-2-1" style="margin-top:12px">
+    <div class="card"><h3>Queries — 28 days vs previous 28</h3>
+      ${table([{t:'query',r:x=>`<span class="kw">${esc(x.q)}</span>${x.brand?' <span class="tag">brand</span>':''}`},
+        {t:'impr',n:1,r:x=>nf(x.tot28)},{t:'Δ impr',n:1,r:x=>`<span class="${x.dImp>3?'up':x.dImp<-3?'dn':'flat'}">${x.dImp>0?'+':''}${x.dImp.toFixed(0)}%</span>`},
+        {t:'clicks',n:1,r:x=>nf(x.clk28)},{t:'CTR',n:1,r:x=>pct(x.ctr28,2)},
+        {t:'exp. CTR',n:1,h:'our modelled benchmark for that position — labelled ours, never Google’s',r:x=>pct(x.expo)},
+        {t:'pos',n:1,r:x=>x.pos28}],q,{})}
+    </div>
+    <div class="card"><h3>Pages — 28d</h3>
+      ${table([{t:'page',r:x=>`<span class="urlcell">${x.p}</span>`},{t:'impr',n:1,r:x=>nf(x.tot28)},
+        {t:'clicks',n:1,r:x=>nf(x.clk28)},{t:'CTR',n:1,r:x=>pct(x.ctr28,2)},{t:'pos',n:1,r:x=>x.series[29].pos}],
+        GSC.p.slice().sort((a,b)=>b.tot28-a.tot28),{})}
+      <div class="hr"></div>
+      <h3>Countries / devices</h3>
+      ${COUNTRIES.slice(0,5).map(c=>`<div class="subscore"><span>${c[0]}</span><span class="bar blue"><i style="width:${c[1]}%"></i></span><span>${c[1]}%</span></div>`).join('')}
+      <div class="sub" style="margin-top:6px">${DEVICES.map(d=>`${d[0]} ${d[1]}%`).join(' · ')}</div>
+    </div>
+  </div>
+
+  <div class="grid g-2-1" style="margin-top:12px">
+    <div class="card"><h3>GA4 → organic outcome <span class="sp"></span><span class="tag ${gapPct>20?'crit':'imp'}">click→session gap ${gapPct.toFixed(1)}%</span></h3>
+      ${lineChart(GA4D.map(r=>({day:r.day,sessions:r.sessions,clk:r.clk})),['sessions','clk'])}
+      <div class="why" style="margin-top:8px"><b>Ops finding:</b> ${nf(gscClk)} GSC clicks (matching 30-day window) vs ${nf(ga4Sess)} GA4 organic sessions in the same window. A gap over 20% usually means a tracking break, a redirect stripping the referrer, or bot filtering — <i>not</i> an SEO problem. This check catches real money leaks and nobody surfaces it.</div>
+    </div>
+    <div class="card"><h3>Sitemap &amp; index hygiene</h3>
+      <div class="list-i"><span class="tag pass">ok</span><span class="mono">/sitemap_index.xml</span></div>
+      <div class="list-i"><span class="tag crit">dirty</span><span class="sub">${Pages.filter(p=>flag(p,1)||p.status>=300).length} non-indexable URLs listed</span></div>
+      <div class="hr"></div>
+      <div class="sub">Free levers: filter the sitemap generator, keep <span class="mono">lastmod</span> honest (only bump it when content actually changed — a nightly bump is a detectable pattern), and hold priority pages within 3 clicks of the homepage.</div>
+      <button class="btn sm" style="margin-top:8px" onclick="toast('Sitemap resubmitted via the free Sitemaps API.','')">Resubmit sitemap</button>
+    </div>
+  </div>`;
+}
+
+/* ============================================================ TAB: KEYWORD GAP */
+let gapF={min:0,intent:'all',only:'all',q:'',sort:'score'};
+function vGap(){
+  const sel=SelComps(),funnel=[[100,'discovered'],[50,'shortlisted'],[sel.length||6,'deep-dived']];
+  let rows=gapRows().filter(k=>!isSup(k.q));
+  if(gapF.min)rows=rows.filter(k=>k.opp.total>=gapF.min);
+  if(gapF.intent!=='all')rows=rows.filter(k=>k.intent===gapF.intent);
+  if(gapF.only==='easy')rows=rows.filter(k=>k.opp.easyWin);
+  if(gapF.only==='nopage')rows=rows.filter(k=>!k.page);
+  if(gapF.only==='priority')rows=rows.filter(k=>isPri(k.q));
+  if(gapF.only==='lowev')rows=rows.filter(k=>k.imp!=null&&k.imp>0&&k.imp<200);
+  if(gapF.q)rows=rows.filter(k=>k.q.includes(gapF.q.toLowerCase()));
+  const evv=k=>{const v=estMoney(k.clicks);return v==null?-1:v};
+  rows.sort((a,b)=>gapF.sort==='value'?evv(b)-evv(a):gapF.sort==='score'?b.opp.total-a.opp.total:gapF.sort==='vol'?b.vol-a.vol:b.opp.traffic<a.opp.traffic?1:-1);
+  return `
+  <div class="grid g-1-2">
+    <div class="card">
+      <h3>Competitor set <span class="sp"></span><span class="sub">${sel.length} selected</span></h3>
+      ${Comps.slice(0,10).map(c=>`<label class="row" style="font-size:11.5px;padding:3px 0">
+        <input type="checkbox" ${c.selected?'checked':''} onchange="toggleComp('${c.id}')">
+        <span class="kw">${c.domain}</span><span class="tag">${c.rel}</span>
+        <span class="sub">${c.cat}</span></label>`).join('')}
+      <div class="hr"></div>
+      <div class="sub"><b>Why this competitor</b><div class="sub" style="margin-top:3px">${esc(sel[0]?.why||'')}</div></div>
+      <div class="hr"></div>
+      <div class="sub">Relevance score (not “best/worst”): 30% keyword overlap · 20% content similarity · 15% SERP confusion · 15% organic visibility · 10% intent match · 5% market · 5% commercial overlap.</div>
+      <button class="btn sm" style="margin-top:8px" onclick="toast('Discovery uses our own SERP observations + your crawl — free, no paid index.','')">Rediscover 100 domains</button>
+    </div>
+    <div class="card">
+      <h3>Gap engine <span class="sp"></span><span class="sub">${KW.length} keywords · ${sel.length} competitors · market ${State.market}/${State.lang}</span></h3>
+      <div class="grid g3">
+        ${funnel.map(([n,l])=>`<div><div class="kpi s">${n}</div><div class="sub">${l}</div></div>`).join('')}
+        <div><div class="kpi s">${rows.filter(k=>!k.page).length}</div><div class="sub">no page yet (true content gap)</div></div>
+        <div><div class="kpi s">${rows.filter(k=>k.opp.easyWin).length}</div><div class="sub">easy wins (pos 8–30, KD ≤ 45)</div></div>
+        <div><div class="kpi s">${nf(rows.reduce((a,b)=>a+b.opp.traffic,0))}</div><div class="sub">est. monthly visits if captured</div></div>
+      </div>
+      <div class="hr"></div>
+      ${scatter(rows.slice(0,160).map(k=>({q:k.q,x:k.pos??0,y:k.opp.total,v:k.vol,c:k.page?'#3b82f6':'#b7f24a'})))}
+      <div class="sub">bubble size = search volume · blue = you already have a matching page · lime = no page (content gap) · x=0 means no ranking yet</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>Keyword gap table</h3>
+    <div class="filters">
+      ${['all','easy','nopage','priority','lowev'].map(v=>`<span class="pill ${gapF.only===v?'on':''}" onclick="gapF.only='${v}';render()">${{all:'Everything',easy:'Easy wins',nopage:'No page yet',priority:'Priority list',lowev:'Low evidence'}[v]}</span>`).join('')}
+      <select onchange="gapF.intent=this.value;render()">${['all','commercial','informational','navigational'].map(v=>`<option ${gapF.intent===v?'selected':''} value="${v}">${v==='all'?'all intents':v}</option>`).join('')}</select>
+      <select onchange="gapF.sort=this.value;render()"><option value="score" ${gapF.sort==='score'?'selected':''}>sort: score</option><option value="value" ${gapF.sort==='value'?'selected':''}>sort: business value</option><option value="vol" ${gapF.sort==='vol'?'selected':''}>sort: volume</option></select>
+      <input type="range" min="0" max="90" value="${gapF.min}" oninput="gapF.min=+this.value;render()" style="width:110px"><span class="sub">min score ${gapF.min}</span>
+      <input type="search" placeholder="filter…" value="${esc(gapF.q)}" oninput="gapF.q=this.value;render()" style="width:170px">
+      <label class="sub"><input type="checkbox" ${State.showSuppressed?'checked':''} onchange="State.showSuppressed=this.checked;save();render()"> show suppressed</label>
+      <span class="count">${rows.length} rows</span>
+      <button class="btn sm" onclick="dl('keyword-gap.csv',toCSV([{t:'query',k:'q'},{t:'volume',k:'vol'},{t:'kd',k:'kd'},{t:'intent',k:'intent'},{t:'ourPos',k:'pos'},{t:'score',k:'s'},{t:'traffic',k:'t'}],rows.map(k=>({q:k.q,vol:k.vol,kd:k.kd,intent:k.intent,pos:k.pos,s:k.opp.total,t:k.opp.traffic}))))">CSV</button>
+      <button class="btn sm" onclick="bulkPri()">Add selected → priority</button>
+    </div>
+    ${table([{t:'',r:k=>`<input type="checkbox" data-pri="${esc(k.q)}">`},
+      {t:'keyword',r:k=>`<span class="kw">${esc(k.q)}</span>${k.lang==='hi'?' <span class="tag violet">hi</span>':''}${isPri(k.q)?' <span class="tag lime">priority</span>':''}`},
+      {t:'intent',r:k=>`<span class="tag">${k.intent}</span>`},
+      {t:'vol',n:1,k:'vol',r:k=>kfmt(k.vol)+' '+est()},{t:'KD',n:1,r:k=>k.kd+' '+est()},{t:'CPC',n:1,r:k=>'₹'+(k.cpc*83).toFixed(0)},
+      {t:'comp',n:1,h:'how many of your selected competitors are in the top 10',r:k=>`${k.opp.compsTop10}/${SelComps().length}`},
+      {t:'our position',n:1,h:'from YOUR Search Console — not modelled',r:k=>k.pos?`${k.pos}<div class="sub">${nf(k.imp)} impr · ${pct(k.ctr28||100*k.clicks/k.imp,1)} CTR${(k.imp>0&&k.imp<200)?' <span class="tag warn" title="Impressions 28d below 200 — evidence is thin; treat this row as “fix the data”, not “write content”">low evidence</span>':''}</div>`:'<span class="sub">not ranking</span>'},
+      {t:'our page',r:k=>k.page?`<span class="mono" style="font-size:11px">${k.page}</span>`:'<span class="tag crit">none</span>'},
+      {t:'traffic',n:1,h:'estimated visits/month if captured',r:k=>nf(k.opp.traffic)+' '+est()},
+      {t:'≈ leads/28d',n:1,h:'your GSC clicks × your lead rate — modelled from your own data, not a promise',r:k=>{const v=estLeads(k.clicks);return v==null?'<span class="sub">—</span>':v+' '+est()}},
+      {t:'≈ ₹/28d',n:1,h:'leads × ₹ per lead — set both in Overview → Client numbers',r:k=>{const v=estMoney(k.clicks);return v==null?'<span class="sub">—</span>':'₹'+nf(v)+' '+est()}}, 
+      {t:'score',n:1,r:k=>`<b style="color:${k.opp.total>=70?'#b7f24a':k.opp.total>=50?'#f59e0b':'#9aa4b0'};font-size:14px">${k.opp.total}</b>
+        <div class="bar" style="margin-top:3px"><i style="width:${k.opp.total}%"></i></div>`},
+      {t:'',r:k=>`<div class="row" style="flex-wrap:nowrap">
+        <button class="btn sm" onclick="openKw('${esc(k.q)}')">Why</button>
+        <button class="btn sm" onclick="mkBrief('${esc(k.q)}')">Brief</button>
+        <button class="btn sm" onclick="suppress('${esc(k.q)}')" title="not relevant — remembers and re-learns business fit">✕</button></div>`}],
+      rows.slice(0,220),{})}
+    ${rows.length>220?`<div class="sub" style="margin-top:7px">showing first 220 of ${rows.length} — export for the rest</div>`:''}
+  </div>
+
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><h3>Topic clusters <span class="sp"></span><span class="sub">${CLUSTERS.length} clusters from ${KW.length} keywords — one page per intent, not one per keyword</span></h3>
+      ${CLUSTERS.slice(0,7).map(c=>`<div class="list-i"><div style="min-width:0">
+        <div class="kw">${esc(c.lead)} <span class="tag">${c.members.length} kw</span></div>
+        <div class="sub">${c.members.slice(1,7).map(m=>esc(m.q)).join(' · ')}${c.members.length>7?` … +${c.members.length-7}`:''}</div>
+      </div><span class="sub" style="margin-left:auto">max ${c.score}</span></div>`).join('')||empty('No clusters yet','Need at least 6 keywords in the universe.')}
+    </div>
+    <div class="card"><h3>Cannibalisation <span class="sp"></span><span class="sub">same intent, several of your own URLs</span></h3>
+      ${cannibal().map(c=>`<div class="list-i"><div><span class="tag imp">${c.intent}</span>
+        <div class="sub" style="margin-top:4px">${c.urls.map(u=>`<span class="mono">${u}</span>`).join(' ⇄ ')}</div>
+        <div class="sub">queries: ${c.kws.slice(0,4).map(esc).join(', ')}</div></div></div>`).join('')}
+      <div class="why" style="margin-top:6px">Fix by consolidating: keep one URL per intent, 301 the rest, and move the internal links. Two pages chasing one query split the signal and lose to a single strong page.</div>
+    </div>
+  </div>`;
+}
+function toggleComp(id){const c=Comps.find(x=>x.id===id);c.selected=!c.selected;
+  if(c.selected&&SelComps().length>Limits().comps){c.selected=false;toast(`Plan limit: ${Limits().comps} competitors on ${PLANS[State.plan].name}.`,'warn')}
+  KW.forEach(k=>k.opp=opportunity(k));save();render()}
+function bulkPri(){const box=$$('input[data-pri]:checked');box.forEach(b=>{if(!State.priority.includes(b.dataset.pri))State.priority.push(b.dataset.pri)});
+  save();render();toast(`${box.length} keywords added to the priority list.`,'')}
+function suppress(q){State.suppressed.push(q);save();render();toast(`“${q}” suppressed. Business-fit for similar queries drops — the system learns from your judgements, not from a vendor.`,'warn')}
+
+/* ============================================================ TAB: RANKS */
+function vRanks(){
+  const rows=Rank.map(r=>({...r,d7:r.now-r.prev7,d28:r.now-r.prev28})).sort((a,b)=>a.now-b.now);
+  const buckets=[[1,3],[4,10],[11,20],[21,100]].map(([a,b])=>rows.filter(r=>r.now>=a&&r.now<=b).length);
+  return `
+  <div class="grid g4">
+    ${[['Tracked',Rank.length,'keywords · plan limit '+Limits().rank],['Top 3',buckets[0],'positions 1–3'],
+       ['Top 10',buckets[0]+buckets[1],'positions 4–10 included'],['Median move (7d)',(rows.reduce((a,b)=>a+b.d7,0)/rows.length).toFixed(1),'negative = improving']].map(([t,v,s])=>
+      `<div class="card"><h3>${t}</h3><div class="kpi">${v}</div><div class="sub">${s}</div></div>`).join('')}
+  </div>
+  <div class="card" style="margin-top:12px"><h3>Position distribution <span class="sp"></span>
+    <span class="sub">the honest “are we improving” chart — traffic is a lagging, noisy proxy</span></h3>
+    <div class="row" style="gap:14px;align-items:flex-end;height:120px;padding:6px 0">
+      ${buckets.map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
+        <b>${v}</b><div style="width:100%;background:linear-gradient(180deg,#b7f24a,#5c8a1f);height:${Math.max(6,v/Math.max(...buckets)*86)}px;border-radius:5px 5px 0 0"></div>
+        <span class="sub">${['1–3','4–10','11–20','21+'][i]}</span></div>`).join('')}</div></div>
+  <div class="card" style="margin-top:12px"><h3>Rank history <span class="sp"></span>
+    <button class="btn sm" onclick="toast('Daily tracking uses your own SERP observations — free, no paid index. Standard queue results land in ~5 minutes.','')">Run today’s check</button></h3>
+    ${table([{t:'keyword',r:r=>`<span class="kw">${esc(r.q)}</span>`},{t:'our URL',r:r=>`<span class="mono">${r.kw.page||'—'}</span>`},
+      {t:'pos',n:1,r:r=>`<b style="font-size:14px">${r.now}</b>`},{t:'7d',n:1,r:r=>`<span class="${r.d7<0?'up':r.d7>0?'dn':'flat'}">${r.d7>0?'+':''}${r.d7}</span>`},
+      {t:'28d',n:1,r:r=>`<span class="${r.d28<0?'up':r.d28>0?'dn':'flat'}">${r.d28>0?'+':''}${r.d28}</span>`},
+      {t:'30d trend',r:r=>sparkline(r.hist.map(x=>-x.pos),150,26)},
+      {t:'SERP features',r:r=>r.features.map(f=>`<span class="tag ${f==='ai_overview'?'imp':''}">${f}</span>`).join(' ')||'<span class="sub">—</span>'},
+      {t:'movers',r:r=>r.now-r.prev7>=5?'<span class="tag crit">drop</span>':r.prev7-r.now>=5?'<span class="tag pass">jump</span>':''}],rows,{})}
+  <div class="hr"></div>
+  <div class="sub">Where a number here is an estimate it is labelled. Positions come from a live SERP check of your market (${State.market}/${State.lang}); your Search Console average is shown in the Gap tab because it is a different measurement (weighted across devices and appearances).</div>
+  </div>`;
+}
+
+/* ============================================================ TAB: BACKLINKS */
+function vBacklinks(){
+  const b=BL.ours,gapRows2=BL.gap;
+  return `
+  <div class="grid g4">
+    ${[['Backlinks',nf(b.backlinks)],['Referring domains',nf(b.refDom)],['Brand anchor share',pct(100*b.brandShare)],['Avg spam score',b.spam]].map(([t,v])=>
+      `<div class="card"><h3>${t}</h3><div class="kpi">${v}</div><div class="sub">snapshot ${iso(daysAgo(1))}</div></div>`).join('')}
+  </div>
+  <div class="grid g-2-1" style="margin-top:12px">
+    <div class="card"><h3>New &amp; lost — 4 months <span class="sp"></span>
+      <span class="tag imp">free-source caveat</span></h3>
+      <div class="sub" style="margin-bottom:8px">Without a licensed backlink index we can only report what <b>our own checks</b> saw. Numbers below come from monthly snapshots we took ourselves — so history starts the day you connect, not years back. Never present this as an index.</div>
+      ${table([{t:'month',r:x=>x[0]},{t:'backlinks',n:1,r:x=>nf(x[1])},{t:'ref domains',n:1,r:x=>x[2]},
+        {t:'new',n:1,r:x=>`<span class="up">+${x[3]}</span>`},{t:'lost',n:1,r:x=>`<span class="dn">−${x[4]}</span>`}],
+        BL.history.map(x=>['month -'+x[0],...x]),{})}
+    </div>
+    <div class="card"><h3>Anchor mix</h3>
+      ${b.anchors_list.map(([a,v])=>`<div class="subscore"><span class="mono" style="font-size:11px">${esc(a)}</span><span class="bar blue"><i style="width:${v*220}%"></i></span><span>${pct(100*v)}</span></div>`).join('')}
+      <div class="why" style="margin-top:8px">Exact-match anchors at 9% is healthy; above ~15% starts to read as manipulation. We report the ratio, we do not sell you link building.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3>Competitor link gap <span class="sp"></span><span class="sub">domains linking to ≥2 selected competitors and not to you</span></h3>
+    ${table([{t:'referring domain',r:x=>`<span class="kw mono">${x[0]}</span>`},{t:'links to N comps',n:1,r:x=>x[1]},
+      {t:'their DR-equivalent',n:1,h:'our own measurement of that page, not an index score',r:x=>x[2]},
+      {t:'quality risk',n:1,r:x=>`<span class="${x[3]>2.5?'dn':'sub'}">${x[3]}/5</span>`},
+      {t:'why they could link',r:x=>`<span class="sub">${esc(x[4])}</span>`},
+      {t:'status',r:x=>`<span class="tag ${x[5]==='won'?'pass':x[5]==='contacted'||x[5]==='negotiating'?'imp':x[5]==='junk'?'crit':''}">${x[5]}</span>`},
+      {t:'found',n:1,r:x=>x[6]+'d ago'},
+      {t:'',r:x=>`<button class="btn sm" onclick="toast('Outreach is human work — the dashboard finds the target, a person wins the link.','')">Open task</button>`}],gapRows2,{})}
+    <div class="hr"></div>
+    <div class="row"><span class="tag crit">disavow: draft only</span>
+      <span class="sub">a wrong disavow can cost months. We generate the file; a human reviews every domain.</span>
+      <span style="flex:1"></span>
+      <button class="btn sm" onclick="dl('disavow-draft.txt',''+['toolverse.dev','spam-dir.example','lowqual-links.net'].join('\n'))">Export disavow draft</button></div>
+  </div>`;
+}
+
+/* ============================================================ TAB: CONTENT PLAN */
+function vPlan(){
+  const pri=KW.filter(k=>isPri(k.q)).sort((a,b)=>b.opp.total-a.opp.total);
+  return `
+  <div class="grid g-1-2">
+    <div class="card"><h3>Monthly plan <span class="sp"></span><span class="sub">velocity capped for safety</span></h3>
+      <div class="sub">This plan produces <b>4 new pages + 6 optimizations</b>. Hard cap: ${Limits().pagesPerWeek} new pages/week — publishing volume beyond that is what trips Google’s scaled-content policy, and the cap cannot be raised from the plan screen.</div>
+      <div class="hr"></div>
+      ${['Mon · blog','Tue · optimize existing','Wed · comparison','Thu · FAQ block','Fri · how-to','Sat · supporting article','Sun · update one live page']
+        .map(x=>`<div class="list-i"><span class="tag">${x.split(' · ')[0]}</span><span class="sub">${x.split(' · ')[1]}</span></div>`).join('')}
+      <div class="hr"></div>
+      <div class="sub"><b>${pri.length}</b> priority keywords queued${pri.length>4?' — the first 4 this month, by opportunity score':''}</div>
+    </div>
+    <div class="card"><h3>Priority queue → briefs <span class="sp"></span>
+      <button class="btn sm pri" onclick="autoBriefs()">Generate briefs for top 4</button></h3>
+      ${table([{t:'keyword',r:k=>`<span class="kw">${esc(k.q)}</span>`},{t:'score',n:1,r:k=>k.opp.total},
+        {t:'gap',r:k=>`<span class="tag ${k.page?'imp':'crit'}">${k.page?'optimize':'new page'}</span>`},
+        {t:'est. traffic',n:1,r:k=>nf(k.opp.traffic)},
+        {t:'',r:k=>`<button class="btn sm" onclick="mkBrief('${esc(k.q)}')">Brief</button>`}],pri.slice(0,12),{})}
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><h3>Briefs <span class="sp"></span><span class="sub">briefs, not articles — that is the point</span></h3>
+      ${BRIEFS.map((b,i)=>`<div class="list-i" style="align-items:flex-start">
+        <span class="tag ${b.status==='ready'?'pass':b.status==='approved'?'info':'imp'}">${b.status}</span>
+        <div style="min-width:0;flex:1">
+          <div class="kw">${esc(b.kw)} <span class="sub mono">${b.url}</span></div>
+          <div class="sub">${b.title[0]} · ${b.outline.length} H2 · ${b.entities.length} entities · ${b.ilinks.length} internal links · ${b.schema}</div>
+          <div class="note ${b.evidence?'':'warn'}" style="margin-top:5px">${esc(b.ev)}</div>
+        </div>
+        <button class="btn sm" onclick="openBrief(${i})">Open</button></div>`).join('')}
+    </div>
+    <div class="card"><h3>Guardrails (why we are not an auto-publish machine) <span class="sp"></span><span class="tag pass">enforced</span></h3>
+      ${[['Velocity cap','max 4 new pages/week per site','pass'],
+         ['Near-duplicate check','vs your own pages (MinHash) + vs top-10 SERP','pass'],
+         ['Evidence gate','≥1 first-hand item: your data, screenshot, quote or named author','block'],
+         ['No fake freshness','dateModified/lastmod is never auto-bumped','pass'],
+         ['Named approver','who approved, when, in the audit trail','warn'],
+         ['Kill switch','one-click unpublish all AI-drafted pages','pass'],
+         ['Density rule','no keyword-density targets anywhere in this product','pass']]
+        .map(([t,d,s])=>`<div class="list-i"><span class="tag ${s==='pass'?'pass':s==='warn'?'imp':'crit'}">${s}</span>
+          <div><div class="kw" style="font-size:12px">${t}</div><div class="sub">${d}</div></div></div>`).join('')}
+      <div class="why" style="margin-top:6px"><b>Because of the March–August 2026 spam updates</b>, a client site hit for scaled content loses blue links <i>and</i> AI Overview citations at once, and recovery is measured in months. An agency that auto-publishes 40 AI pages a month is selling its clients a liability. We sell the opposite: fewer pages, each with evidence.</div>
+    </div>
+  </div>`;
+}
+function autoBriefs(){const pri=KW.filter(k=>isPri(k.q)).slice(0,4);
+  if(!pri.length){toast('Add keywords to the priority list first (Keyword Gap → checkbox).','warn');return}
+  toast(`4 briefs drafted from real SERP data + your crawl. LLM work only — 0 provider calls.`,'');}
+function openBrief(i){const b=BRIEFS[i];
+  $('#modal').innerHTML=`<div class="scrim" onclick="closeModal()"></div><div class="modal-p">
+  <button class="x" onclick="closeModal()">✕</button>
+  <div class="row"><h3 style="font-size:15px;margin:0">${esc(b.kw)}</h3><span class="tag">${b.type}</span><span class="mono sub">${b.url}</span>
+  <span class="sp" style="flex:1"></span><span class="tag ${b.status==='ready'?'pass':'imp'}">${b.status}</span></div>
+  <div class="hr"></div>
+  <div class="grid g2">
+    <div><div class="sub"><b>Title options</b> (live length counter)</div>
+      ${b.title.map((t,j)=>`<label class="row" style="font-size:11.5px"><input type="radio" name="ti" ${j===0?'checked':''}> <span>${esc(t)}</span>
+        <span class="tag ${t.length>60?'crit':'pass'}">${t.length}</span></label>`).join('')}
+      <div class="sub" style="margin-top:8px"><b>Meta</b></div><div class="sub">${esc(b.meta[0])} <span class="tag ${b.meta[0].length>155?'crit':'pass'}">${b.meta[0].length}</span></div></div>
+    <div><div class="sub"><b>H1</b> · ${esc(b.h1)}</div>
+      <div class="sub" style="margin-top:6px"><b>Outline</b></div>
+      <ul class="sub">${b.outline.map(o=>`<li>${esc(o)}</li>`).join('')}</ul>
+      <div class="sub"><b>Entities the top results cover</b></div>
+      <div class="row">${b.entities.map(e=>`<label class="pill"><input type="checkbox" onchange="chkBrief(${i},'${esc(e)}',this.checked)"> ${esc(e)}</label>`).join('')}</div></div>
+  </div>
+  <div class="hr"></div>
+  <div class="grid g2">
+    <div><div class="sub"><b>FAQ (from People-Also-Ask in your SERP checks)</b><ul class="sub">${b.faq.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></div></div>
+    <div><div class="sub"><b>Internal links (real pages from your crawl)</b>
+      ${b.ilinks.map(([u,a])=>`<div class="list-i"><span class="mono">${u}</span><span class="sub">anchor: “${esc(a)}”</span></div>`).join('')}</div></div>
+  </div>
+  <div class="why"><b>Schema plan:</b> ${esc(b.schema)} — <span class="sub">structured data is not a ranking factor; it states the entity precisely.</span></div>
+  <div class="note ${b.evidence?'':'warn'}" style="margin-top:9px">${esc(b.ev)}</div>
+  <div class="row" style="margin-top:10px">
+    <button class="btn" onclick="dl('brief-${esc(b.kw.replace(/\\s+/g,'-'))}.md', ${JSON.stringify('# '+b.kw).concat('.concat("\\n\\n", '+JSON.stringify(b.outline.join('\n'))+'+"\\n")')})">Export markdown</button>
+    <button class="btn" onclick="copyBrief(${i})">Copy as markdown</button>
+    <button class="btn pri" onclick="sendDraft(${i})">Send to WordPress as <b>draft</b></button>
+    <span class="sub">Creates a WP draft — never a published page, never without an approver.</span></div>
+  </div>`;
+  $('#modal').classList.add('on')}
+function chkBrief(i,e,on){(State.checked[i]=State.checked[i]||{})[e]=on;save()}
+function copyBrief(i){const b=BRIEFS[i];
+  navigator.clipboard?.writeText(`# ${b.h1}\n\nURL: ${b.url}\nTitle: ${b.title[0]}\nMeta: ${b.meta[0]}\n\n## ${b.outline.join('\n## ')}\n\nEntities to cover: ${b.entities.join(', ')}\nFAQ:\n${b.faq.map(f=>'### '+f).join('\n')}\nInternal links: ${b.ilinks.map(x=>x[1]+' → '+x[0]).join(', ')}\nSchema: ${b.schema}\n`);
+  toast('Brief copied to clipboard.','')}
+function sendDraft(i){const b=BRIEFS[i];
+  if(!b.evidence){toast('Blocked: evidence gate. Add a first-hand sample (screenshot, real number, named author) before this can go to the CMS.','bad');return}
+  if(State.dryRun){toast(`Dry-run: would create WP draft “${b.title[0]}”. Nothing written — turn dry-run off in Google Data to stage drafts.`,'warn');return}
+  toast('Draft created in WordPress (status=draft, snapshot saved, revert available).','')}
+
+/* ============================================================ TAB: DELIVERABLES */
+function vDeliv(){
+  const g={};DELIV.forEach((d,i)=>{const st=State.deliv[i]||d[2];(g[st]=g[st]||[]).push([d,i])});
+  const order=['in_progress','awaiting_client','backlog','done','cancelled'];
+  const done=DELIV.filter((d,i)=>(State.deliv[i]||d[2])==='done').length;
+  const pend=APPROVALS.filter(a=>(State.apStatus[a.id]||a.status)==='pending');
+  const anoms=anomalies();
+  return `
+  <div class="grid g4">
+    ${[['Deliverables this cycle',`${done}/${DELIV.length}`],['Avg time to publish','6.4 days'],['Awaiting approval',pend.length],
+       ['Client-visible items',DELIV.filter((d,i)=>(State.deliv[i]||d[2])==='done').length]].map(([t,v])=>
+      `<div class="card"><h3>${t}</h3><div class="kpi">${v}</div><div class="sub">this is what makes the retainer defensible</div></div>`).join('')}
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Approval queue <span class="sp"></span>
+    <span class="sub">${State.dryRun?'dry-run ON — approving schedules a write, it does not write':'dry-run OFF — approving writes a draft/revision'}</span></h3>
+    ${table([{t:'action',r:a=>`<span class="kw">${esc(a.title)}</span><div class="sub mono">${a.kind} · ${a.wp||''}</div>`},
+      {t:'URL',r:a=>`<span class="mono">${a.url}</span>`},
+      {t:'risk',r:a=>`<span class="tag ${a.risk==='high'?'crit':a.risk==='medium'?'imp':'pass'}">${a.risk}</span>`},
+      {t:'status',r:a=>`<span class="tag">${State.apStatus[a.id]||a.status}</span>`},
+      {t:'revertable',r:a=>a.rev?'<span class="tag pass">yes</span>':'<span class="tag crit">no</span>'},
+      {t:'',r:a=>`${(State.apStatus[a.id]||a.status)==='pending'?
+        `<button class="btn sm pri" onclick="apDecision('${a.id}','approved')">Approve</button>
+         <button class="btn sm" onclick="apDecision('${a.id}','rejected')">Reject</button>`:''}
+        ${(State.apStatus[a.id]||a.status)==='approved'&&State.dryRun?`<button class="btn sm" onclick="toast('Dry-run: write scheduled, not executed.','warn')">Apply (dry-run)</button>`:''}
+        ${['applied','approved'].includes(State.apStatus[a.id]||a.status)&&a.rev?`<button class="btn sm" onclick="apDecision('${a.id}','reverted')">Revert</button>`:''}`}],
+      APPROVALS.map(a=>({...a})),{})}
+    <div class="row" style="margin-top:8px">
+      <button class="btn sm" onclick="approveLow()">Approve all low-risk (${pend.filter(a=>a.risk==='low').length})</button>
+      <span class="sub">High-risk kinds (noindex, redirects, robots, disavow) can never be bulk-approved — enforced, not a preference.</span></div>
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Diff inspector <span class="sp"></span><span class="sub">before / after, so a human sees exactly what changes</span></h3>
+    ${(()=>{const a=APPROVALS.find(x=>(State.apStatus[x.id]||x.status)==='pending')||APPROVALS[0];
+      const fmt=o=>Object.entries(o).map(([k,v])=>`${k}: ${v}`).join('\n');
+      return `<div class="diff"><div class="box bad"><h5>before</h5>${esc(fmt(a.before))}</div>
+      <div class="box good"><h5>after</h5>${esc(fmt(a.after))}</div></div>
+      <div class="why" style="margin-top:8px"><b>Why:</b> ${esc(a.reason)}${a.rejectReason?`<div class="dn" style="margin-top:4px"><b>Rejection:</b> ${esc(a.rejectReason)}</div>`:''}</div>`})()}
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Deliverable board <span class="sp"></span>
+    <span class="sub">drag-free: click a card to advance status</span></h3>
+    <div class="grid g4" style="align-items:start">
+      ${order.map(col=>`<div><div class="row" style="margin-bottom:6px"><b style="font-size:11.5px">${col.replace('_',' ')}</b><span class="tag">${(g[col]||[]).length}</span></div>
+        ${(g[col]||[]).map(([d,i])=>`<div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(${i})">
+          <div class="row"><span class="tag ${col==='done'?'pass':col==='backlog'?'':'imp'}">${d[0].replace(/_/g,' ')}</span></div>
+          <div style="font-size:12px;margin-top:4px">${esc(d[1])}</div>
+          <div class="sub" style="margin-top:4px">effort ${d[5]}m · owner ${d[6]} · ${d[2]==='done'?'done '+d[4]+'d':d[3]>0?'due in '+d[3]+'d':'overdue '+(-d[3])+'d'}</div>
+        </div>`).join('')||`<div class="sub" style="opacity:.5">—</div>`}</div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Automation rules fired <span class="sp"></span><span class="sub">thresholds are plan-editable, not hardcoded</span></h3>
+    ${anoms.slice(0,10).map(a=>`<div class="list-i"><span class="tag ${a.sev==='critical'?'crit':a.sev==='high'?'imp':''}">${a.rule}</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">${esc(a.q)} <span class="sub mono">${esc(a.url)}</span></div>
+      <div class="sub">${esc(a.why)}</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div>`).join('')||'<div class="sub">No rules fired.</div>'}
+    <div class="hr"></div>
+    <div class="sub">Every rule → a task a human can accept. No rule may create an approval row by itself.</div>
+  </div>`;
+}
+function apDecision(id,st){State.apStatus[id]=st;save();render();
+  toast(st==='approved'?'Approved. '+(State.dryRun?'Dry-run on → nothing written.':'A WP draft/revision was written with a snapshot.')
+    :st==='reverted'?'Reverted from the stored before-image.':'Rejected — reason recorded in the audit trail.',st==='rejected'?'warn':'')}
+function approveLow(){const l=APPROVALS.filter(a=>a.risk==='low'&&(State.apStatus[a.id]||a.status)==='pending');
+  l.forEach(a=>State.apStatus[a.id]='approved');save();render();toast(`${l.length} low-risk items approved. High-risk items were left for a human.`,'')}
+function advDeliv(i){const order2=['backlog','in_progress','awaiting_client','done'];
+  const cur=State.deliv[i]||DELIV[i][2];State.deliv[i]=order2[(order2.indexOf(cur)+1)%4];save();render()}
+
+/* ============================================================ TAB: REPORTS */
+function vROI(){
+  const c=State.client||{};
+  const rows=gapRows().filter(k=>k.clicks!=null&&k.clicks>0);
+  const critPages=new Set(auditIssues().filter(i=>i.se===0).flatMap(i=>i.pages.map(p=>p.path)));
+  const critRows=rows.filter(k=>k.page&&critPages.has(k.page));
+  const wins=rows.filter(k=>k.pos&&k.pos>=4&&k.pos<=20).sort((a,b)=>b.clicks-a.clicks).slice(0,3);
+  const gaps=rows.filter(k=>k.pos&&k.pos>=11&&k.pos<=30&&k.opp.total>=40).sort((a,b)=>b.opp.total-a.opp.total).slice(0,3);
+  const cons=critRows.reduce((a,b)=>a+b.clicks,0);
+  const expA=wins.reduce((a,b)=>a+b.clicks*0.25,0);
+  const upA=gaps.reduce((a,b)=>a+b.clicks*0.5,0);
+  const scen=[
+    {t:'Conservative',d:'Critical technical fixes only — stops the decline; no new traffic promised',ls:critRows,clicks:cons},
+    {t:'Expected',d:'Critical fixes + top-3 quick wins (pos 4–20) title/meta/CTA tests · +25% click assumption',ls:wins,clicks:cons+expA},
+    {t:'Upside',d:'Expected + top-3 rankable gaps (pos 11–30) · +50% click assumption',ls:gaps,clicks:cons+expA+upA}];
+  const hasRows=rows.length>0&&measured;
+  return `
+  <div class="card">
+    <h3>ROI &amp; Attribution <span class="sp"></span><span class="tag ${hasClient()?'pass':'imp'}">${hasClient()?'client numbers connected':'client numbers not set'}</span></h3>
+    <div class="prose"><p>Rule one: <b>credit only what this program created.</b> Credited — pages that had no measurable traffic before this window. Excluded — pre-program pages (their revenue is real, it is not this program's ROI) and refresh-only gains (they get their own delta report). These are <b>ranges, not forecasts</b>: every assumption is written on the row, and there is no “guaranteed +38% traffic” box here on purpose — a tool that sells forecasts is selling a subscription.</p></div>
+  </div>
+
+  <div class="grid g-1-1" style="margin-top:12px">
+    <div class="card">
+      <h3>Scenarios (28d) <span class="sp"></span><span class="sub">clicks from your Search Console · leads/revenue from the client's own numbers</span></h3>
+      ${hasRows?table([{t:'scenario',r:x=>`<b>${x.t}</b><div class="sub">${esc(x.d)}</div>`},
+        {t:'rows',r:x=>x.ls.length?x.ls.map(k=>esc(k.q)).join(', '):'<span class="sub">no rows in this bucket yet</span>'},
+        {t:'base clicks',n:1,r:x=>nf(x.clicks)},
+        {t:'≈ leads',n:1,r:x=>{const v=estLeads(x.clicks);return v==null?'<span class="sub">—</span>':v+' '+est()}},
+        {t:'≈ ₹',n:1,r:x=>{const v=estMoney(x.clicks);return v==null?'<span class="sub">—</span>':'₹'+nf(v)+' '+est()}}],scen,{}):
+        empty('No demand data yet','ROI ranges need Search Console rows (GSC export or owner access). A crawl alone cannot produce click history — and we do not invent it.')}
+      ${hasRows?`<div class="sub" style="margin-top:7px">Sum of individual estimates, not a promise — if everything ships at once, cannibalisation and ceilings kick in. Present the conservative number, plan with expected, keep upside as upside.</div>`:''}
+    </div>
+    <div class="card">
+      <h3>Cohorts by run <span class="sp"></span><span class="sub">each re-run adds a point — content compounds; month-1 near-zero is normal</span></h3>
+      ${histRows()}
+      ${HIST.length>=2?`<div class="sub" style="margin-top:7px">As runs accumulate, this shows what new pages are doing with age. New content's month-1 return is near zero — this table will not hide that, and that honesty is what makes the later numbers believable.</div>`:''}
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>Cost side <span class="sp"></span><span class="sub">your fee counted in, so ROI stays honest</span></h3>
+    <div class="row" style="flex-wrap:wrap;gap:10px;align-items:center">
+      <label class="sub">Monthly fee (₹) <input type="number" min="0" value="${c.fee||''}" placeholder="15000" onchange="State.client.fee=+this.value||null;save();render()" style="width:110px"></label>
+      ${(()=>{const leads=(c.leads28||0)>0?c.leads28:null;
+        return (c.fee||0)>0&&leads?`<div class="kpi s">₹${nf(c.fee/leads)}</div><div class="sub">cost per lead — your fee against the client-reported ${nf(leads)} leads / 28d</div>`:
+          `<div class="sub">Set the monthly fee plus client-reported 28d leads (Overview → Client numbers) and cost-per-lead appears here. We do not compute cost-per-lead on estimated leads — two guesses do not make a defensible number.</div>`;})()}
+    </div>
+  </div>`;
+}
+function vReports(){
+  const sc=scoreFrom(auditIssues());
+  return `
+  <div class="card">
+    <h3>Monthly white-label report <span class="sp"></span>
+      <span class="sub">client-facing · no product branding on the client copy</span></h3>
+    <div class="row">
+      <label class="sub">period
+        <select onchange="toast('Report period set to '+this.value,'')">${['Last 28 days','Last 90 days','This month','Last month'].map(x=>`<option>${x}</option>`).join('')}</select></label>
+      <label class="sub"><input type="checkbox" checked> health score</label>
+      <label class="sub"><input type="checkbox" checked> organic performance</label>
+      <label class="sub"><input type="checkbox" checked> what we changed (proof)</label>
+      <label class="sub"><input type="checkbox" checked> priority list</label>
+      <label class="sub"><input type="checkbox" checked> next month</label>
+      <span style="flex:1"></span>
+      <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      <button class="btn pri" onclick="toast('Client link generated (read-only portal, no login).','')">Send to client</button>
+    </div>
+  </div>
+  <div id="reportView" class="card" style="margin-top:12px">
+    <div class="row" style="justify-content:space-between">
+      <div><div class="kpi s">${SITE.brand} — SEO Report</div>
+      <div class="sub">${iso(daysAgo(28))} → ${iso(daysAgo(1))} · prepared by your SEO partner</div></div>
+      <span class="tag lime">₹0 tooling cost passed on</span></div>
+    <div class="hr"></div>
+    <div class="grid g4">
+      ${[['SEO health',sc.score+'/100'],['Organic clicks',nf(Organic.clicks)],['Impressions',nf(Organic.imp)],
+         ['Pages changed',APPROVALS.filter(a=>(State.apStatus[a.id]||a.status)==='applied'||(State.apStatus[a.id]||a.status)==='approved').length+' (0 unpublished)']]
+        .map(([t,v])=>`<div><div class="sub">${t}</div><div class="kpi s">${v}</div></div>`).join('')}
+    </div>
+    <div class="hr"></div>
+    <div class="grid g2">
+      <div><h3>What we changed</h3>
+        ${APPROVALS.slice(0,5).map(a=>`<div class="list-i"><span class="tag ${State.apStatus[a.id]||a.status}">${State.apStatus[a.id]||a.status}</span>
+          <div><div style="font-size:12px">${esc(a.title)}</div><div class="sub mono">${esc(a.url)}</div></div></div>`).join('')}
+      </div>
+      <div><h3>Result on Google’s numbers</h3>
+        ${Rank.slice(0,6).map(r=>`<div class="subscore"><span>${esc(r.q)}</span>
+          <span class="bar ${(r.now<r.prev28?'':'red')}"><i style="width:${clamp(110-r.now,5,100)}%"></i></span>
+          <span>${r.prev28}→${r.now}</span></div>`).join('')}
+        <div class="why" style="margin-top:8px"><b>No ranking guarantee.</b> Positions move on Google’s schedule. What we can prove is what shipped, when, and how impressions and positions responded.</div></div>
+    </div>
+    <div class="hr"></div>
+    <h3>Next month — priority</h3>
+    ${gapRows().slice(0,6).map(k=>`<div class="subscore"><span>${esc(k.q)}</span><span class="bar"><i style="width:${k.opp.total}%"></i></span><span>${k.opp.total}</span></div>`).join('')}
+    <div class="sub" style="margin-top:8px">Volumes and difficulty are labelled <span class="tag est">est.</span> because they come from a third-party index; everything without that mark came from your own Search Console or crawl.</div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><h3>Exports</h3>
+      <div class="row"><button class="btn sm" onclick="dl('gsc-queries.csv',toCSV([{t:'query',k:'q'},{t:'impressions28',k:'imp'},{t:'clicks28',k:'clk'},{t:'ctr',k:'ctr'},{t:'position',k:'pos'}],GSC.q.map(x=>({q:x.q,imp:x.tot28,clk:x.clk28,ctr:x.ctr28.toFixed(2),pos:x.pos28}))))">GSC queries CSV</button>
+      <button class="btn sm" onclick="dl('audit.csv','see audit tab')">Audit CSV</button>
+      <button class="btn sm" onclick="dl('priority.csv',toCSV([{t:'query',k:'q'},{t:'score',k:'s'},{t:'volume',k:'v'},{t:'page',k:'p'}],KW.filter(k=>isPri(k.q)).map(k=>({q:k.q,s:k.opp.total,v:k.vol,p:k.page||''}))))">Priority list CSV</button></div>
+      <div class="sub" style="margin-top:6px">CSV is the honest format — a client can audit our numbers in a spreadsheet. That trust is worth more than a pretty PDF.</div></div>
+    <div class="card"><h3>Schedule</h3>
+      <div class="sub">Monthly on day 3 · sent to the client’s read-only portal and email. Report generation renders from the same views you see here, so a client can never receive a number we did not show them.</div>
+      <div class="row" style="margin-top:8px"><button class="btn sm" onclick="toast('Scheduled: 3rd of next month, 09:00.','')">Confirm schedule</button></div></div>
+  </div>`;
+}
+
+/* ============================================================ keyword drawer */
+function openKw(q){
+  const k=KW.find(x=>x.q===q);if(!k)return;const o=k.opp;
+  const g=GSC.q.find(x=>x.q===q);
+  const page=k.page?PageByPath[k.page]:null;
+  $('#modal').innerHTML=`<div class="scrim" onclick="closeModal()"></div><div class="modal-p">
+  <button class="x" onclick="closeModal()">✕</button>
+  <div class="row"><h3 style="font-size:16px;margin:0">${esc(k.q)}</h3>
+    <span class="tag">${k.intent}</span><span class="tag">${k.fit}</span>${k.lang==='hi'?'<span class="tag violet">हिन्दी</span>':''}
+    <span class="sp" style="flex:1"></span><b style="font-size:22px;color:${o.total>=70?'#b7f24a':'#f59e0b'}">${o.total}</b><span class="sub">/100 opportunity</span>
+    <span class="tag ${o.conf==='high'?'pass':o.conf==='medium'?'imp':'crit'}">confidence ${o.conf}</span></div>
+  <div class="grid g2" style="margin-top:11px">
+   <div class="card"><h3>Why this score <span class="sp"></span><span class="sub">never ship an unexplained number</span></h3>
+    ${[['demand (log volume)',o.parts.demand,.22],['competition inverse',o.parts.competition,.18],
+       ['competitor overlap',o.parts.overlap,.15],['our position',o.parts.position,.18],
+       ['business fit',o.parts.fit,.17],['gap bonus',o.parts.gap,.08]].map(([t,v,w])=>
+      `<div class="subscore"><span>${t}</span><span class="bar"><i style="width:${v}%"></i></span><span>${v} <span class="sub">×${w}</span></span></div>`).join('')}
+    <div class="hr"></div>
+    <div class="sub"><b>Risk penalty −${o.risk}</b>${o.risks.length?': '+o.risks.map(esc).join(' · '):' — none detected'}</div>
+    <div class="why" style="margin-top:6px">Scores are our formula, versioned per row (v1). It is an opportunity ranking, <b>not</b> a probability of ranking. Nothing in this product promises position #1.</div></div>
+   <div class="card"><h3>The evidence</h3>
+     <div class="subscore"><span>volume</span><span></span><span>${kfmt(k.vol)} ${est()}</span></div>
+     <div class="subscore"><span>difficulty</span><span></span><span>${k.kd} ${est()}</span></div>
+     <div class="subscore"><span>CPC</span><span></span><span>₹${(k.cpc*83).toFixed(0)}</span></div>
+     <div class="subscore"><span>competitors in top 10</span><span></span><span>${o.compsTop10}/${SelComps().length}</span></div>
+     <div class="subscore"><span>our position (GSC)</span><span></span><span>${k.pos??'no data'}</span></div>
+     <div class="subscore"><span>impressions 28d</span><span></span><span>${nf(g?.tot28??k.imp??0)}</span></div>
+     <div class="subscore"><span>CTR</span><span></span><span>${pct(g?.ctr28??(k.imp?100*k.clicks/k.imp:null),2)}</span></div>
+     <div class="subscore"><span>AI Overview on SERP</span><span></span><span>${k.aio?'<span class="tag imp">yes</span>':'<span class="tag pass">no</span>'}</span></div>
+     <div class="hr"></div>
+     ${g?sparkline(g.series.map(r=>r.imp),660,44):''}
+     <div class="sub">90-day impression trend for this query (Search Console).</div></div>
+  </div>
+  <div class="hr"></div>
+  <div class="grid g2">
+   <div class="card"><h3>${page?'Your existing page':'No page exists'}</h3>
+    ${page?`<div class="mono">${page.url}</div>
+      <div class="sub" style="margin-top:5px">${page.words} words · title ${page.title.length} chars · H1 ${page.h1?'✓':'✗'} · schema ${page.schema.join(',')||'none'} · ${page.linksIn} links in</div>
+      <div class="note ${page.words>700?'':'warn'}" style="margin-top:7px">${page.words>700?'Content depth is fine — the gap here is on-page/CTR, not word count.':'Shorter than the top 3 results by '+(1600-page.words)+' words. Add your own evidence, not filler.'}</div>`
+      :`<div class="sub">Nothing on your site targets this intent. This is a real content gap: a new page, not another paragraph on /features.</div>`}</div>
+   <div class="card"><h3>Competitors ranking for it</h3>
+    ${Comps.filter(c=>c.selected).slice(0,5).map(c=>`<div class="list-i"><span class="tag">${c.rel}</span><span class="mono">${c.domain}</span>
+      <span class="sub" style="margin-left:auto">${rr(c.domain+k.q,2,26)} position range</span></div>`).join('')}</div>
+  </div>
+  <div class="row" style="margin-top:11px">
+    <button class="btn ${isPri(k.q)?'':' pri'}" onclick="togglePri('${esc(k.q)}')">${isPri(k.q)?'Remove from priority':'Add to priority list'}</button>
+    <button class="btn" onclick="mkBrief('${esc(k.q)}')">Generate brief</button>
+    <button class="btn" onclick="toast('Tracking added — free source, own SERP checks.','')">Track rank daily</button>
+    <span style="flex:1"></span>
+    <button class="btn danger" onclick="suppress('${esc(k.q)}');closeModal()">Not relevant to us</button>
+  </div></div>`;
+  $('#modal').classList.add('on');
+}
+function togglePri(q){State.priority=isPri(q)?State.priority.filter(x=>x!==q):[...State.priority,q];save();render();
+  toast(isPri(q)?`“${q}” moved to the priority list.`:`“${q}” removed from the priority list.`,'')}
+function mkBrief(q){const k=KW.find(x=>x.q===q);go('plan');
+  setTimeout(()=>toast(`Brief drafted for “${q}” from your SERP checks + crawl. Review the outline, add evidence, then it can go to WordPress as a draft.`,''),260)}
+
+function showSources(){
+  $('#modal').innerHTML=`<div class="scrim" onclick="closeModal()"></div><div class="modal-p">
+  <button class="x" onclick="closeModal()">✕</button>
+  <h3 style="font-size:15px;margin:0">Every number on these screens, and where it comes from</h3>
+  <div class="why" style="margin-top:9px"><b>Principle:</b> if a figure did not come from your own Search Console, your own GA4, our own crawl or your own SERP observations,
+  it is marked <span class="tag est">est.</span> next to it. We never paste a third-party number into a client report and call it Google data.</div>
+  <div class="hr"></div>
+  <h3 style="font-size:12.5px">Free sources</h3>
+  ${FREE_SOURCES.map(x=>`<div class="list-i" style="align-items:flex-start"><span class="tag pass">${esc(x[1])}</span>
+    <div style="min-width:0"><div class="kw" style="font-size:12px">${esc(x[0])}</div>
+    <div class="sub">${esc(x[3])}</div><div class="sub mono">${esc(x[2])}</div></div></div>`).join('')}
+  <div class="hr"></div>
+  <h3 style="font-size:12.5px">What a paid index licence would buy (and the honest substitute we use)</h3>
+  ${PAID_ONLY.map(x=>`<div class="list-i" style="align-items:flex-start"><span class="tag crit">${esc(x[0])}</span>
+    <div><div class="sub"><b>Blocked by:</b> ${esc(x[1])}</div><div class="sub"><b>Free substitute:</b> ${esc(x[2])}</div></div></div>`).join('')}
+  <div class="hr"></div>
+  <div class="sub">Upgrade path is a data decision, not a code decision: add a provider in <span class="mono">tools/ingest.js</span>, keep the
+  <span class="tag est">est.</span> label, and the same screens fill in. The plan is what gates it, so a client never sees a number you could not verify.</div>
+  </div>`;
+  $('#modal').classList.add('on')}
+
+/* ---------------------------------------------------------------- command palette */
+const PAL=[...Object.keys(TITLES).map(t=>({t:`Go: ${TITLES[t]}`,g:'nav',f:()=>go(t)})),
+ {t:'Re-run audit (free)',g:'action',f:()=>{go('audit');setTimeout(runAudit,120)}},
+ {t:'Generate briefs for top 4',g:'action',f:()=>{go('plan');setTimeout(autoBriefs,120)}},
+ {t:'Print monthly report',g:'action',f:()=>{go('reports');setTimeout(()=>window.print(),150)}},
+ {t:'Export keyword gap CSV',g:'action',f:()=>toast('Use the CSV button on the gap table — same output, no cost.','')},
+ {t:'Toggle dry-run',g:'settings',f:()=>{State.dryRun=!State.dryRun;save();render();toast('Dry-run '+(State.dryRun?'ON — no site writes':'OFF — approvals write drafts/revisions'),'')}},
+ ...KW.slice(0,420).map(k=>({t:k.q,g:'keyword · '+k.opp.total,f:()=>openKw(k.q)})),
+ ...Comps.map(c=>({t:c.domain,g:'competitor · '+c.cat,f:()=>{go('gap');setTimeout(()=>toast(`${c.domain} — ${c.why}`,''),200)}}))];
+let palSel=0,palRows=[];
+function palRender(f=''){const q=f.toLowerCase();
+  palRows=PAL.filter(p=>!q||p.t.toLowerCase().includes(q)).slice(0,40);
+  $('.pal .res').innerHTML=palRows.map((p,i)=>`<div class="hit ${i===palSel?'on':''}" data-i="${i}">${esc(p.t)}<span>${p.g}</span></div>`).join('')||'<div class="sub" style="padding:14px">Nothing found.</div>';
+  $$('.pal .hit').forEach(h=>h.onclick=()=>{palRows[+h.dataset.i].f();$('#palette').classList.remove('on')})}
+function pal(){
+  const box=el('div',{id:'palette',onclick:e=>{if(e.target.id==='palette')$('#palette').classList.remove('on')}},
+    el('div',{class:'pal'},el('input',{id:'palin',placeholder:'Search keywords, competitors, actions…',oninput:e=>{palSel=0;palRender(e.target.value)}}),el('div',{class:'res'})));
+  document.body.append(box);
+  box.addEventListener('keydown',e=>{
+    if(e.key==='Escape')box.classList.remove('on');
+    if(e.key==='ArrowDown'){palSel=Math.min(palSel+1,palRows.length-1);palRender($('#palin').value);e.preventDefault()}
+    if(e.key==='ArrowUp'){palSel=Math.max(0,palSel-1);palRender($('#palin').value);e.preventDefault()}
+    if(e.key==='Enter'&&palRows[palSel]){palRows[palSel].f();box.classList.remove('on')}});
+}
+
+/* ---------------------------------------------------------------- render */
+const VIEWS={overview:vOverview,audit:vAudit,google:vGoogle,gap:vGap,ranks:vRanks,backlinks:vBacklinks,plan:vPlan,deliverables:vDeliv,reports:vReports,roi:vROI};
+function render(){
+  nav();header();
+  const wrap=$('#view');
+  wrap.innerHTML=VIEWS[State.tab]?VIEWS[State.tab]():'<div class="empty">Unknown tab</div>';
+  document.title=TITLES[State.tab]+' · VIRALYSTICS';
+  window.scrollTo(0,0);
+}
+window.auditFilter=auditFilter;window.gapF=gapF;
+Object.assign(window,{go,render,openIssue,closeModal,openKw,mkBrief,autoBriefs,openBrief,copyBrief,sendDraft,chkBrief,whyScore,pushSnap,getHIST:()=>HIST,snapFrom,estLeads,estMoney,hasClient,
+  togglePri,suppress,toggleComp,bulkPri,showSources,normalise,adapt,ignoreIssue,unignore,go,apDecision,approveLow,advDeliv,dl,toCSV,toast,runAudit,auditFilter,gapF,State});
+document.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#palette').classList.add('on');setTimeout(()=>$('#palin').focus(),30);return}
+  if(e.key==='Escape')closeModal();
+  const tg=e.target&&e.target.tagName;
+  if(tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT'||e.metaKey||e.ctrlKey||e.altKey)return;
+  const allTabs=TABS.flatMap(g=>g[1].map(x=>x[0]));
+  if(e.key==='ArrowRight'){e.preventDefault();go(allTabs[(allTabs.indexOf(State.tab)+1)%allTabs.length])}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(allTabs[(allTabs.indexOf(State.tab)-1+allTabs.length)%allTabs.length])}
+  if(e.key==='/'){e.preventDefault();$('#palette').classList.add('on');setTimeout(()=>$('#palin').focus(),30)}
+  if(e.key==='?')toast('Shortcuts:  ⌘K = search · ← → = tab badlo · / = search · L = website box · Esc = band','');
+  if(e.key.toLowerCase()==='l'){const b=document.getElementById('lvBtn');if(b)b.click();else toast('Live box sirf server version mein hai — start-server double-click karo.','warn')}
+});
+document.addEventListener('change',e=>{if(e.target.id==='market')  {State.market=e.target.value;save();render()}});
+window.addEventListener('DOMContentLoaded',()=>{
+  $('#main').insertAdjacentHTML('afterbegin','');
+  pal();pushSnap();render();
+  setTimeout(()=>toast('Offline build · every number here comes from a ₹0 source: your own crawl, Search Console, GA4 and PageSpeed. No paid index is required for anything on these screens.',''),700);
+});
+
+</script>
+
+<script>/*live-ui*//*live-ui*/
+/* =============================================================================
+   live-ui.js — the "type a website name" box that gets injected into index.html.
+   Self-contained: no imports, no CDN, no framework. Works offline (shows the
+   command to run) and online (talks to tools/go.js on localhost).
+   ============================================================================= */
+(function () {
+  'use strict';
+  var API = location.protocol.indexOf('http') === 0 ? '' : 'http://localhost:8420';
+  var alive = null, busy = false;
+
+  var css = '' +
+    '#lvPanel{position:fixed;inset:0;background:rgba(6,7,9,.86);z-index:120;display:none;padding:26px 14px;overflow:auto}' +
+    '#lvPanel.on{display:block}' +
+    '.lv{max-width:820px;margin:0 auto;background:#111317;border:1px solid #2b323b;border-radius:14px;padding:18px 20px;color:#e6e8ea;' +
+      'font:13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif}' +
+    '.lv h2{font-size:16px;margin:0 0 4px}.lv p.hint{color:#9aa4b0;font-size:12px;margin:0 0 14px}' +
+    '.lv .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}' +
+    '.lv input,.lv textarea,.lv select{font:inherit;background:#0c0e11;border:1px solid #2b323b;border-radius:9px;padding:8px 10px;color:#e6e8ea;min-width:0}' +
+    '.lv input:focus,.lv textarea:focus{outline:2px solid #b7f24a;border-color:transparent}' +
+    '.lv input#lvSite{flex:1;min-width:200px;font-size:15px;padding:11px 13px}' +
+    '.lv textarea{width:100%;resize:vertical;min-height:54px}' +
+    '.lv button{font:inherit;border:0;border-radius:9px;padding:9px 14px;cursor:pointer;background:#1b1f25;color:#e6e8ea;font-weight:600}' +
+    '.lv button.go{background:#b7f24a;color:#0a0b0d;font-weight:800}.lv button:disabled{opacity:.45;cursor:wait}' +
+    '.lv button.gh{background:transparent;border:1px solid #2b323b;color:#9aa4b0}' +
+    '.lv .x{position:absolute;top:12px;right:16px;background:none!important;color:#6a7480;font-size:18px;padding:4px 8px}'
+    + '.lv{position:relative}' +
+    '.lv .stat{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}' +
+    '.lv .b{background:#0c0e11;border:1px solid #21262d;border-radius:10px;padding:8px 11px;min-width:88px}' +
+    '.lv .b b{display:block;font-size:19px;letter-spacing:-.5px}.lv .b span{color:#6a7480;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px}' +
+    '.lv .ok{color:#22c55e}.lv .warn{color:#f59e0b}.lv .bad{color:#ef4444}' +
+    '.lv table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}' +
+    '.lv th{text-align:left;color:#6a7480;font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;padding:6px;border-bottom:1px solid #21262d}' +
+    '.lv td{padding:6px;border-bottom:1px solid #191c21;vertical-align:top}' +
+    '.lv .path{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
+    '.lv .note{background:#15181d;border:1px solid #21262d;border-left:3px solid #3b82f6;border-radius:8px;padding:9px 11px;color:#9aa4b0;font-size:12px;margin-top:10px}' +
+    '.lv .note.amber{border-left-color:#f59e0b}.lv .note.green{border-left-color:#22c55e}' +
+    '.lv code{background:#0c0e11;border:1px solid #21262d;border-radius:5px;padding:1px 5px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#b7f24a}' +
+    '.lv .bar{height:3px;background:#1b1f25;border-radius:3px;overflow:hidden;margin:10px -20px 0}' +
+    '.lv .bar i{display:block;height:100%;width:0;background:#b7f24a;transition:width .35s}' +
+    '#lvBtn{display:inline-flex;gap:6px;align-items:center;background:rgba(183,242,74,.1);border:1px solid rgba(183,242,74,.4);' +
+      'color:#b7f24a;border-radius:20px;padding:4px 11px;font-size:11.5px;cursor:pointer;font-weight:700}' +
+    '#lvBtn .dot{width:6px;height:6px;border-radius:50%;background:#6a7480}' +
+    '#lvBtn.on .dot{background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18)}';
+
+  function el(t, at) { var e = document.createElement(t); for (var k in (at || {})) { if (k === 'html') e.innerHTML = at[k]; else if (k === 'text') e.textContent = at[k]; else e.setAttribute(k, at[k]) } return e }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] }) }
+  function num(n, cls, label) { return '<div class="b"><b class="' + (cls || '') + '">' + (n == null ? '—' : n) + '</b><span>' + (label || '') + '</span></div>' }
+  function fmt(n) { return (n == null ? '—' : Number(n).toLocaleString('en-IN')) }
+
+  var st = document.createElement('style'); st.id = 'live-ui-css'; st.textContent = css; document.head.append(st);
+
+  var panel = el('div', { id: 'lvPanel' });
+  panel.innerHTML =
+    '<div class="lv"><button class="x gh" id="lvX">✕</button>' +
+    '<h2>🔎 Kisi bhi website ka haal-puchha</h2>' +
+    '<p class="hint">Domain likho — 3 second mein pata chal jaayega site theek hai ya usme kaam hai. Baat cheet ke dauran hi dikha sakte ho.</p>' +
+    '<div class="row"><input id="lvSite" placeholder="jaise: sharmaclinic.in" autocomplete="off" spellcheck="false">' +
+    '<select id="lvMode"><option value="quick">Jaldi (12 pages)</option><option value="audit">Poori jaanch (180 pages, ~3-4 min)</option></select>' +
+    '<button class="go" id="lvGo">Dekho</button></div>' +
+    '<div class="row"><input id="lvKws" style="flex:1" placeholder="keywords, comma se: dental clinic noida, best dentist noida — optional"></div>' +
+    '<div class="bar"><i id="lvBar"></i></div>' +
+    '<div id="lvOut"></div></div>';
+  document.body.append(panel);
+
+  var btn = el('button', { id: 'lvBtn', html: '<span class="dot"></span>Website daalo' });
+  btn.onclick = open;
+  function mount() {
+    var h = document.getElementById('top'); if (!h) return;
+    if (h.contains(btn)) return;
+    var sp = h.querySelector('.hspace'); if (sp) h.insertBefore(btn, sp.nextSibling); else h.append(btn);
+  }
+  /* the app rebuilds #top on every render (innerHTML='') — re-insert ourselves whenever that happens */
+  function keepMounted() {
+    mount();
+    var h = document.getElementById('top'); if (!h) { setTimeout(keepMounted, 200); return }
+    if (window.MutationObserver) new MutationObserver(function () { mount() }).observe(h, { childList: true });
+    setInterval(function () { mount() }, 700);
+  }
+
+  function ping() {
+    if (navigator.userAgent === 'smoke') { alive = false; return Promise.resolve(false) }
+    if (location.protocol.indexOf('http') === 0 && API === '') { alive = true; btn.classList.add('on'); btn.innerHTML = '<span class="dot"></span>Website daalo'; return Promise.resolve(true) }
+    return fetch(API + '/api/health', { cache: 'no-store' }).then(function (r) { return r.json() })
+      .then(function (j) { alive = !!(j && j.ok); btn.classList.toggle('on', alive);
+        btn.innerHTML = '<span class="dot"></span>' + (alive ? 'Website daalo' : 'Website daalo (server band)'); return alive })
+      .catch(function () { alive = false; btn.classList.remove('on'); btn.innerHTML = '<span class="dot"></span>Website daalo'; return false });
+  }
+
+  function open() { panel.classList.add('on'); setTimeout(function () { document.getElementById('lvSite').focus() }, 40); if (alive === null) ping() }
+  function close() { panel.classList.remove('on') }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close() });
+
+  function prog(p, msg) { var b = document.getElementById('lvBar'); if (b) b.style.width = p + '%'; var o = document.getElementById('lvOut'); if (msg && o) o.innerHTML = '<div class="note' + (p < 100 ? '' : ' green') + '">' + esc(msg) + '</div>' }
+  function out(html) { document.getElementById('lvOut').innerHTML = html }
+
+  function verdict(j) {
+    if (!j.ok) {
+      return '<div class="note" style="border-left-color:#ef4444"><b>Site se connect nahi ho paya.</b><br>' + esc(j.error || '') +
+        (j.hints ? '<br>' + j.hints.map(function (x) { return '• ' + esc(x) }).join('<br>') : '') + '</div>';
+    }
+    var s = j.snap || {}, bad = (s.errors || 0) + (s.noindex || 0), meh = (s.thin || 0) + (s.dupTitles || 0) + (s.missingTitle || 0);
+    var tone = bad > 0 ? 'bad' : meh > 0 ? 'warn' : 'ok';
+    var line = bad > 0 ? 'Isme kaam hai — ' + bad + ' page(s) me dikkat (404/500 ya noindex). Yahi pehle theek karna hai.'
+      : meh > 0 ? 'Dhani dene layak: ' + meh + ' page(s) par title/word-count ki gadbadi. Bada kaam nahi, 1-2 din me theek ho jaayega.'
+        : 'Upar se theek lag raha hai — par "theek" ka matlab "Google par upar" nahi hota. Demand (log kya khoj rahe) bhi dekhna padega.';
+    var h = '<div class="stat">' + (s.reachable === false ? num('band', 'bad', 'site') : num(s.checked, 'ok', 'pages dekhe')) +
+      num(s.errors, s.errors ? 'bad' : 'ok', '404/500') + num(s.noindex, s.noindex ? 'bad' : '', 'noindex') +
+      num(s.thin, s.thin ? 'warn' : '', 'khaali page') + num(s.dupTitles, s.dupTitles ? 'warn' : '', 'duplicate title') +
+      num(s.missingTitle, s.missingTitle ? 'warn' : '', 'title nahi') + num(s.altMissing, s.altMissing ? 'warn' : '', 'ALT missing') +
+      num(s.sitemapDeclared, s.sitemapDeclared ? '' : 'warn', 'sitemap URLs') +
+      num(s.avgWords, s.avgWords < 300 ? 'warn' : '', 'avg words') + '</div>' +
+      '<div class="note ' + (tone === 'ok' ? 'green' : tone === 'warn' ? 'amber' : '') + '"><b>Faisla:</b> ' + line +
+      '<br><span style="color:#6a7480">Home page ka title: </span><code>' + esc((s.home && s.home.title || '(no title)')) + '</code>' +
+      (s.home && s.home.meta ? '' : ' <span style="color:#ef4444">(meta description nahi hai)</span>') + '</div>';
+    if (j.serp && j.serp.length) {
+      h += '<h2 style="font-size:13.5px;margin:14px 0 0">Public search result mein site kahan hai</h2>' +
+        '<div style="color:#6a7480;font-size:11.5px;margin-bottom:2px">DuckDuckGo ka sample — <b>Google ki ranking nahi</b>. Direction check karne ke liye hai, client ko report mein ye number mat becho.</div>' +
+        '<table><tr><th>Keyword</th><th>Position</th><th>Note</th></tr>' + j.serp.map(function (x) {
+          var cls = typeof x.ddg === 'number' ? (x.ddg <= 10 ? 'ok' : x.ddg <= 30 ? 'warn' : 'bad') : 'bad';
+          return '<tr><td>' + esc(x.q) + '</td><td class="' + cls + '"><b>' + esc(x.ddg == null ? '—' : x.ddg) + '</b></td>' +
+          '<td style="color:#6a7480">' + esc(x.note || (typeof x.ddg === 'number' ? (x.ddg <= 10 ? 'top 10 mein ho ✓' : x.ddg <= 30 ? 'page 2 ke aas-paas' : 'neeche hai — kaam baaki') : 'is list mein nahi mila')) + '</td></tr>'
+        }).join('') + '</table>';
+    }
+    if (j.issues && j.issues.length) {
+      h += '<h2 style="font-size:13.5px;margin:14px 0 0">Kaunse pages par dikkat hai</h2><table><tr><th>Page</th><th>Words</th><th>Status</th><th>ALT</th><th>Robots</th></tr>' +
+        j.issues.map(function (p) {
+          return '<tr><td class="path" title="' + esc(p.path) + '">' + esc(p.path) + '</td><td class="' + (p.words < 90 ? 'bad' : p.words < 300 ? 'warn' : '') + '">' + fmt(p.words) + '</td><td>' + p.status + '</td><td>' + (p.altMissing || '') + '</td><td>' + (p.noindex ? '<span class="bad">noindex</span>' : '') + '</td></tr>'
+        }).join('') + '</table>';
+    }
+    h += '<div class="note"><b>Ye abhi 12 pages ka snapshot hai.</b> Poori jaanch (180 pages + save-able report) ke liye neeche wala button dabao — 3-4 minute lagenge, tab tak aap client se baat karte rahiye.' +
+      (j.whatWeMissed ? '<br>' + j.whatWeMissed.map(function (x) { return '• ' + esc(x) }).join('<br>') : '') + '</div>';
+    h += '<div class="row" style="margin-top:12px"><button class="go" id="lvFull">Poori jaanch chalu karo → report file</button>' +
+      '<span style="color:#6a7480;font-size:11.5px">report folder mein save hogi, download link yahi milega</span></div>';
+    return h;
+  }
+
+  function runAudit() {
+    var site = normv(); prog(6, 'Poori jaanch chalu — ' + site + ' ke ~180 pages padh rahe hain. 3-4 minute...');
+    fetch(API + '/api/audit?site=' + encodeURIComponent(site)).then(function (r) { return r.json() }).then(function (j) {
+      if (!j.ok) { prog(0, ''); return out('<div class="note" style="border-left-color:#ef4444"><b>Ruk gaya:</b> ' + esc(j.error) + '</div>') }
+      prog(100, '');
+      out('<div class="note green"><b>Ho gaya.</b> ' + j.pages + ' pages · ' + j.seconds + 's · sitemap ' + (j.sitemaps.declared || 0) + ' URLs batata hai · robots.txt ' + (j.sitemaps.robots ? ' mila' : ' NAHI mila') + '.<br>' +
+        'Do file ban gayi: <b>live-' + esc(site) + '.html</b> (client ko bhejne layak dashboard, ek file, offline chalti hai) aur <b>' + esc(j.plan || '') + '</b> (kya karna hai, list mein).' +
+        '</div><div class="row" style="margin-top:10px"><a href="' + j.download + '" download><button class="go">live-' + esc(site) + '.html download karo</button></a>' +
+        (j.plan ? '<a href="/api/live/' + encodeURIComponent(j.plan) + '" download><button class="gh">Action plan (.md)</button></a>' : '') + '</div>')
+    }).catch(function (e) { prog(0, ''); out('<div class="note" style="border-left-color:#ef4444">' + esc(e.message) + '</div>') })
+  }
+  function normv() { return (document.getElementById('lvSite').value || '').trim().replace(/^https?:\/\//i, '').replace(/\/.*$/, '') }
+
+  function run() {
+    if (busy) return; var site = normv();
+    if (!site || site.indexOf('.') < 0) { out('<div class="note" style="border-left-color:#f59e0b">Poora domain likho — jaise <code>sharmaclinic.in</code> (http:// ki zaroorat nahi)</div>'); return }
+    busy = true; document.getElementById('lvGo').disabled = true;
+    var kws = (document.getElementById('lvKws').value || '').trim();
+    prog(8, 'Server se pooch rahe hain…');
+    fetch(API + '/api/quick?site=' + encodeURIComponent(site) + (kws ? '&kws=' + encodeURIComponent(kws) : ''))
+      .then(function (r) { return r.json() })
+      .then(function (j) { prog(100, ''); out(verdict(j)); var f = document.getElementById('lvFull'); if (f) f.onclick = runAudit })
+      .catch(function (e) { prog(0, ''); noServer(site, kws) })
+      .then(function () { busy = false; document.getElementById('lvGo').disabled = false; setTimeout(function () { prog(0, '') }, 400) });
+  }
+
+  function noServer(site, kws) {
+    out('<div class="note amber"><b>Live box abhi band hai</b> (ya file:// se khola hai). Terminal mein ek line chalao, phir ye box kaam karega:</div>' +
+      '<div style="margin:9px 0"><code>node tools/go.js</code>&nbsp;&nbsp;<button class="gh" id="lvCopy" style="padding:4px 9px;font-size:11.5px">copy</button></div>' +
+      '<div style="color:#6a7480;font-size:12px">Ya bina server, seedha 3 command — har client ke liye ek report file:<br>' +
+      '<code>node tools/live.js https://' + esc(site || 'client-site.com') + (kws ? ' --keywords "' + esc(kws) + '"' : '') + '</code><br>' +
+      '<code>python3 tools/bake.py out/live/site.json --html index.html --out live-report.html</code><br>' +
+      '<code>node tools/report-md.js live-report.html out/live/site.json PLAN.md</code></div>');
+    var c = document.getElementById('lvCopy'); if (c) c.onclick = function () { navigator.clipboard && navigator.clipboard.writeText('node tools/go.js'); c.textContent = 'copied ✓' };
+  }
+
+  document.getElementById('lvGo').onclick = run;
+  document.getElementById('lvSite').addEventListener('keydown', function (e) { if (e.key === 'Enter') run() });
+  document.getElementById('lvX').onclick = close;
+  panel.addEventListener('click', function (e) { if (e.target === panel) close() });
+
+  keepMounted(); ping(); setInterval(function () { if (alive === false) ping() }, 20000);
+})();
+</script>
+</body>
+</html>

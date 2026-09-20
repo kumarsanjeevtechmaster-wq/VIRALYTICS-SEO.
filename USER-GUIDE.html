@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viralytics — Use Karne Ka Booklet</title>
+<style>
+  :root{--ink:#191c20;--sub:#5b6472;--line:#e6e8ec;--acc:#3d7a1e;--accbg:#eef6e6;--amber:#b45309;--ambbg:#fef6e7;--red:#b91c1c;--redbg:#fdeeee;--blue:#1d4ed8;--bluebg:#eef3fe}
+  *{box-sizing:border-box}
+  body{font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Noto Sans Devanagari",sans-serif;color:var(--ink);margin:0;background:#fff}
+  .pg{max-width:820px;margin:0 auto;padding:40px 48px 56px}
+  .cover{min-height:96vh;display:flex;flex-direction:column;justify-content:space-between;border-bottom:3px solid var(--acc)}
+  .cover h1{font-size:44px;line-height:1.15;margin:0 0 10px;letter-spacing:-1px}
+  .cover h1 span{color:var(--acc)}
+  .cover .tag{font-size:18px;color:var(--sub);max-width:540px}
+  .cover .chip{display:inline-block;background:var(--accbg);color:var(--acc);border:1px solid #cfe3bf;border-radius:20px;padding:5px 14px;font-weight:700;font-size:13px;margin-bottom:18px}
+  .cover .foot{font-size:12.5px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px}
+  h2{font-size:24px;letter-spacing:-.5px;margin:44px 0 12px;padding-top:10px}
+  h2 .no{display:inline-block;background:var(--ink);color:#fff;font-size:13px;border-radius:8px;padding:2px 9px;margin-right:10px;vertical-align:3px}
+  h3{font-size:17px;margin:26px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--accbg)}
+  h3 .em{font-size:19px}
+  p{margin:8px 0}
+  ul,ol{margin:8px 0 8px 2px;padding-left:22px}
+  li{margin:4px 0}
+  .callout{border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px}
+  .callout b.t{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+  .g{background:var(--accbg);border:1px solid #cfe3bf}.g b.t{color:var(--acc)}
+  .a{background:var(--ambbg);border:1px solid #f2ddb0}.a b.t{color:var(--amber)}
+  .r{background:var(--redbg);border:1px solid #f3caca}.r b.t{color:var(--red)}
+  .b{background:var(--bluebg);border:1px solid #cddcfb}.b b.t{color:var(--blue)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+  th{background:#f5f6f8;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--sub)}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;background:#f2f3f5;border:1px solid #e2e4e8;border-radius:5px;padding:1.5px 6px}
+  pre{background:#0f1115;color:#e8eaed;border-radius:10px;padding:14px 16px;font:12.5px/1.6 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;margin:12px 0}
+  pre .c{color:#7c8593}
+  .shelf{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
+  .shelf div{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fafbfc}
+  .shelf b{display:block;font-size:19px;margin-bottom:2px}
+  .shelf span{font-size:12px;color:var(--sub)}
+  .steps{counter-reset:st;list-style:none;padding:0;margin:14px 0}
+  .steps li{counter-increment:st;position:relative;padding:0 0 16px 44px}
+  .steps li:before{content:counter(st);position:absolute;left:0;top:0;width:29px;height:29px;border-radius:50%;background:var(--acc);color:#fff;font-weight:800;display:grid;place-items:center;font-size:14px}
+  .steps li b.h{display:block;font-size:15px}
+  .steps li p{margin:3px 0 0;color:var(--sub);font-size:13.5px}
+  .tabs td:first-child{font-weight:700;white-space:nowrap}
+  .k{background:var(--ink);color:#fff;border-radius:4px;padding:1px 7px;font-size:11.5px;font-family:ui-monospace,monospace}
+  .qa h4{margin:16px 0 4px;font-size:15px}
+  .qa p{margin:0;color:var(--sub)}
+  .ok{color:var(--acc);font-weight:700}.no{color:var(--red);font-weight:700}
+  .pg2{border-top:1px dashed #cfd3da}
+  .small{font-size:12.5px;color:var(--sub)}
+  .dek{background:#f7faf5;border:1px solid #e2e8dc;border-left:4px solid var(--acc);border-radius:8px;padding:9px 13px;margin:8px 0;font-size:13.5px}
+  .dek b{color:var(--acc)}
+  .act{background:#f5f8ff;border:1px solid #dbe4fb;border-left:4px solid var(--blue);border-radius:8px;padding:9px 13px;margin:8px 0;font-size:13.5px}
+  .act b{color:var(--blue)}
+  .warn{background:var(--redbg);border:1px solid #f3caca;border-left:4px solid var(--red);border-radius:8px;padding:9px 13px;margin:8px 0;font-size:13.5px}
+  .warn b{color:var(--red)}
+  .tagrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .tagrow span{font-size:12px;background:#f2f3f5;border:1px solid var(--line);border-radius:20px;padding:3px 11px}
+  @media print{
+    @page{size:A4;margin:14mm}
+    body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cover{min-height:auto;page-break-after:always}
+    .pg{padding:0}
+    h2,h3{page-break-after:avoid}.callout,table,pre,.steps li,.shelf,.dek,.act,.warn{page-break-inside:avoid}
+    .noprint{display:none}
+  }
+  @media (max-width:640px){.pg{padding:24px 18px}.cover h1{font-size:32px}}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover"><div class="pg">
+  <div>
+    <div class="chip">VIRALYTICS · FREE USER GUIDE · 2026</div>
+    <h1>Website ka <span>SEO karna</span> —<br>poora tareeka,<br>asli bhasha mein</h1>
+    <p class="tag">Ye booklet unke liye hai jo kisi ki website ko Google par aage badhana chahte hain, par shuru mein technical terms samajh nahi aate. Isko aaram se padh lo — keval padhne ke baad aap apne aap is dashboard ko chala sakte hain.</p>
+  </div>
+  <div class="foot">
+    <b>Kya hai is mein:</b> &nbsp;1. SEO ka matlab &nbsp;·&nbsp; 2. Ye system kaise kaam karta hai &nbsp;·&nbsp; 3. रोज़ sirf 5 namber &nbsp;·&nbsp; 4. Website ka naam kahan daalein &nbsp;·&nbsp; 5. <b>Har tab ka poora kaam</b> &nbsp;·&nbsp; 6. <b>Kab kya dekhna hai</b> &nbsp;·&nbsp; 7. Mahine ka chakra &nbsp;·&nbsp; 8. Paise &nbsp;·&nbsp; 9. Common sawaal &nbsp;·&nbsp; 10. Glossary<br><br>
+    <b>Kya NAHI hai:</b> &nbsp;jitna bhi technical jargon hota hai — bharosa rakhiye, yahan wo simple bhasha mein likha hai.
+  </div>
+</div></section>
+
+<!-- ============ 1 ============ -->
+<div class="pg pg2">
+<h2><span class="no">1</span>SEO ka matlab — ek dukaan se samjhiye</h2>
+<p>Sochiye aapki ek <b>dukaan</b> hai. Google ek bahut badi <b>market</b> hai jahan log cheezein dhoondne aate hain. Aapki website ki har ek page dukaan ki ek <b>almari</b> hai. Jo shabdon se log khoj karte hain, unhe <b>keyword</b> kehte hain. Google market ka <b>chowkidar</b> hai — wo tay karta hai ki aapki almari kitni aage dikhegi.</p>
+<p>Chowkidar teen cheezein dekhta hai:</p>
+<div class="shelf">
+  <div><b>1</b><span><b>Samaan hai kya?</b> — Page mein asli jawab likha hai, ya sirf keyword baar-baar likh diya?</span></div>
+  <div><b>2</b><span><b>Log aapka naam lete hain?</b> — Doosri websites aapki taraf link deti hain (backlinks) — yehi "zuban par hona" hai.</span></div>
+  <div><b>3</b><span><b>Ghusna aasan hai?</b> — Page tez khulta hai, har page tak raasta hai, koi page band nahi pita.</span></div>
+</div>
+<div class="callout r"><b class="t">Ek aham sudhaar</b>"Jise keyword Google mein daal diya, wo upar aa gaya" — aisa nahi hota. Keyword sirf itna tay karta hai ki aapka page <b>kis sawaal ka jawab</b> hai. Upar isliye aate hain kyunki wo jawab baaki 9 natijon se behtar hai. Keyword zaroori hai, kaafi nahi.</div>
+<div class="callout g"><b class="t">Aapki sabse badi taakat</b>Koi bhi duniya mein "Google par number 1" ka waada nahi kar sakta. Google ka maalik Google hai. Jo aisa bole, wo jhooth bol raha hai. Aap <b>waada nahi, report</b> denge — yahi wajah hai ki log agency ko mahine-mahine paise dete rehte hain.</div>
+</div>
+
+<!-- ============ 2 ============ -->
+<div class="pg pg2">
+<h2><span class="no">2</span>Ye system kaise kaam karta hai — poora chakkar</h2>
+<p>Sabse pehle ye samajh lijiye ki <b>dashboard aapke liye kya karta hai aur aap kya karte ho</b>. Ye sabse important baat hai — isse samajh aayega ki aap machine par bharosa kyun kar sakte ho, aur kahan aapka haath lagana zaroori hai.</p>
+
+<h3>Ek analogi: health-checkup machine + doctor</h3>
+<p>Sochiye ye ek <b>health-checkup machine</b> hai aur aap <b>doctor</b>. Machine khud sab naap leti hai — BP, sugar, heartbeat — aur aapko ek report de deti hai jisme laal/peele flags laga hua hai ki kahan dikkat deni hai. Par <b>machine dawai nahi likhti</b> — dawai doctor likhta hai, patient ki manzoori se. Yahi poora dashboard hai.</p>
+
+<h3>Jo cheezein khud (bina aapke) hoti hain</h3>
+<div class="dek"><b>Naapta hai:</b> Aapki site ke pages ek-ek karke padhta hai — title, description, links, tooti cheezein, kitne words hain. Ye kaam apna apna hota hai, aapko kuch nahi karna.</div>
+<div class="dek"><b>Score deta hai:</b> 100 par se kitne namber, aur kehta hai kaunsi cheez score gira rahi hai.</div>
+<div class="dek"><b>Pehle kaunsa kaam:</b> Sabse zyada asar dene wale kaam ko upar rakhta hai, taaki aap pehle wahi karo.</div>
+<div class="dek"><b>Report + saboot banata hai:</b> Ek file banti hai jo aap client ko bhej sakte ho, jisme likha hota hai kya toota tha, kya theek hua, aur Google ke namber kaise hilte hain.</div>
+<div class="dek"><b>Dobara naap kar batata hai:</b> Agli baar jab aap jaanch chalao, wo batata hai ki score upar gaya ya neeche — taaki aap dikha sako ki kaam kar raha hai.</div>
+
+<h3>Jo cheezein sirf INSAN karta hai (dashboard karta nahi)</h3>
+<div class="warn"><b>theek karna:</b> Jo toota hai, usse site par theek karna — ye developer ya aap karte ho. Dashboard sirf batata hai kya theek karna hai.</div>
+<div class="warn"><b>likhna:</b> Naya content likhna — ye writer ya aap karte ho. Dashboard brief deta hai (kya likhna hai), par article apne aap nahi likhta aur bina aapki manzoori ke site par nahi jaata.</div>
+<div class="warn"><b>manzoori dena:</b> Har cheez jo site par jani hai, pehle <b>client ki manzoori</b> hoti hai. Ek galti jo apne aap publish ho jaye, saalon ki mehnat kha jaati hai.</div>
+
+<div class="callout g"><b class="t">Isliye aap safe ho</b>Ye dashboard aapke <b>khilaaf</b> nahi aapke <b>saath</b> hai. Wo aapke aage kaam karwa deta hai (naapna, list banana, report banana), aur jahan insaan ki soch chahiye (kaunsa kaam, kis order mein, kya theek hai) — wahan aap hoti ho. Google bhi blind automation ko saza karta hai, isliye "insaan ne dekha aur manzoor kiya" hi aapki agency ki sabse badi taakat hai.</div>
+
+<h3>Ye 5 kadmon ka loop hai — isko yaad rakho</h3>
+<ol>
+  <li><b>Naapo</b> (automatic) — site padho, score nikalo</li>
+  <li><b>Plan banao</b> (automatic list, aap chunte ho) — kaunsa kaam, pehle kaunsa</li>
+  <li><b>Approve karo</b> (insaan) — client manzoor kare</li>
+  <li><b>Karo</b> (insaan/dev) — theek karo, likho, site par daalo</li>
+  <li><b>Dobara naapo</b> (automatic) — dikhao ki score upar gaya</li>
+</ol>
+<p class="small">Agle mahine phir wahi loop. Yahi "loop" hai jo ek baar ka kaam nahi, mahine-mahine ka paisa banata hai.</p>
+</div>
+
+<!-- ============ 3 ============ -->
+<div class="pg pg2">
+<h2><span class="no">3</span>रोज़ sirf ye 5 namber dekhein</h2>
+<p>Dashboard mein 40 shabd dikhenge. Pareshan mat hoyiye — aapko roz sirf in 5 ko yaad rakhna hai, baaki sab inhi ko naapne ke auzaar hain.</p>
+<table>
+  <tr><th>Shabd</th><th>Aasan matlab</th><th>Kam namber ka matlab</th></tr>
+  <tr><td><b>Impressions</b></td><td>Google ne aapka naam kitni baar logon ko dikhaaya</td><td>Aap kam logon tak pahunch rahe hain</td></tr>
+  <tr><td><b>Clicks</b></td><td>Dikhne par kitne log andar aaye</td><td>Naam / title attractive nahi</td></tr>
+  <tr><td><b>CTR</b> (percentage)</td><td>Kitne % log dikhne par andar aaye</td><td>2nd jagah par 3% = bura, 15th jagah par 3% = bahut accha</td></tr>
+  <tr><td><b>Position</b></td><td>Kitne number par dikh rahe ho</td><td>11 se 30 ke beech = sabse sasta fayda, thoda sudhaar chahiye</td></tr>
+  <tr><td><b>Links</b></td><td>Kitni doosri sites aapke baare mein bolti hain</td><td>Google aapko kam bharosemand maanta hai</td></tr>
+</table>
+<div class="callout a"><b class="t">Yahi poori kahani hai</b>Ek page 15th par hai, CTR sirf 1.5% hai. Matlab log aapko dekh rahe hain par click nahi kar rahe — title theek karo. Ek page 4th par hai, CTR accha hai — wahan 2-3 naye paragraph se kahin nahi jaate, upar aa sakte ho. Is dashboard ka kaam yahi cheez dikhana hai, taaki aap ghol-maaul mein na gire.</div>
+</div>
+
+<!-- ============ 4 ============ -->
+<div class="pg pg2">
+<h2><span class="no">4</span>Website ka naam kahan daalte hain?</h2>
+<div class="callout g"><b class="t">Seedha jawab</b>Dashboard ke andar ek box hai — <b>"🔎 Website daalo"</b>. Upar right corner mein bhi ek chhota sa button hai, uspar click karo. Box mein likho jaise <code>sharmaclinic.in</code> (<b>http:// mat likho</b>), aur <b>Dekho</b> dabao. Bas. 3 second mein pata chala — site theek hai ya usme kaam hai.</div>
+
+<h3>Wo box kya karta hai</h3>
+<table>
+  <tr><th>Mode</th><th>Kya hota hai</th><th>Kab use karein</th></tr>
+  <tr><td><b>Jaldi</b> (default)</td><td>12 pages padhta hai, ~3 second</td><td>Baat-cheet ke dauran turant dikhane ke liye</td></tr>
+  <tr><td><b>Poori jaanch</b></td><td>180 pages padhta hai, 3-4 minute</td><td>Client ki pehli report banane ke liye</td></tr>
+</table>
+<p>Poori jaanch ke baad ek <b>report file</b> ban jaati hai — <code>live-sharmaclinic.in.html</code>. Wo file aap client ko bhej sakte hain, wo <b>bina internet ke bhi khulti hai</b>. Saath mein ek <b>action plan</b> (.md) bhi milta hai — likha hua ki kya karna hai.</p>
+
+<div class="callout b"><b class="t">Box mein keywords bhi likh sakte ho</b>Box ke neeche chhoti jagah hai jahan aap likh sakte hain jaise <code>best dentist noida, dental clinic noida</code>. Tab dashboard dikhayega ki wo site public search mein kahan hai (DuckDuckGo ka sample — direction check, <b>Google ki ranking nahi</b>). Client meeting mein ye number mat dikhaiye, bas aapke liye ek idea hai.</div>
+
+<h3>Box se report banane ke 3 raste</h3>
+<table>
+  <tr><th>Rasta</th><th>Kya karna hai</th><th>Kab</th></tr>
+  <tr><td><b>1. Box se (sabse aasan)</b></td><td>Server chalu ho (<code>node tools/go.js</code>), browser mein box kholo, naam likho, "Poori jaanch" dabao</td><td>90% kaam yahi se</td></tr>
+  <tr><td><b>2. Terminal se</b></td><td>3 command (booklet ke aakhir mein)</td><td>Jab box kaam na kare</td></tr>
+  <tr><td><b>3. Google ke namber ke saath</b></td><td>Upar wale + malik ne Search Console CSV di ho to usse bhi daalo</td><td>Jab demand side bhi chahiye</td></tr>
+</table>
+<h3>Server band hai to?</h3>
+<p>Box tabhi chalta hai jab terminal mein ek line chal rahi ho: <code>node tools/go.js</code> (browser http://localhost:8420 par khulega). Agar nahi chal raha, toh box <b>khud batayega</b> ki server band hai — aur neeche 3 command ki poori list bhi dikhayega jo bina server ke kaam karti hai.</p>
+</div>
+
+<!-- ============ 5 ============ -->
+<div class="pg pg2">
+<h2><span class="no">5</span>Har tab ka poora kaam — ek-ek karke</h2>
+<p>Dashboard ke <b>10 tab</b> hain. Neeche har ek ka poora matlab hai — <b>ek line mein</b> kya hai, <b>dekhein kya</b> (kaunse namber), <b>kya karein</b> (action), aur <b>laal nishaan</b> (kya turant theek karein). Pehle table se poori jhalak lo, phir har tab ki detail padho.</p>
+<div class="tagrow"><span>⌨ ← → tab badlo</span><span>/ ya ⌘K — koi bhi cheez dhoondho</span><span>L — "Website daalo" box</span><span>Esc — modal band</span></div>
+
+<table class="tabs">
+  <tr><th>Tab</th><th>Ek line mein</th><th>Kab dekhein</th></tr>
+  <tr><td>🏠 Overview</td><td>Aaj ka poora haal — score + top kaam</td><td>रोज़, 5 min</td></tr>
+  <tr><td>🩺 Website Audit</td><td>Kya toota hai, kyon, kaise theek</td><td>Hafte mein 1</td></tr>
+  <tr><td>📊 Google Data</td><td>Asli Google ke namber</td><td>Hafte mein 1</td></tr>
+  <tr><td>🔑 Keyword Gap</td><td>Kya dhoondte hain aur aapki page nahi</td><td>Mahine mein 1</td></tr>
+  <tr><td>📈 Rank Tracker</td><td>Jagah upar gayi ya neeche</td><td>Hafte mein 1</td></tr>
+  <tr><td>🔗 Backlinks</td><td>Naam kaun le raha hai</td><td>Mahine mein 1</td></tr>
+  <tr><td>🗺️ Content Plan</td><td>Kis page par kya likhna hai</td><td>Mahine mein 1</td></tr>
+  <tr><td>✅ Deliverables</td><td>Kya ho gaya, manzoori baaki kya</td><td>रोज़</td></tr>
+  <tr><td>🖨️ Reports</td><td>Client ko bhejne wali report</td><td>Mahine mein 1</td></tr>
+  <tr><td>💰 ROI &amp; Leads</td><td>Kaam = kitne ₹ (range mein)</td><td>Mahine mein 1</td></tr>
+</table>
+
+<!-- ---- 5.1 Overview ---- -->
+<h3>🏠 1) Overview — "aaj kya karna hai"</h3>
+<div class="dek"><b>Ek line:</b> Aapka roz ka dashboard. Score, aaj ka sabse top kaam, aur 4 namber — sab ek jagah. रोज़ sirf yahi tab kholo.</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>Health Score (0–100)</b> + 6 chhote sub-scores (Indexability, On-page, Internal linking, Performance, Schema, International)</li>
+  <li>Score ke paas <b>do chhote nishaan</b> — <b>data fresh (2d old)</b> (naapne se kitne din hue) aur <b>▲ +1 vs pichli baar</b> (score upar gaya ya neeche)</li>
+  <li><b>"Why this score?"</b> button — client poochhe namber kaise aaya, to dabao</li>
+  <li><b>Aaj ki top opportunities</b> — AI ne 4-5 sabse zyada asar dene waale kaam chun ke diye hain</li>
+  <li><b>4 KPI cards</b> — Organic clicks, Impressions, CTR, Average position (28 din ke)</li>
+  <li><b>Client numbers card</b> — yahan client ke 2 namber bharte hain (neeche detail)</li>
+  <li><b>Run history card</b> — pichhli jaanchon ka record, score kaise badha</li>
+</ul>
+<div class="dek"><b>Dekhein kya (roz ka 5 min):</b> (1) Score aur uska trend — upar gaya ya neeche? (2) 🔴 kitni critical cheezein hain? (3) Top 3 opportunities mein se aaj kaunsa karoge?</div>
+<div class="act"><b>Kya karein:</b> Top 1 opportunity par click karo, wo aapko us tab par le jaayega jahan kaam hai. Us din sirf wohi 1-2 kaam karo, baaki kal.</div>
+<div class="warn"><b>Laal nishaan:</b> 🔴 critical &gt; 0 ho to pehle wahi theek karo — naya content likhne se pehle tooti cheezein theek honi chahiye.</div>
+<div class="callout b" style="margin-top:12px"><b class="t">Client ke 2 namber — yahi ROI banata hai</b>Overview ke neeche card mein do khaali jagah hain: <b>"1 lead per kitne clicks"</b> aur <b>"1 lead kitne ka (₹)"</b>. Client se ek baar poochho — 10 second ka sawaal. Daal diye toh har keyword ke saamne ≈leads aur ≈₹ dikhne lagenge, aur ROI tab mein teen range ban jaate hain. (Poora ROI tab section 5.10 mein hai.)</div>
+
+<!-- ---- 5.2 Audit ---- -->
+<h3>🩺 2) Website Audit — "kya toota hai, kyon, kaise theek"</h3>
+<div class="dek"><b>Ek line:</b> Aapki site ki poori jaanch. Har tooti cheez alag hai, kehta hai <b>kyon mahanati hai</b> aur <b>theek kaise karein</b> (code snippet ke saath).</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li>Kitne pages padhe gaye, score kitna hai</li>
+  <li><b>Issues ki list</b> — 🔴 critical, 🟡 improvement, ⚪ notice (filter kar sakte ho)</li>
+  <li>Har issue par <b>Open</b> dabao to milega: kyon zaroori hai, fix kya hai, code snippet, aur kaunse pages par hai</li>
+  <li>Sab pages ki table (title, words, status, LCP, waghera)</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> Sabse pehle 🔴 critical ki list — jaise <b>noindex</b> (page ne Google ko kaha "mat dikha"), <b>soft 404</b> (page khulta hai par andar khaali), <b>duplicate titles</b> (2 pages ka title ek), <b>robots blocked</b>.</div>
+<div class="act"><b>Kya karein:</b> Red items ko "Add to approval queue" karo, phir Deliverables tab mein client ko dikhao. Sabke paas ready-made fix snippet hai — developer ko bas wo likh dena.</div>
+<div class="warn"><b>Laal nishaan:</b> 🔴 wale sab din 1-7 mein theek honi chahiye. Ye theek nahi hue to upar jaane ka koi matlab nahi.</div>
+
+<!-- ---- 5.3 Google Data ---- -->
+<h3>📊 3) Google Data — "asli Google ke namber"</h3>
+<div class="dek"><b>Ek line:</b> Jo namber Google ne aapko diye (impressions, clicks, position) — bina iske dashboard aadha hai. Ye namber <b>site ke malik</b> se aate hain.</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>3 connection cards</b> — Search Console, Google Analytics (GA4), WordPress</li>
+  <li><b>Organic trend (90 din)</b> — clicks + impressions ka line chart</li>
+  <li><b>Queries table</b> — kaunsa keyword, kitne impressions, kitne clicks, CTR, position, aur <b>kitne CTR hone chahiye the</b></li>
+  <li><b>Pages table</b> — kaunsa page kitne logon ko dikha</li>
+  <li><b>Countries / devices</b> — log kahan se aate hain, phone se ya computer se</li>
+  <li><b>GA4 vs GSC match check</b> — agar dono mein 20% se zyada farak hai to kahin tracking toota hai (ye ek chhota sa paisa ka nuksaan hai)</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> (1) Kaunse keywords <b>zyada impressions</b> le rahe hain par <b>CTR kam</b> hai — unke title theek karne se clicks badh jaate hain. (2) Kaunse <b>position gir</b> gaye.</div>
+<div class="act"><b>Kya karein:</b> Zyada impression + kam CTR wale keyword ka title dobara likho. Position girne par dekho competitor ne kya kiya.</div>
+<div class="warn"><b>Dhyan do:</b> Ye tab <b>tab tak khali rahega</b> jab tak malik Search Console na de. Do raste hain: (a) malik Search Console khol ke 2 min mein "Export" dabaye, CSV de; (b) malik aapko read-only access de. Is tab mein dono ka button hai.</div>
+
+<!-- ---- 5.4 Keyword Gap ---- -->
+<h3>🔑 4) Keyword Gap — "kaam yahi se banta hai"</h3>
+<div class="dek"><b>Ek line:</b> Log Google par kya dhoond rahe hain, aur unmein se jin par aapki <b>koi page hi nahi</b> — yahi asli mauka hai. Yahan se naya kaam banta hai.</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>Competitor set</b> — kaunse competitors dekhne hain (checkbox se chuno)</li>
+  <li><b>Scatter plot</b> — x = aapki position, y = mauka (opportunity). Limed bauble = naya page banana hai.</li>
+  <li><b>Badi table</b> — har keyword: volume, difficulty, aapki position, aapki page (ya "none"), est. traffic, ≈leads, ≈₹, score</li>
+  <li><b>Filters</b> — Easy wins / No page yet / Priority / <b>Low evidence</b></li>
+  <li><b>Topic clusters</b> + <b>cannibalisation</b> (aapke apne 2 pages ek hi cheez ke liye lad rahe hain)</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> (1) Jin rows mein <b>"our page = none"</b> hai aur score high hai — wahi real content gap hai. (2) Jin par <b>low evidence</b> tag hai — unpar abhi bada kaam mat karo.</div>
+<div class="act"><b>Kya karein:</b> 4 aise keywords chuno (zyada dhoondhe ja rahe hain + aapki page nahi hai), unhe priority mein daalo, phir Content Plan tab mein briefs banao.</div>
+<div class="warn"><b>Laal nishaan:</b> <b>low evidence</b> tag = 28 din mein 200 se kam baar dikhaya. "Faisla" nahi — "data pehle badhao" hai. Chhote nible par chhota kaam theek hai, naya page abhi nahi.</div>
+
+<!-- ---- 5.5 Rank Tracker ---- -->
+<h3>📈 5) Rank Tracker — "upar gayi ya neeche"</h3>
+<div class="dek"><b>Ek line:</b> Aapki position (jagah) kaise badli — yahi honest "kya hum behtar ho rahe hain" ka chart hai. Traffic ek noisy number hai, position zyada seedha hai.</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>4 namber</b> — kitne tracked, top 3 mein kitne, top 10 mein kitne, median kitna hil</li>
+  <li><b>Position distribution</b> — kitne pages 1-3 par, 4-10 par, 11-20 par, 21+ par</li>
+  <li><b>Har keyword</b> — abhi position, 7 din mein kitna hil, 28 din mein kitna hil, 30 din ka trend</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> (1) Distribution <b>bae ki taraf shift</b> ho raha hai (kam number = behtar)? (2) Kaunse <b>bade movers</b> hain — ▲/▼ 5 se zyada jisko.</div>
+<div class="act"><b>Kya karein:</b> Bade giravai par (▼) investigate karo — kya hua? Bade uthav par (▲) wahi karne par dobara karo jo kaam kar raha hai.</div>
+
+<!-- ---- 5.6 Backlinks ---- -->
+<h3>🔗 6) Backlinks — "naam kaun le raha hai"</h3>
+<div class="dek"><b>Ek line:</b> Kitni doosri websites aapke baare mein bolti hain (link deti hain) — aur competitor ka naam kaun leta hai aur aapka nahi.</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>4 namber</b> — backlinks, referring domains, brand anchor share, spam score</li>
+  <li><b>New &amp; lost (4 mahine)</b> — naye kitne aaye, kitne gaye (aapke apne check ke hisaab se)</li>
+  <li><b>Anchor mix</b> — log aapke baare mein kya shabd likh ke link dete hain</li>
+  <li><b>Competitor link gap</b> — kaunse domains competitor ko link dete hain par aapko nahi (yahi aapke liye naye link ke targets hain)</li>
+  <li><b>Disavow</b> — spam links ka list (sirf draft, insaan har ek dekh kar approve kare)</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> <b>Competitor link gap</b> wala table — yahan se pata chalta hai ki kaunsi sites se aapko link maangna chahiye.</div>
+<div class="act"><b>Kya karein:</b> Ye kaam <b>insaan</b> karta hai — dashboard target dhoondta hai, insaan outreach kar ke link jeet-ta hai. Kisi ko kuch mat do jo usse aapke baare mein likhne ke badle na mile.</div>
+<div class="warn"><b>Sach batao:</b> Bina paid index ke ye sirf dikhata hai jo <b>aapke apne check</b> ne dekha — history is din se hai jab aap connect kiye. Isse "poora index" ke roop mein becho nahi.</div>
+
+<!-- ---- 5.7 Content Plan ---- -->
+<h3>🗺️ 7) Content Plan — "kis page par kya likhna hai"</h3>
+<div class="dek"><b>Ek line:</b> Naya content kis order mein, kis page par, kya likhna hai — <b>brief deta hai, article nahi</b>. Saath mein safety guardrails jo auto-publish rokati hain.</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>Monthly plan</b> — hafte mein kaunsa din kaunsa kaam. <b>Hard cap: 4 naye pages/week</b> (ye limit badha hi nahi ja sakti)</li>
+  <li><b>Priority queue → briefs</b> — aapke chune keywords se briefs bante hain</li>
+  <li><b>Har brief</b> — title options (live length counter), meta, H1, outline (H2s), entities, FAQ, internal links, schema</li>
+  <li><b>Evidence gate</b> — kam se kam 1 apni cheez chahiye (aapka data, screenshot, quote) warna brief block rehta hai</li>
+  <li><b>Guardrails</b> — kyun ye ek auto-publish machine nahi hai</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> Kaunse briefs <b>ready</b> hain aur kaunse mein <b>evidence gate</b> lag rahi hai.</div>
+<div class="act"><b>Kya karein:</b> Brief dekho → koi likhe → aap dekho → manzoor karo → "Send to WordPress as <b>draft</b>" dabao. Kabhi publish nahi hota, sirf draft. Evidence gate ho to pehle apni 1 cheez jodo.</div>
+<div class="warn"><b>Laal nishaan:</b> 4 se zyada pages mahine mein mat banao — Google 2025-26 mein isi ko saza de raha hai. Cap isliye hai.</div>
+
+<!-- ---- 5.8 Deliverables ---- -->
+<h3>✅ 8) Deliverables — "kya ho gaya, manzoori baaki kya"</h3>
+<div class="dek"><b>Ek line:</b> Aapke kaam ka poora hisaab — kya karne ka vaada tha, kya ho gaya, aur kya abhi client ki manzoori ka intezar kar raha hai. <b>Yahi aapki agency ka saboot hai.</b></div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>Approval queue</b> — jo cheezein site par jaani hain. Har ek par risk (low/medium/high), revertable ya nahi, aur <b>Approve / Reject</b> buttons</li>
+  <li><b>Diff inspector</b> — theek se pehle vs baad, taaki aap dekh sako kya badla</li>
+  <li><b>Board</b> — backlog → in progress → awaiting client → done (card par click karo, status badalta hai)</li>
+  <li><b>Automation rules fired</b> — dashboard ne kaunse signals pakde (har rule → insaan ke liye task, khud kuch nahi karta)</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> <b>Pending approvals</b> — kitni cheezein client ki manzoori ka intezar kar rahi hain. Inhe aage badhna hai.</div>
+<div class="act"><b>Kya karein:</b> Low-risk items approve karo. High-risk items (noindex, redirects, disavow) <b>kabhi bulk approve mat karo</b> — wo hamesha insaan ek-ek karke dekhna chahiye. Ye enforced hai, preference nahi.</div>
+<div class="warn"><b>Yaad rakho:</b> Har cheez jo site par jati hai, is queue se hi jati hai aur manzoori ke baad. Isliye aap kisi bhi waqt keh sakte ho — "humne bina client ki manzoori ke kuch nahi kiya."</div>
+
+<!-- ---- 5.9 Reports ---- -->
+<h3>🖨️ 9) Reports — "client ko bhejne wali report"</h3>
+<div class="dek"><b class="t">Ek line</b>Mahine ke aakhir mein client ko bhejne wali report — aapki branding ke bina (white-label). <b>Print dabao → PDF → bhejo.</b></div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>Monthly report</b> — health score, organic performance, <b>kya humne badla</b> (proof), priority list, agla mahina</li>
+  <li><b>CSV exports</b> — GSC queries, audit, priority list (client spreadsheet mein dekh kar verify kar sakta hai — yahi bharosa deta hai)</li>
+  <li><b>Schedule</b> — mahine ke 3rd tareekh par automatically</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> "What we changed" section bhara hua hai kya — proof ki aapne kaam kiya, sirf kahani nahi sunayi.</div>
+<div class="act"><b>Kya karein:</b> Print / Save as PDF → client ko bhejo. Iske saath ek line: "Agla mahina hum ye 4 cheezein karenge." <b>Yahi cheez agle mahine ka paisa deta hai.</b></div>
+
+<!-- ---- 5.10 ROI ---- -->
+<h3>💰 10) ROI &amp; Leads — "kaam = kitne paise"</h3>
+<div class="dek"><b>Ek line:</b> Is mahine ka kaam kitne leads aur kitne ₹ ka hai — <b>range mein, promise nahi</b>. Client jab poochhe "toh paise mein fayda kitna?", yahi tab khola karo.</div>
+<p><b>Yahan kya milega:</b></p>
+<ul>
+  <li><b>Attribution rule</b> — sirf uska natak jis program ne khud banaya (pichhle kaam ka paisa is program ka nahi hai)</li>
+  <li><b>3 scenarios (range)</b> — <b>Conservative</b> (sirf tooti cheezein theek karo), <b>Expected</b> (+3 aasan sudhaar), <b>Upside</b> (+3 naye pages). Har ek ke saath base clicks, ≈leads, ≈₹</li>
+  <li><b>Cohorts by run</b> — pichhli jaanchon ki table, score kaise badha</li>
+  <li><b>Cost side</b> — aapki monthly fee + cost per lead</li>
+</ul>
+<div class="dek"><b>Dekhein kya:</b> <b>Conservative range</b> — yahi safe number hai jo aap client ko dikha sakte ho.</div>
+<div class="act"><b>Kya karein:</b> Pehle Overview mein client ke 2 namber (lead per clicks, lead kitne ₹) daalo. Tab yehi tab range khud bana dega. Client ko <b>Conservative se bulavo</b>, Expected se plan banao, Upside ko "agar sab sahi gaya" rakho.</div>
+<div class="warn"><b>Sach raho:</b> Yahan "guaranteed +40% traffic" wala box <b>hai hi nahi</b> — jaan-boojh ke. Ye range hain, har range ke saath likha hai kaunsa maan liya. Jab aap kam waada karte ho aur zyada laate ho, tabhi agla mahine milta hai.</div>
+
+<div class="callout g" style="margin-top:20px"><b class="t">Score ke paas chhote nishaan — poore tab mein common</b>Jo nishaan aap Overview mein dekhe, wo aur jagah bhi aate hain: <b>data fresh/old</b> (naapne se kitne din hue — 45+ par "phir se naapo"), <b>▲/▼ trend</b> (pichhli jaanch se kitna badha), <b>est.</b> chip (jo namber aapke apne Google/crawl se nahi, third-party se hain), aur <b>low evidence</b> tag. Inko dekhna aapko hamesha "ye namber kitna bharosemand hai" batata hai.</div>
+</div>
+
+<!-- ============ 6 ============ -->
+<div class="pg pg2">
+<h2><span class="no">6</span>Kab kya dekhna hai — aapka schedule</h2>
+<p>Tab dekhna "jab bhi yaad aaye" nahi — ek nijaat rakho. Ye schedule aapko 1-2 ghante roz dega, aur client ko hamesha ek aage khada dikhaayega.</p>
+
+<h3>रोज़ — sirf 5 minute (Overview only)</h3>
+<ul>
+  <li>Score aur trend dekho — upar gaya ya neeche?</li>
+  <li>🔴 kitni critical hain?</li>
+  <li>Top 3 mein se aaj kaunsa 1 kaam karoge?</li>
+  <li>Deliverables mein pending approvals aage badhao</li>
+</ul>
+<h3>Hafte mein 1 baar — 15 minute</h3>
+<ul>
+  <li><b>Website Audit</b> — naya toota kya hai? Red theek ho rahe hain?</li>
+  <li><b>Google Data</b> — CTR kam wale keywords, position jisme giravai</li>
+  <li><b>Rank Tracker</b> — distribution shift ho raha hai? Bade movers?</li>
+</ul>
+<h3>Mahine mein 1 baar — 30 minute</h3>
+<ul>
+  <li><b>Keyword Gap</b> — naya kya dhoondhe ja raha hai, 4 naye keywords chuno</li>
+  <li><b>Backlinks</b> — naye links, competitor gap se naye targets</li>
+  <li><b>Content Plan</b> — agle mahine ke 4 briefs ready karo</li>
+  <li><b>ROI &amp; Leads</b> — Conservative range dobara dekho</li>
+  <li><b>Reports</b> — mahine ke 3rd par report bhejo</li>
+</ul>
+<div class="callout a"><b class="t">Ek aasan ratta</b><b>रोज़</b> = Overview (5 min) + Deliverables · <b>Hafte mein 1</b> = Audit + Google Data + Rank Tracker · <b>Mahine mein 1</b> = Gap + Backlinks + Plan + ROI + Report. Bas. Baaki sab in tabon ke andar hai.</div>
+</div>
+
+<!-- ============ 7 ============ -->
+<div class="pg pg2">
+<h2><span class="no">7</span>Ek mahine ka asli chakra (yahi aapki service hai)</h2>
+<ul class="steps">
+  <li><b class="h">Din 1 — Jaanch + list bhejo</b><p>Us site ki poori jaanch chalao (3-4 min). Audit tab ki list ko PDF banao (Ctrl+P → Save as PDF). Client ko bhejo: "Aapki site mein 9 jagah gadbad hai, 3 aisi jinse aapke grahak aapko pa hi nahi rahe." <b>Pehle din hi value dikhti hai — yahan se hi sale banti hai.</b></p></li>
+  <li><b class="h">Din 2–7 — Sirf laal cheezein theek karwao</b><p>Audit mein 🔴 wale items (duplicate titles, noindex, toote links, band pages) theek karwao. Abhi naya page mat likhwao.</p></li>
+  <li><b class="h">Din 8–14 — 4 keywords, 4 brief</b><p>Keyword Gap se 4 keywords chuno (jo zyada dhoondhe ja rahe hain aur aapki wahan page nahi hai). Har ek ke liye brief banao — kya likhna hai, kya-kya batana hai, andar kaunse link lagenge. Koi likhe, aap dekho, manzoor karo — tabhi site par jaaye.</p></li>
+  <li><b class="h">Din 15–25 — Jo page 11–30 par hai, use behtar banao</b><p>Naya page banane se ye sasta aur tez asar karta hai. Title theek karo, 2-3 naye paragraph daalo, andar se 2-3 link jodo.</p></li>
+  <li><b class="h">Din 30 — Report + ROI bhejo</b><p>ROI tab se Conservative range dekho, phir Reports tab → Print → bhejo. Isme dikhta hai ki kya kaam hua, kitne ₹ ka fayda (range), aur agla mahina kya karenge. <b>Yahi cheez agle mahine ka paisa deta hai.</b></p></li>
+</ul>
+<div class="callout a"><b class="t">Client meeting mein kya dikhana hai</b>1) Browser kholo, box mein uska domain likho → 3 second ki snapshot. 2) Poori jaanch ka PDF bhejo. 3) "Agla mahina hum ye 4 cheezein karenge" ki list bhejo. <b>Ye teeno cheezein aap is dashboard se bana sakte ho bina kisi aur tool ke.</b></div>
+</div>
+
+<!-- ============ 8 ============ -->
+<div class="pg pg2">
+<h2><span class="no">8</span>Paise kaise kamaenge</h2>
+<table>
+  <tr><th>Kya</th><th>Ratta</th></tr>
+  <tr><td>Aapka kharch (software, API, tool)</td><td><b>₹0</b> — sab free, sab aapke haath mein</td></tr>
+  <tr><td>Ek client ko jo aap maang sakte ho</td><td>₹10,000 – ₹30,000 / mahina</td></tr>
+  <tr><td>4 clients ka matlab</td><td>₹40,000 – ₹1,20,000 / mahina, software ka ek paisa nahi jaata</td></tr>
+  <tr><td>रोज़ kitna time</td><td>~8 ghante (har client ~2 ghante)</td></tr>
+</table>
+<h3>Client ko kya kahenge — ye yaad rakhiye</h3>
+<p class="no">❌ "Main aapko Google par number 1 laaunga" — kahi mat kahiye. Sach nahi hai, baad mein yahi jhagda banta hai.</p>
+<p class="ok">✅ "Main har mahine aapko dikhaunga ki aapki site mein kya kharab tha, maine kya theek kiya, aur Google ke namber kaise hilte hain. Saath mein agle mahine kya karenge — ye bhi." — sach hai, aur yahi retainer bikta hai.</p>
+<h3>Shuru mein in 3 cheezon se bachna hai</h3>
+<table>
+  <tr><th>Kya</th><th>Kyon nahi</th></tr>
+  <tr><td>Mahine mein 4 se zyada page banwana</td><td>Google 2025-26 mein isi ko saza de raha hai — 40 page daalne wale sites neeche gir gaye</td></tr>
+  <tr><td>Sasta link package kharidna</td><td>Site mahino ke liye khatam kar deta hai. Kisi ko kuch mat do jo usse aapke baare mein likhne ke badle na mile.</td></tr>
+  <tr><td>"Hum 500 keywords target kar rahe hain" likhna</td><td>Client samajhta nahi, aur aapko bhi pata nahi rahega ki iska kya fayda hua</td></tr>
+</table>
+</div>
+
+<!-- ============ 9 ============ -->
+<div class="pg pg2">
+<h2><span class="no">9</span>Common sawaal</h2>
+<div class="qa">
+<h4>Malik Search Console nahi dega to?</h4>
+<p>Koi baat nahi. Aapka dashboard aadha chalta rahega — <b>supply side</b> (site ka apna haal: titles, links, pages, tooti cheezein) poori milti hai, sirf <b>demand side</b> (log kya dhoond rahe hain) khali rahegi. Isliye pehle 7 din ka kaam demand side ke bina bhi ho jaata hai. Baad mein wapas keh do: "Ab Google ke asli namber bhi laate hain" — aisa kehne par 9 mein se 7 maan jaate hain.</p>
+<h4>Kya ye tool site par kharabi daal sakta hai?</h4>
+<p>Nahi. Ye sirf padhta hai — jaise koi aapki dukaan ke saamne se guzra aur dekha. Wo likhta hi nahi. Aur jo likhta bhi hai (naye titles, naye paragraphs), wo <b>client ki manzoori ke bina site par nahi jaata</b>.</p>
+<h4>Main terminal nahi jaanta to?</h4>
+<p>Terminal sirf 2 jagah chahiye: (1) pehli baar mein <code>node tools/go.js</code> ek line — phir browser mein sab box se hota hai. (2) Agar aap khud report banane ka order dena chahein: 3 line ki list (yeh booklet ke aakhir mein hai). Baaki sab browser mein hai.</p>
+<h4>Mobile se chala sakta hoon?</h4>
+<p>Dashboard desktop ke liye banaya hai. Mobile par tab badalna mushkil ho sakta hai. Agar aap ko mobile se chahiye toh ek baar batayein — main bana dunga.</p>
+<h4>Kitni sites ek saath?</h4>
+<p>Itni jitni chahiye. Har site ki apni report file hoti hai, apna apna naam. Aap ek laptop par 10 clients ka dashboard ek saath chala sakte ho.</p>
+<h4>Kya main Google ke rulaoon ke khilaaf kar raha hoon?</h4>
+<p>Nahi. Ye tool sirf padhta hai, aur ek baar har 250 millisecond mein — jaise koi aam insaan padhta hai. Wo kisi ka account nahi todta, koi paid service nahi chhupta, aur koi data aap ke aage nahi bechta.</p>
+<h4>Client poochhe: "toh paise mein fayda kitna?"</h4>
+<p>Rojagari ke 2 namber poochho — "1 lead kitne organic clicks mein se banti hai, aur 1 lead aapko kitna kamata hai?" — Overview ke client card mein daal do. Tab ROI tab khud teen range bana dega: Conservative / Expected / Upside. <b>Client ko Conservative range se hi bulawa do</b> — jab aap kam waada karte ho aur usse zyada laate ho, tabhi agle mahine ka paisa milta hai.</p>
+<h4>Score badhega ya nahi? Kitne mahine mein?</h4>
+<p>Sach bolo: <b>range de sakte ho, vaada nahi</b>. Pehla mahina aksar sirf tooti cheezein theek hota hai — namber tabhi hilta hai jab wo theek kiya hua Google ke paas pahunchta hai (do hafele se do mahine). Har mahine ke re-run se ROI tab ki "Cohorts by run" table mein ek point badhta hai — wohi table dikhata hai ki naya content apni age ke saath kya kar raha hai. Month-1 near-zero normal hai, aur is dashboard mein wo cheez chhupane ka button hi nahi hai — yahi aapki imandari ka nishaan hai.</p>
+<h4>File mein history kyun jama hoti jaati hai?</h4>
+<p>Har baar jab aap jaanch chalaate ho ya wahi file wapis kholte ho, ek chhota sa point save hota hai — date, score, pages, clicks. Point wahi file ke andar jama hote hain, toh jo file aap client ko bhejte ho, woh khud yaad rakhti hai ki pichhle mahine kya tha. Kisi doosri jagah kuch save nahi hota, koi cloud nahi, koi account nahi.</p>
+</div>
+</div>
+
+<!-- ============ 10 ============ -->
+<div class="pg pg2">
+<h2><span class="no">10</span>Glossary — 20 shabd simple bhasha mein</h2>
+<table>
+  <tr><th>Shabd</th><th>Matlab</th></tr>
+  <tr><td><b>Keyword</b></td><td>Jo shabdon se log Google mein khoj karte hain</td></tr>
+  <tr><td><b>Ranking / Position</b></td><td>Kitne number par dikh rahe hain (1 = sabse upar)</td></tr>
+  <tr><td><b>Organic</b></td><td>Bina paise diye jo log aaye — ye hi asli dher hai</td></tr>
+  <tr><td><b>Impressions</b></td><td>Google ne aapka naam kitni baar dikhaaya</td></tr>
+  <tr><td><b>Clicks</b></td><td>Kitne log andar aaye</td></tr>
+  <tr><td><b>CTR</b></td><td>Dikhne par kitne % log andar aaye</td></tr>
+  <tr><td><b>Lead</b></td><td>Jo person aapse baat karna chahta hai (form bhara, call ki) — paisa isi se aata hai</td></tr>
+  <tr><td><b>Title</b></td><td>Jo line browser tab mein dikhti hai (sabse pehla impression)</td></tr>
+  <tr><td><b>Meta description</b></td><td>Title ke neeche jo 2 line aati hain — click karwane wali line</td></tr>
+  <tr><td><b>H1</b></td><td>Page ka bada heading (har page par sirf ek)</td></tr>
+  <tr><td><b>Thin page</b></td><td>Jo page sirf 90 words se kam likha hai — Google usse kamzor maanta hai</td></tr>
+  <tr><td><b>Soft 404</b></td><td>Jo page "kholta" hai par andar kuch nahi — 404 ka jhoota roop</td></tr>
+  <tr><td><b>404 / 500</b></td><td>Page toota (404) ya site ki taraf se galti (500)</td></tr>
+  <tr><td><b>noindex</b></td><td>Page ne Google ko kaha "mujhe mat dikha" — aksar galti se</td></tr>
+  <tr><td><b>Canonical</b></td><td>Jo page Google ko batata hai "main aapki asli line hoon" (duplicate page ke liye)</td></tr>
+  <tr><td><b>Orphan page</b></td><td>Jo page tak koi andar se link nahi deta — Google use dhoond nahi pata</td></tr>
+  <tr><td><b>Alt text</b></td><td>Image ka likha hua naam — bina iske Google image samajh nahi pata</td></tr>
+  <tr><td><b>Backlink</b></td><td>Doosri site se aapki taraf ka link</td></tr>
+  <tr><td><b>Index</b></td><td>Jo pages Google ne "mujhe mil sakte hain" mein daale hain</td></tr>
+  <tr><td><b>Sitemap</b></td><td>Site ka apna naksha — Google ko batata hai ki kitne pages hain</td></tr>
+  <tr><td><b>Core Web Vitals</b></td><td>Page kitni tez khulta hai (LCP = pehla cheez, CLS = kitna hilta hai, INP = kitna tezi se jawab deta hai)</td></tr>
+</table>
+</div>
+
+<!-- ============ 11 ============ -->
+<div class="pg pg2">
+<h2><span class="no">11</span>Quick reference — 3 command</h2>
+<pre><span class="c"># 1) Server chalu karo (browser mein http://localhost:8420 khulega)</span>
+node tools/go.js
+
+<span class="c"># 2) Kisi bhi site ki poori report file banao (bina server ke bhi)</span>
+node tools/live.js https://client-site.com --pages 180 --depth 3
+python3 tools/bake.py out/live/site.json --html index.html --out live-client.html
+node tools/report-md.js live-client.html out/live/site.json PLAN.md
+
+<span class="c"># 3) Agar Google ke asli namber bhi chahiye (malik ne CSV di hain)</span>
+node tools/live.js https://client-site.com --gsc-csv queries.csv --gsc-csv pages.csv
+python3 tools/bake.py out/live/site.json --html index.html --out live-client.html</pre>
+<p class="small">Har file apne aap mein poori hai — aap usse client ko bhej sakte ho, wo internet ke bina bhi khul jaati hai. Kisi aur ke aage koi data nahi jaata, koi account nahi chahiye, aur ₹0 chahiye.</p>
+<div class="callout g" style="margin-top:26px"><b class="t">Aakhir mein</b>Ye dashboard aapka <b>auzaar</b> hai, aapki <b>soch</b> nahi. Yeh aapko batayega ki kya toota hai, kya khoofa hai, aur kya behtar ho sakta hai. Par "kaunsa keyword" aur "kis order mein kya karna hai" — wo aap tay karo, client ke saath baat karke. Tool ne aapka kaam 3 ghante se 30 minute mein kar diya hai — baaki 2.5 ghante mein aap soch ke kaam karo, aur wo soch hi aapki agency ka paisa hai.</div>
+<p class="small" style="text-align:center;margin-top:30px">Viralytics · 2026 · ye booklet free hai, aap ise kisi ko bhi dikhao · <b>Ctrl+P → Save as PDF</b> se ise PDF banao</p>
+</div>
+
+</body>
+</html>
