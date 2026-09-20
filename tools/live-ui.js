@@ -6,7 +6,15 @@
    ============================================================================= */
 (function () {
   'use strict';
-  var API = location.protocol.indexOf('http') === 0 ? '' : 'http://localhost:8420';
+  var CLOUD_API = 'https://xolyhkxeykvzofittswv.functions.supabase.co/viralytics';
+  var API = (function () {
+    if (location.protocol.indexOf('http') !== 0) return CLOUD_API;
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      return location.pathname.replace(/\/[^/]*\.html$/i, '').replace(/\/$/, '');
+    }
+    if (!location.hostname.endsWith('supabase.co')) return CLOUD_API;
+    return location.pathname.replace(/\/[^/]*\.html$/i, '').replace(/\/$/, '');
+  })();
   var alive = null, busy = false;
 
   var css = '' +
@@ -140,10 +148,16 @@
     fetch(API + '/api/audit?site=' + encodeURIComponent(site)).then(function (r) { return r.json() }).then(function (j) {
       if (!j.ok) { prog(0, ''); return out('<div class="note" style="border-left-color:#ef4444"><b>Ruk gaya:</b> ' + esc(j.error) + '</div>') }
       prog(100, '');
+      var dlUrl = String(j.download || '');
+      if (dlUrl && dlUrl.indexOf('http') !== 0 && (API && dlUrl.indexOf(API) !== 0)) dlUrl = API + (dlUrl.charAt(0) === '/' ? '' : '/') + dlUrl;
+      var plUrl = String(j.plan || '');
+      if (plUrl && plUrl.indexOf('http') !== 0 && (API && plUrl.indexOf(API) !== 0)) {
+        plUrl = (API || '') + (plUrl.indexOf('/api/live/') === 0 ? '' : '/api/live/') + encodeURIComponent(plUrl.split('/').pop());
+      }
       out('<div class="note green"><b>Ho gaya.</b> ' + j.pages + ' pages · ' + j.seconds + 's · sitemap ' + (j.sitemaps.declared || 0) + ' URLs batata hai · robots.txt ' + (j.sitemaps.robots ? ' mila' : ' NAHI mila') + '.<br>' +
         'Do file ban gayi: <b>live-' + esc(site) + '.html</b> (client ko bhejne layak dashboard, ek file, offline chalti hai) aur <b>' + esc(j.plan || '') + '</b> (kya karna hai, list mein).' +
-        '</div><div class="row" style="margin-top:10px"><a href="' + j.download + '" download><button class="go">live-' + esc(site) + '.html download karo</button></a>' +
-        (j.plan ? '<a href="/api/live/' + encodeURIComponent(j.plan) + '" download><button class="gh">Action plan (.md)</button></a>' : '') + '</div>')
+        '</div><div class="row" style="margin-top:10px"><a href="' + (dlUrl || '#') + '" download><button class="go">live-' + esc(site) + '.html download karo</button></a>' +
+        (plUrl ? '<a href="' + plUrl + '" download><button class="gh">Action plan (.md)</button></a>' : '') + '</div>')
     }).catch(function (e) { prog(0, ''); out('<div class="note" style="border-left-color:#ef4444">' + esc(e.message) + '</div>') })
   }
   function normv() { return (document.getElementById('lvSite').value || '').trim().replace(/^https?:\/\//i, '').replace(/\/.*$/, '') }

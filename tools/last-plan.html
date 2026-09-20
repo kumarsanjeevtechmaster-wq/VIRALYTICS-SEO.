@@ -1,0 +1,59 @@
+
+  <div class="grid g-1-2">
+    <div class="card"><h3>Monthly plan <span class="sp"></span><span class="sub">velocity capped for safety</span></h3>
+      <div class="sub">This plan produces <b>4 new pages + 6 optimizations</b>. Hard cap: 4 new pages/week — publishing volume beyond that is what trips Google’s scaled-content policy, and the cap cannot be raised from the plan screen.</div>
+      <div class="hr"></div>
+      <div class="list-i"><span class="tag">Mon</span><span class="sub">blog</span></div><div class="list-i"><span class="tag">Tue</span><span class="sub">optimize existing</span></div><div class="list-i"><span class="tag">Wed</span><span class="sub">comparison</span></div><div class="list-i"><span class="tag">Thu</span><span class="sub">FAQ block</span></div><div class="list-i"><span class="tag">Fri</span><span class="sub">how-to</span></div><div class="list-i"><span class="tag">Sat</span><span class="sub">supporting article</span></div><div class="list-i"><span class="tag">Sun</span><span class="sub">update one live page</span></div>
+      <div class="hr"></div>
+      <div class="sub"><b>0</b> priority keywords queued</div>
+    </div>
+    <div class="card"><h3>Priority queue → briefs <span class="sp"></span>
+      <button class="btn sm pri" onclick="autoBriefs()">Generate briefs for top 4</button></h3>
+      <div class="tbl-wrap"><table data-sort=""><thead><tr><th class="" data-i="0">keyword</th><th class="n" data-i="1">score</th><th class="" data-i="2">gap</th><th class="n" data-i="3">est. traffic</th><th class="" data-i="4"></th></tr></thead><tbody><tr><td colspan="5" class="sub" style="padding:20px">No rows match the filters.</td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><h3>Briefs <span class="sp"></span><span class="sub">briefs, not articles — that is the point</span></h3>
+      <div class="list-i" style="align-items:flex-start">
+        <span class="tag pass">ready</span>
+        <div style="min-width:0;flex:1">
+          <div class="kw">ai reel generator <span class="sub mono">/ai-reel-generator</span></div>
+          <div class="sub">AI Reel Generator for Short-Form Video · 5 H2 · 7 entities · 3 internal links · SoftwareApplication + FAQPage</div>
+          <div class="note warn" style="margin-top:5px">Blocked: marked ready with no first-hand sample. Add 2 reels your product actually produced (account + date), then this clears.</div>
+        </div>
+        <button class="btn sm" onclick="openBrief(0)">Open</button></div><div class="list-i" style="align-items:flex-start">
+        <span class="tag info">approved</span>
+        <div style="min-width:0;flex:1">
+          <div class="kw">ai reel generator online <span class="sub mono">/ai-reel-generator</span></div>
+          <div class="sub">AI Reel Generator Online — No Install · 4 H2 · 4 entities · 1 internal links · SoftwareApplication</div>
+          <div class="note " style="margin-top:5px">Approved — two real browser exports attached by the editor on 12 Sep.</div>
+        </div>
+        <button class="btn sm" onclick="openBrief(1)">Open</button></div><div class="list-i" style="align-items:flex-start">
+        <span class="tag imp">draft</span>
+        <div style="min-width:0;flex:1">
+          <div class="kw">social media ai tools <span class="sub mono">/blog/social-media-ai-tools</span></div>
+          <div class="sub">Social Media AI Tools — what actually saves hours · 4 H2 · 7 entities · 2 internal links · Article</div>
+          <div class="note warn" style="margin-top:5px">Draft. The top 10 results are all listicles with no data — your own numbers are the entire reason this page would rank.</div>
+        </div>
+        <button class="btn sm" onclick="openBrief(2)">Open</button></div><div class="list-i" style="align-items:flex-start">
+        <span class="tag imp">draft</span>
+        <div style="min-width:0;flex:1">
+          <div class="kw">instagram content planner <span class="sub mono">/features/content-calendar</span></div>
+          <div class="sub">Instagram Content Planner That Fills Itself · 4 H2 · 5 entities · 2 internal links · SoftwareApplication</div>
+          <div class="note warn" style="margin-top:5px">Priority: your /features/content-calendar is a 320-word stub ranking at 11.4 with 6,120 impressions. Fixing this page beats writing a new one.</div>
+        </div>
+        <button class="btn sm" onclick="openBrief(3)">Open</button></div>
+    </div>
+    <div class="card"><h3>Guardrails (why we are not an auto-publish machine) <span class="sp"></span><span class="tag pass">enforced</span></h3>
+      <div class="list-i"><span class="tag pass">pass</span>
+          <div><div class="kw" style="font-size:12px">Velocity cap</div><div class="sub">max 4 new pages/week per site</div></div></div><div class="list-i"><span class="tag pass">pass</span>
+          <div><div class="kw" style="font-size:12px">Near-duplicate check</div><div class="sub">vs your own pages (MinHash) + vs top-10 SERP</div></div></div><div class="list-i"><span class="tag crit">block</span>
+          <div><div class="kw" style="font-size:12px">Evidence gate</div><div class="sub">≥1 first-hand item: your data, screenshot, quote or named author</div></div></div><div class="list-i"><span class="tag pass">pass</span>
+          <div><div class="kw" style="font-size:12px">No fake freshness</div><div class="sub">dateModified/lastmod is never auto-bumped</div></div></div><div class="list-i"><span class="tag imp">warn</span>
+          <div><div class="kw" style="font-size:12px">Named approver</div><div class="sub">who approved, when, in the audit trail</div></div></div><div class="list-i"><span class="tag pass">pass</span>
+          <div><div class="kw" style="font-size:12px">Kill switch</div><div class="sub">one-click unpublish all AI-drafted pages</div></div></div><div class="list-i"><span class="tag pass">pass</span>
+          <div><div class="kw" style="font-size:12px">Density rule</div><div class="sub">no keyword-density targets anywhere in this product</div></div></div>
+      <div class="why" style="margin-top:6px"><b>Because of the March–August 2026 spam updates</b>, a client site hit for scaled content loses blue links <i>and</i> AI Overview citations at once, and recovery is measured in months. An agency that auto-publishes 40 AI pages a month is selling its clients a liability. We sell the opposite: fewer pages, each with evidence.</div>
+    </div>
+  </div>

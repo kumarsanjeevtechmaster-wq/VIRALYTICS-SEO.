@@ -1,0 +1,119 @@
+
+  <div class="grid g4">
+    <div class="card"><h3>Deliverables this cycle</h3><div class="kpi">3/10</div><div class="sub">this is what makes the retainer defensible</div></div><div class="card"><h3>Avg time to publish</h3><div class="kpi">6.4 days</div><div class="sub">this is what makes the retainer defensible</div></div><div class="card"><h3>Awaiting approval</h3><div class="kpi">2</div><div class="sub">this is what makes the retainer defensible</div></div><div class="card"><h3>Client-visible items</h3><div class="kpi">3</div><div class="sub">this is what makes the retainer defensible</div></div>
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Approval queue <span class="sp"></span>
+    <span class="sub">dry-run ON — approving schedules a write, it does not write</span></h3>
+    <div class="tbl-wrap"><table data-sort=""><thead><tr><th class="" data-i="0">action</th><th class="" data-i="1">URL</th><th class="" data-i="2">risk</th><th class="" data-i="3">status</th><th class="" data-i="4">revertable</th><th class="" data-i="5"></th></tr></thead><tbody><tr data-r="0" class=""><td class=""><span class="kw">Rewrite title + meta for /features/reel-generator</span><div class="sub mono">title_rewrite · post 412 · Yoast fields</div></td><td class=""><span class="mono">/features/reel-generator</span></td><td class=""><span class="tag pass">low</span></td><td class=""><span class="tag">pending</span></td><td class=""><span class="tag pass">yes</span></td><td class=""><button class="btn sm pri" onclick="apDecision('a1','approved')">Approve</button>
+         <button class="btn sm" onclick="apDecision('a1','rejected')">Reject</button>
+        
+        </td></tr><tr data-r="1" class=""><td class=""><span class="kw">Remove noindex from /compare/later, /compare/sprout, /compare/agorapulse</span><div class="sub mono">noindex_toggle · 3 pages · robots meta via RankMath field</div></td><td class=""><span class="mono">/compare/later</span></td><td class=""><span class="tag crit">high</span></td><td class=""><span class="tag">pending</span></td><td class=""><span class="tag pass">yes</span></td><td class=""><button class="btn sm pri" onclick="apDecision('a2','approved')">Approve</button>
+         <button class="btn sm" onclick="apDecision('a2','rejected')">Reject</button>
+        
+        </td></tr><tr data-r="2" class=""><td class=""><span class="kw">Add ALT to 4 images on /features/reel-generator</span><div class="sub mono">alt_text · 4 media items</div></td><td class=""><span class="mono">/features/reel-generator</span></td><td class=""><span class="tag pass">low</span></td><td class=""><span class="tag">approved</span></td><td class=""><span class="tag pass">yes</span></td><td class="">
+        <button class="btn sm" onclick="toast('Dry-run: write scheduled, not executed.','warn')">Apply (dry-run)</button>
+        <button class="btn sm" onclick="apDecision('a3','reverted')">Revert</button></td></tr><tr data-r="3" class=""><td class=""><span class="kw">Link /blog/hindi-content from /blog and /features</span><div class="sub mono">internal_link · 2 post edits</div></td><td class=""><span class="mono">/blog</span></td><td class=""><span class="tag pass">low</span></td><td class=""><span class="tag">applied</span></td><td class=""><span class="tag pass">yes</span></td><td class="">
+        
+        <button class="btn sm" onclick="apDecision('a4','reverted')">Revert</button></td></tr><tr data-r="4" class=""><td class=""><span class="kw">FAQPage schema on /faq (8 questions already on the page)</span><div class="sub mono">schema_jsonld · page 88 · custom HTML block</div></td><td class=""><span class="mono">/faq</span></td><td class=""><span class="tag pass">low</span></td><td class=""><span class="tag">applied</span></td><td class=""><span class="tag pass">yes</span></td><td class="">
+        
+        <button class="btn sm" onclick="apDecision('a5','reverted')">Revert</button></td></tr><tr data-r="5" class=""><td class=""><span class="kw">301 /old-price → /pricing</span><div class="sub mono">redirect · </div></td><td class=""><span class="mono">/old-price</span></td><td class=""><span class="tag crit">high</span></td><td class=""><span class="tag">rejected</span></td><td class=""><span class="tag crit">no</span></td><td class="">
+        
+        </td></tr></tbody></table></div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn sm" onclick="approveLow()">Approve all low-risk (1)</button>
+      <span class="sub">High-risk kinds (noindex, redirects, robots, disavow) can never be bulk-approved — enforced, not a preference.</span></div>
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Diff inspector <span class="sp"></span><span class="sub">before / after, so a human sees exactly what changes</span></h3>
+    <div class="diff"><div class="box bad"><h5>before</h5>title: AI Reel Generator — Viralytics
+meta: Turn one written idea into five 9:16 reels with captions, hooks and auto-posting.</div>
+      <div class="box good"><h5>after</h5>title: AI Reel Generator — 5 Reels From One Idea (Free Trial)
+meta: Turn one sentence into five 9:16 reels. Hooks and captions you can edit, auto-post to Instagram, TikTok and Shorts. 14-day trial, no card.</div></div>
+      <div class="why" style="margin-top:8px"><b>Why:</b> 14,500 impressions at 2.21% CTR vs 3.30% expected at position 18. Highest single CTR lever on the site.</div>
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Deliverable board <span class="sp"></span>
+    <span class="sub">drag-free: click a card to advance status</span></h3>
+    <div class="grid g4" style="align-items:start">
+      <div><div class="row" style="margin-bottom:6px"><b style="font-size:11.5px">in progress</b><span class="tag">1</span></div>
+        <div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(3)">
+          <div class="row"><span class="tag imp">page optimization</span></div>
+          <div style="font-size:12px;margin-top:4px">Optimize 4 striking-distance pages (pos 4–15)</div>
+          <div class="sub" style="margin-top:4px">effort 60m · owner manager · overdue 14d</div>
+        </div></div><div><div class="row" style="margin-bottom:6px"><b style="font-size:11.5px">awaiting client</b><span class="tag">1</span></div>
+        <div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(4)">
+          <div class="row"><span class="tag imp">internal linking pass</span></div>
+          <div style="font-size:12px;margin-top:4px">Link 4 orphan pages from relevant hubs</div>
+          <div class="sub" style="margin-top:4px">effort 40m · owner exec · overdue 8d</div>
+        </div></div><div><div class="row" style="margin-bottom:6px"><b style="font-size:11.5px">backlog</b><span class="tag">5</span></div>
+        <div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(5)">
+          <div class="row"><span class="tag ">schema rollout</span></div>
+          <div style="font-size:12px;margin-top:4px">SoftwareApplication + FAQ schema on 6 templates</div>
+          <div class="sub" style="margin-top:4px">effort 25m · owner exec · due in 2d</div>
+        </div><div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(6)">
+          <div class="row"><span class="tag ">new page</span></div>
+          <div style="font-size:12px;margin-top:4px">New page: AI Reel Generator (gap score 91)</div>
+          <div class="sub" style="margin-top:4px">effort 240m · owner writer · due in 4d</div>
+        </div><div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(7)">
+          <div class="row"><span class="tag ">new page</span></div>
+          <div style="font-size:12px;margin-top:4px">Comparison: Viralytics vs NoteGraph</div>
+          <div class="sub" style="margin-top:4px">effort 180m · owner writer · due in 11d</div>
+        </div><div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(8)">
+          <div class="row"><span class="tag ">report</span></div>
+          <div style="font-size:12px;margin-top:4px">Monthly client report</div>
+          <div class="sub" style="margin-top:4px">effort 20m · owner manager · due in 24d</div>
+        </div><div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(9)">
+          <div class="row"><span class="tag ">outreach campaign</span></div>
+          <div style="font-size:12px;margin-top:4px">Link outreach: 12 domains competitors have, we lack</div>
+          <div class="sub" style="margin-top:4px">effort 120m · owner manager · due in 6d</div>
+        </div></div><div><div class="row" style="margin-bottom:6px"><b style="font-size:11.5px">done</b><span class="tag">3</span></div>
+        <div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(0)">
+          <div class="row"><span class="tag pass">audit</span></div>
+          <div style="font-size:12px;margin-top:4px">Baseline audit + health score</div>
+          <div class="sub" style="margin-top:4px">effort 60m · owner owner · done -30d</div>
+        </div><div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(1)">
+          <div class="row"><span class="tag pass">keyword strategy</span></div>
+          <div style="font-size:12px;margin-top:4px">Keyword strategy + 40-keyword priority list</div>
+          <div class="sub" style="margin-top:4px">effort 45m · owner manager · done -34d</div>
+        </div><div class="card" style="margin-bottom:7px;padding:9px 10px;cursor:pointer" onclick="advDeliv(2)">
+          <div class="row"><span class="tag pass">technical fix</span></div>
+          <div style="font-size:12px;margin-top:4px">Fix 3 noindex + 2 canonical mismatches on /compare/*</div>
+          <div class="sub" style="margin-top:4px">effort 30m · owner exec · done -31d</div>
+        </div></div><div><div class="row" style="margin-bottom:6px"><b style="font-size:11.5px">cancelled</b><span class="tag">0</span></div>
+        <div class="sub" style="opacity:.5">—</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px"><h3>Automation rules fired <span class="sp"></span><span class="sub">thresholds are plan-editable, not hardcoded</span></h3>
+    <div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">ai social media manager <span class="sub mono">/features</span></div>
+      <div class="sub">position 12.2 is inside the first 1.5 pages and the page covers neither the phrase nor the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">instagram content planner <span class="sub mono">/features/content-calendar</span></div>
+      <div class="sub">position 11.3 is inside the first 1.5 pages and the page covers neither the phrase nor the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">social media automation ai <span class="sub mono">/features/scheduler</span></div>
+      <div class="sub">position 12.2 is inside the first 1.5 pages and the page covers the phrase but not the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">best ai social media tool 2026 <span class="sub mono">/compare</span></div>
+      <div class="sub">position 14 is inside the first 1.5 pages and the page covers neither the phrase nor the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">repurpose content ai <span class="sub mono">/blog/repost-repurpose-workflow</span></div>
+      <div class="sub">position 9.8 is inside the first 1.5 pages and the page covers neither the phrase nor the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">ai से instagram ग्रोथ <span class="sub mono">/blog/hindi-content</span></div>
+      <div class="sub">position 7.8 is inside the first 1.5 pages and the page covers the phrase but not the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">how to use ai for social media <span class="sub mono">/blog/ai-vs-human-content</span></div>
+      <div class="sub">position 13.7 is inside the first 1.5 pages and the page covers neither the phrase nor the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag ">position_between</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">ai social media manager for instagram <span class="sub mono">/features</span></div>
+      <div class="sub">position 7.8 is inside the first 1.5 pages and the page covers neither the phrase nor the 5 entities the top results all cover.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div><div class="list-i"><span class="tag crit">index_drop</span>
+      <div style="min-width:0"><div class="kw" style="font-size:12px">(site) <span class="sub mono">/compare/*</span></div>
+      <div class="sub">indexed URLs fell 14% (212 → 182); 30 of them are /compare/* turned noindex on 12 Sep. A canonical cannot rescue a blocked page.</div></div>
+      <button class="btn sm" style="margin-left:auto" onclick="toast('Task created and linked to a deliverable — never auto-applied.','')">Create task</button></div>
+    <div class="hr"></div>
+    <div class="sub">Every rule → a task a human can accept. No rule may create an approval row by itself.</div>
+  </div>

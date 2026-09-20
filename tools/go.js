@@ -23,7 +23,6 @@
 const http = require('http'), fs = require('fs'), path = require('path'), url = require('url'),
       cp = require('child_process');
 const { quick, collect, serpSample } = require('./live.js');
-const PY = (() => { for (const c of ['python3', 'python']) { try { const r = cp.spawnSync(c, ['--version']); if (r.status === 0) return c } catch (e) {} } return 'python3' })();  // Windows par 'python' hota hai
 process.on('uncaughtException', e => console.error('uncaughtException (kept alive):', e && e.message || e));
 process.on('unhandledRejection', e => console.error('unhandledRejection (kept alive):', e && e.message || e));
 
@@ -122,11 +121,9 @@ async function handleApi(req, res, u) {
       fs.mkdirSync(REPORTS, { recursive: true });
       const payloadFile = path.join(ROOT, 'out', site, 'site.json');
       fs.writeFileSync(payloadFile, JSON.stringify(data, null, 0));
-      const py = fs.existsSync(path.join(ROOT, 'tools/bake.py'))
-        ? cp.spawnSync(PY, [path.join(ROOT, 'tools/bake.py'), payloadFile, '--html', readIndex().file,
-                            '--out', path.join(REPORTS, out)], { encoding: 'utf8' })
-        : { status: 127, stderr: 'tools/bake.py not found' };
-      if (py.status !== 0) throw new Error((py.stderr || 'bake failed').split('\n').filter(Boolean).slice(-2).join(' | '));
+      const py = cp.spawnSync('node', [path.join(ROOT, 'tools/bake.js'), payloadFile, '--html', readIndex().file,
+                            '--out', path.join(REPORTS, out)], { encoding: 'utf8' });
+      if (py.status !== 0) throw new Error(((py.stderr || '') + (py.stdout || '')).split('\n').filter(Boolean).slice(-2).join(' | ') || 'bake failed');
       try { cp.spawnSync('node', [path.join(ROOT, 'tools/report-md.js'), path.join(REPORTS, out), payloadFile,
              path.join(REPORTS, out.replace('.html', '-PLAN.md'))], { encoding: 'utf8' }); } catch (e) {}
       return send(res, 200, { ok: true, site, pages: data.pages.length, seconds: data._seconds,

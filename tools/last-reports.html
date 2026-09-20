@@ -1,0 +1,67 @@
+
+  <div class="card">
+    <h3>Monthly white-label report <span class="sp"></span>
+      <span class="sub">client-facing · no product branding on the client copy</span></h3>
+    <div class="row">
+      <label class="sub">period
+        <select onchange="toast('Report period set to '+this.value,'')"><option>Last 28 days</option><option>Last 90 days</option><option>This month</option><option>Last month</option></select></label>
+      <label class="sub"><input type="checkbox" checked> health score</label>
+      <label class="sub"><input type="checkbox" checked> organic performance</label>
+      <label class="sub"><input type="checkbox" checked> what we changed (proof)</label>
+      <label class="sub"><input type="checkbox" checked> priority list</label>
+      <label class="sub"><input type="checkbox" checked> next month</label>
+      <span style="flex:1"></span>
+      <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      <button class="btn pri" onclick="toast('Client link generated (read-only portal, no login).','')">Send to client</button>
+    </div>
+  </div>
+  <div id="reportView" class="card" style="margin-top:12px">
+    <div class="row" style="justify-content:space-between">
+      <div><div class="kpi s">Viralytics — SEO Report</div>
+      <div class="sub">2026-08-22 → 2026-09-18 · prepared by your SEO partner</div></div>
+      <span class="tag lime">₹0 tooling cost passed on</span></div>
+    <div class="hr"></div>
+    <div class="grid g4">
+      <div><div class="sub">SEO health</div><div class="kpi s">25/100</div></div><div><div class="sub">Organic clicks</div><div class="kpi s">3,761</div></div><div><div class="sub">Impressions</div><div class="kpi s">1,25,686</div></div><div><div class="sub">Pages changed</div><div class="kpi s">3 (0 unpublished)</div></div>
+    </div>
+    <div class="hr"></div>
+    <div class="grid g2">
+      <div><h3>What we changed</h3>
+        <div class="list-i"><span class="tag pending">pending</span>
+          <div><div style="font-size:12px">Rewrite title + meta for /features/reel-generator</div><div class="sub mono">/features/reel-generator</div></div></div><div class="list-i"><span class="tag pending">pending</span>
+          <div><div style="font-size:12px">Remove noindex from /compare/later, /compare/sprout, /compare/agorapulse</div><div class="sub mono">/compare/later</div></div></div><div class="list-i"><span class="tag approved">approved</span>
+          <div><div style="font-size:12px">Add ALT to 4 images on /features/reel-generator</div><div class="sub mono">/features/reel-generator</div></div></div><div class="list-i"><span class="tag applied">applied</span>
+          <div><div style="font-size:12px">Link /blog/hindi-content from /blog and /features</div><div class="sub mono">/blog</div></div></div><div class="list-i"><span class="tag applied">applied</span>
+          <div><div style="font-size:12px">FAQPage schema on /faq (8 questions already on the page)</div><div class="sub mono">/faq</div></div></div>
+      </div>
+      <div><h3>Result on Google’s numbers</h3>
+        <div class="subscore"><span>ai social media manager</span>
+          <span class="bar "><i style="width:98%"></i></span>
+          <span>16→12</span></div><div class="subscore"><span>ai social media manager free</span>
+          <span class="bar "><i style="width:91%"></i></span>
+          <span>27→19</span></div><div class="subscore"><span>ai social media manager for instagram</span>
+          <span class="bar "><i style="width:100%"></i></span>
+          <span>9→7</span></div><div class="subscore"><span>social media ai tools</span>
+          <span class="bar "><i style="width:92%"></i></span>
+          <span>26→18</span></div><div class="subscore"><span>ai reel generator</span>
+          <span class="bar "><i style="width:93%"></i></span>
+          <span>25→17</span></div><div class="subscore"><span>ai reel generator online</span>
+          <span class="bar "><i style="width:81%"></i></span>
+          <span>42→29</span></div>
+        <div class="why" style="margin-top:8px"><b>No ranking guarantee.</b> Positions move on Google’s schedule. What we can prove is what shipped, when, and how impressions and positions responded.</div></div>
+    </div>
+    <div class="hr"></div>
+    <h3>Next month — priority</h3>
+    <div class="subscore"><span>ai reel generator online</span><span class="bar"><i style="width:78%"></i></span><span>78</span></div><div class="subscore"><span>ai reel generator for tiktok</span><span class="bar"><i style="width:78%"></i></span><span>78</span></div><div class="subscore"><span>buffer alternative</span><span class="bar"><i style="width:77%"></i></span><span>77</span></div><div class="subscore"><span>ai content generator for social media</span><span class="bar"><i style="width:76%"></i></span><span>76</span></div><div class="subscore"><span>instagram reels ideas</span><span class="bar"><i style="width:76%"></i></span><span>76</span></div><div class="subscore"><span>ai for instagram</span><span class="bar"><i style="width:76%"></i></span><span>76</span></div>
+    <div class="sub" style="margin-top:8px">Volumes and difficulty are labelled <span class="tag est">est.</span> because they come from a third-party index; everything without that mark came from your own Search Console or crawl.</div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><h3>Exports</h3>
+      <div class="row"><button class="btn sm" onclick="dl('gsc-queries.csv',toCSV([{t:'query',k:'q'},{t:'impressions28',k:'imp'},{t:'clicks28',k:'clk'},{t:'ctr',k:'ctr'},{t:'position',k:'pos'}],GSC.q.map(x=>({q:x.q,imp:x.tot28,clk:x.clk28,ctr:x.ctr28.toFixed(2),pos:x.pos28}))))">GSC queries CSV</button>
+      <button class="btn sm" onclick="dl('audit.csv','see audit tab')">Audit CSV</button>
+      <button class="btn sm" onclick="dl('priority.csv',toCSV([{t:'query',k:'q'},{t:'score',k:'s'},{t:'volume',k:'v'},{t:'page',k:'p'}],KW.filter(k=>isPri(k.q)).map(k=>({q:k.q,s:k.opp.total,v:k.vol,p:k.page||''}))))">Priority list CSV</button></div>
+      <div class="sub" style="margin-top:6px">CSV is the honest format — a client can audit our numbers in a spreadsheet. That trust is worth more than a pretty PDF.</div></div>
+    <div class="card"><h3>Schedule</h3>
+      <div class="sub">Monthly on day 3 · sent to the client’s read-only portal and email. Report generation renders from the same views you see here, so a client can never receive a number we did not show them.</div>
+      <div class="row" style="margin-top:8px"><button class="btn sm" onclick="toast('Scheduled: 3rd of next month, 09:00.','')">Confirm schedule</button></div></div>
+  </div>

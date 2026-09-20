@@ -466,12 +466,12 @@ node tools/go.js
 
 <span class="c"># 2) Kisi bhi site ki poori report file banao (bina server ke bhi)</span>
 node tools/live.js https://client-site.com --pages 180 --depth 3
-python3 tools/bake.py out/live/site.json --html index.html --out live-client.html
+node tools/bake.js out/live/site.json --html index.html --out live-client.html
 node tools/report-md.js live-client.html out/live/site.json PLAN.md
 
 <span class="c"># 3) Agar Google ke asli namber bhi chahiye (malik ne CSV di hain)</span>
 node tools/live.js https://client-site.com --gsc-csv queries.csv --gsc-csv pages.csv
-python3 tools/bake.py out/live/site.json --html index.html --out live-client.html</pre>
+node tools/bake.js out/live/site.json --html index.html --out live-client.html</pre>
 <p class="small">Har file apne aap mein poori hai — aap usse client ko bhej sakte ho, wo internet ke bina bhi khul jaati hai. Kisi aur ke aage koi data nahi jaata, koi account nahi chahiye, aur ₹0 chahiye.</p>
 <div class="callout g" style="margin-top:26px"><b class="t">Aakhir mein</b>Ye dashboard aapka <b>auzaar</b> hai, aapki <b>soch</b> nahi. Yeh aapko batayega ki kya toota hai, kya khoofa hai, aur kya behtar ho sakta hai. Par "kaunsa keyword" aur "kis order mein kya karna hai" — wo aap tay karo, client ke saath baat karke. Tool ne aapka kaam 3 ghante se 30 minute mein kar diya hai — baaki 2.5 ghante mein aap soch ke kaam karo, aur wo soch hi aapki agency ka paisa hai.</div>
 <p class="small" style="text-align:center;margin-top:30px">Viralytics · 2026 · ye booklet free hai, aap ise kisi ko bhi dikhao · <b>Ctrl+P → Save as PDF</b> se ise PDF banao</p>

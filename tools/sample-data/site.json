@@ -1,0 +1,122 @@
+{
+ "generatedAt": "2026-09-19T04:00:00Z",
+ "demo": false,
+ "site": {
+  "domain": "viralytics.com",
+  "brand": "Viralytics"
+ },
+ "pages": [
+  {
+   "path": "/",
+   "status": 200,
+   "words": 740,
+   "title": "Viralytics — AI social media manager",
+   "meta": "Plan, draft and publish with AI. See the limits first.",
+   "h1": "AI social media manager",
+   "imgs": 4,
+   "altMissing": 1,
+   "linksOut": 12,
+   "depth": 0,
+   "robots": "",
+   "canonical": "https://viralytics.com/",
+   "schema": [
+    "Organization",
+    "WebSite"
+   ],
+   "type": "homepage"
+  },
+  {
+   "path": "/features/reel-generator",
+   "status": 200,
+   "words": 410,
+   "title": "Features",
+   "meta": "Features of Viralytics",
+   "h1": "",
+   "imgs": 6,
+   "altMissing": 4,
+   "linksOut": 2,
+   "depth": 1,
+   "robots": "index, follow",
+   "canonical": "https://viralytics.com/features",
+   "schema": [],
+   "type": "feature",
+   "lcp": 3120,
+   "cls": 0.24
+  },
+  {
+   "path": "/compare/later",
+   "status": 200,
+   "words": 620,
+   "title": "Viralytics vs Later",
+   "meta": "",
+   "h1": "Viralytics vs Later",
+   "imgs": 2,
+   "altMissing": 0,
+   "linksOut": 3,
+   "depth": 2,
+   "robots": "noindex, follow",
+   "canonical": "https://viralytics.com/compare/later",
+   "schema": [],
+   "type": "comparison"
+  },
+  {
+   "path": "/blog/hindi-content",
+   "status": 200,
+   "words": 260,
+   "title": "हिन्दी सामग्री",
+   "meta": "How to plan Hindi social content with AI",
+   "h1": "Hindi content",
+   "imgs": 1,
+   "altMissing": 1,
+   "linksOut": 0,
+   "depth": 3,
+   "robots": "",
+   "canonical": "",
+   "schema": [],
+   "type": "blog"
+  },
+  {
+   "path": "/pricing",
+   "status": 200,
+   "words": 520,
+   "title": "Pricing",
+   "meta": "Plans",
+   "h1": "Pricing",
+   "imgs": 0,
+   "altMissing": 0,
+   "linksOut": 5,
+   "depth": 1,
+   "robots": "",
+   "canonical": "https://viralytics.com/pricing",
+   "schema": [
+    "Product"
+   ],
+   "type": "pricing"
+  }
+ ],
+ "keywords": [
+  {
+   "q": "ai reel generator",
+   "imp": 14500,
+   "clicks": 320,
+   "pos": 17.8
+  },
+  {
+   "q": "instagram content planner",
+   "imp": 6120,
+   "clicks": 68,
+   "pos": 11.4,
+   "page": "/features/reel-generator"
+  },
+  {
+   "q": "ai social media manager free",
+   "imp": 3300,
+   "clicks": 92,
+   "pos": 19.1
+  }
+ ],
+ "indexed": {
+  "now": 182,
+  "before": 212
+ }
+}
